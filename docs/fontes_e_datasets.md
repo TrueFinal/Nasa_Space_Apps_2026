@@ -1,8 +1,8 @@
 # Fontes e verificação inicial de datasets
 
-Consulta: 2026-11-14. Esta é uma auditoria pública de **metadados**, não um inventário de arquivos científicos baixados. Nenhum download autenticado NASA foi executado. As respostas CMR/Harmony resumidas, parâmetros, datas e hashes das respostas consultadas constam em `auditoria_fontes.json`.
+Consulta: 2026-11-14. Esta tabela descreve a auditoria pública de **metadados de coleção**. As respostas CMR/Harmony resumidas, parâmetros, datas e hashes consultados constam em `auditoria_fontes.json`. Após essa auditoria, foram executadas amostras autenticadas NASA; seu conteúdo efetivamente obtido está no inventário, não deve ser confundido com toda a cobertura temporal da coleção.
 
-Atualização após implementação: a coleta NOAA foi executada e validada. O inventário e a proveniência dos dois arquivos obtidos, junto às falhas de acesso NASA, estão em [`inventario_coleta.json`](inventario_coleta.json). Os arquivos brutos permanecem locais e ignorados pelo Git.
+Atualização após implementação: NOAA e amostras NASA foram executadas e validadas. O inventário e a proveniência estão em [`inventario_coleta.md`](inventario_coleta.md) e [`inventario_coleta.json`](inventario_coleta.json). Os arquivos brutos permanecem locais e ignorados pelo Git. Falhas iniciais de EULA e integração foram resolvidas e permanecem registradas no diário.
 
 | Fonte/produto | Versão | Coleção CMR | Último fim de grânulo encontrado (UTC) | Variáveis prioritárias confirmadas no catálogo |
 |---|---|---|---|---|
@@ -12,7 +12,7 @@ Atualização após implementação: a coleta NOAA foi executada e validada. O i
 | MERRA-2 / M2TMNXSLV | 5.12.4 | C1276812859-GES_DISC | 2026-09-30T23:59:59.000Z | U10M, V10M, SLP, T2M, TQV |
 | MUR SST, opcional | 4.1 | C1996881146-POCLOUD | 2026-11-13T21:00:00.000Z | analysed_sst, analysis_error |
 
-Todas essas coleções anunciaram serviço Harmony `sds/HOSS-geographic` com recorte espacial, temporal e por variável, inclusive suporte a geometria, e saída `application/netcdf`. Isso indica capacidade anunciada, sem comprovar funcionamento autenticado ou unidades dos arquivos. Não aplicar média, regradeamento ou interpolação nesta etapa.
+Todas essas coleções anunciaram serviço Harmony `sds/HOSS-geographic` com recorte espacial, temporal e por variável, inclusive suporte a geometria, e saída `application/netcdf`. As unidades das amostras retornadas estão no inventário: IMERG diário `mm/day`, mensal `mm/hr`; solo GLDAS `kg m-2`, evapotranspiração `kg m-2 s-1`; ventos MERRA-2 `m s-1`, pressão `Pa`, temperatura `K` e vapor `kg m-2`. Nenhuma média, conversão de unidade, regradeamento ou interpolação foi aplicada.
 
 RONI: os GETs do [ASCII oficial](https://www.cpc.ncep.noaa.gov/data/indices/RONI.ascii.txt) e da [tabela oficial de episódios](https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso/roni/) retornaram 200. O ASCII possui `SEAS YR ANOM`, sem rótulo de fase; preservar também o HTML. Não reconstruir o RONI a partir de MUR.
 
@@ -27,9 +27,8 @@ RONI: os GETs do [ASCII oficial](https://www.cpc.ncep.noaa.gov/data/indices/RONI
 
 ## Pendências de acesso e cobertura
 
-- Configurar acesso GitHub ao repositório oficial e identidade para os commits.
-- Configurar credenciais Earthdata localmente e autorizações exigidas pelos serviços; não enviar credenciais na conversa ou versioná-las.
-- Confirmar unidades, dimensões, resolução e qualidade nos arquivos efetivamente retornados; metadados não disponíveis permanecem desconhecidos.
+- Acesso GitHub, identidade, token Earthdata e aceite GES DISC configurados nesta execução; credenciais permanecem locais.
+- Unidades, dimensões, resolução e ausências verificadas nas amostras retornadas. Qualidade científica regional e continuidade histórica não foram validadas.
 - Verificar primeiro/último grânulo no período e região, continuidade e quantidade total antes de escolher janela de extração. A tabela registra apenas a consulta ordenada por último fim de grânulo.
 - Selecionar região brasileira com polígono oficial e auditar estações ANA/INMET antes de recomendar um local. Nenhuma cobertura de estação foi confirmada neste preflight.
 - ANA, INMET, SMAP, MODIS e NASA-SSH são extensões futuras e não têm coletores implementados.

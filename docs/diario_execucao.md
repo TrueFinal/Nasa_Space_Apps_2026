@@ -165,3 +165,27 @@ Teste MUR independente criou job `874ec672-8db8-4b12-8c43-bddfaea10708`, conclu�
 Transporte agora permite headers explícitos no download. O coletor envia o token somente quando o resultado permanece no host Harmony; links externos recebem nenhum header de autorização e redirecionamentos entre hosts seguem a remoção de Authorization feita pelo requests. URLs assinadas continuam sem query no manifesto/log. Teste parametrizado cobre link Harmony versus link externo. MUR será retomado pelo job existente após a amostra mensal, sem duplicar o job.
 
 Validação: 26 testes e Ruff passaram. Unidade consolidada: `fix: validate NASA access and authenticate Harmony results`. Arquivos: core/NASA, testes, README, decisões e diário. Inclui preflight EULA, relação ESIP exata e autenticação no resultado Harmony. Resultado das coletas reais e hashes serão registrados na próxima unidade de inventário.
+
+### Publicação e CI da integração autenticada
+
+Commit `d1bb63927783ac4e5e8b53514366f4208ddeb04e` (`fix: validate NASA access and authenticate Harmony results`) enviado e confirmado no remoto. CI [43634888272](https://github.com/TrueFinal/Nasa_Space_Apps_2026/actions/runs/43634888272) concluiu com sucesso, incluindo os 26 testes.
+
+## 2026-11-14, 20:02 UTC / Europe/Lisbon — amostras NASA obtidas e auditoria final
+
+Após aceite pelo usuário, executados novos jobs mensais para dezembro/2015. Os três produtos foram obtidos e validados:
+
+- IMERG mensal: 1 arquivo, 44.180 bytes, grade 11 × 11, `Grid/precipitation` em `mm/hr`.
+- GLDAS: 1 arquivo, 83.186 bytes, grade 4 × 4, oito variáveis; solo e escoamento em `kg m-2`, evapotranspiração em `kg m-2 s-1`.
+- MERRA-2: 1 arquivo, 86.639 bytes, grade 21 lat × 81 lon; U10M/V10M em `m s-1`, SLP em `Pa`, T2M em `K`, TQV em `kg m-2`.
+- IMERG diário: 2 arquivos, 71.375 bytes, 01–02/12/2015, grades 11 × 11, `precipitation` em `mm/day`.
+- MUR: 2 arquivos, 10.448.477 bytes, registros 01–02/12/2015 às 09h, grades 1001 lat × 5001 lon; `analysed_sst` e `analysis_error` em `kelvin`.
+
+MUR foi solicitado para 01/12 e inclui 02/12 por interseção com a cobertura nativa do grânulo; nenhuma truncagem temporal ou agregação foi aplicada. Os arquivos mensais têm um timestamp representativo; cobertura mensal e tempo da coordenada permanecem distintos no manifesto. A precipitação mensal não foi convertida em acumulado, e nenhuma unidade foi alterada.
+
+Somando NOAA (2 arquivos, 112.812 bytes), a coleta possui **9 arquivos e 10.846.669 bytes**, dos quais sete são recortes científicos NASA. Nenhuma grade global foi baixada. Não foram identificados problemas de integridade; zero valores ausentes reconhecidos nas variáveis selecionadas destas amostras. Isso não comprova continuidade histórica ou qualidade regional e não autoriza conclusões climáticas.
+
+Repetidas as três execuções NASA com os mesmos parâmetros. A verificação bloqueava novas chamadas de download ou submissão e manteve consultas de metadados reais: os sete arquivos NASA foram reutilizados, conjunto de sete jobs e nove hashes inalterados. `--inventory-only` confirmou todos os hashes e ausência de arquivos `.part`.
+
+Atualizados inventários Markdown/JSON, fontes, arquitetura e README para refletir a coleta real. Snapshot JSON guarda arquivos, proveniência, último resultado por dataset e verificação de repetição. Dados brutos e credenciais permanecem ignorados. A extração histórica completa não foi realizada: a caixa brasileira continua provisória e a escolha científica de região ainda deve ser discutida. Nenhuma EDA foi iniciada.
+
+Unidade: `docs: publish verified NASA sample inventory`. Arquivos: README, arquitetura, fontes, inventários e diário. Verificações: todos os arquivos/hashes, períodos/variáveis/unidades lidos dos NetCDF, reexecução sem transferências, JSON válido, ausência do token nos arquivos versionáveis e `git diff --check`. Código já validado por 26 testes e CI no commit anterior; esta unidade altera somente documentos. O hash desta última unidade será informado na entrega após confirmar o push.

@@ -1,6 +1,6 @@
 # Arquitetura da ingestão — etapa 1
 
-Estado em 2026-11-14: **implementada na branch `feature/data-ingestion-mvp`**. Remoto oficial inicialmente vazio, com permissão de escrita confirmada. NOAA executada; descoberta pública NASA executada; extrações autenticadas NASA aguardam `EARTHDATA_TOKEN`. Não há EDA ou interface.
+Estado em 2026-11-14: **implementada na branch `feature/data-ingestion-mvp`**. Remoto oficial inicialmente vazio, com permissão de escrita confirmada. NOAA e amostras autenticadas NASA executadas após configuração do token e aceite das condições GES DISC pelo titular. O inventário registra os arquivos efetivamente obtidos; a janela histórica completa não foi baixada. Não há EDA ou interface.
 
 ## Fluxo e responsabilidades
 

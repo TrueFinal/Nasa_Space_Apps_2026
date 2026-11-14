@@ -1,46 +1,48 @@
 # Inventário da coleta — 2026-11-14
 
-Estado: NOAA obtida e verificada; conteúdo NASA pendente de autenticação. Este
-relatório descreve os arquivos disponíveis e não contém EDA ou interpretação ENSO.
-Evidências completas: [`inventario_coleta.json`](inventario_coleta.json).
+Estado: **coleta de amostras executada e validada**, com RONI e os quatro produtos NASA configurados (IMERG diário/mensal, GLDAS, MERRA-2 e MUR complementar). Não representa a extração de toda a janela histórica. Evidências completas: [`inventario_coleta.json`](inventario_coleta.json).
 
-| Dataset/arquivo | Arquivos obtidos | Bytes | Período/registro | Integridade e limites |
+| Dataset | Arquivos | Bytes | Período/registro | Grade nas amostras |
 |---|---:|---:|---|---|
-| NOAA RONI, ASCII original | 1 | 14.752 | 921 trimestres sobrepostos; janeiro/1950–setembro/2026, mês central | SHA-256 validado, registros em ordem e sem duplicatas; zero ausências reconhecidas |
-| NOAA, classificação HTML oficial | 1 | 98.060 | Tabela histórica original preservada | SHA-256 validado; conteúdo mantido, sem inferir ou extrair fases locais |
-| IMERG Final diário V07 | 0 | 0 | Metadados consultados; último grânulo até setembro/2025 | Conteúdo, unidades, dimensões e ausências ainda não verificados |
-| IMERG Final mensal V07 | 0 | 0 | Metadados consultados; último grânulo até setembro/2025 | Conteúdo, unidades, dimensões e ausências ainda não verificados |
-| GLDAS Noah mensal 2.1 | 0 | 0 | Metadados consultados; último grânulo até julho/2026 | Conteúdo e qualidade de estimativas modeladas ainda não verificados |
-| MERRA-2 mensal 5.12.4 | 0 | 0 | Metadados consultados; último grânulo até setembro/2026 | Conteúdo e qualidade da reanálise ainda não verificados |
-| MUR SST 4.1, opcional | 0 | 0 | Metadados consultados; último grânulo até 13/11/2026 | Somente dry-run; conteúdo ainda não verificado |
+| NOAA RONI + classificação HTML | 2 | 112,812 | jan/1950–set/2026; 921 trimestres + HTML | Índice Niño 3.4, sem grade |
+| IMERG Final diário V07 | 2 | 71,375 | 01–02/12/2015; 2 registros diários | 11 × 11; ~0,1° |
+| IMERG Final mensal V07 | 1 | 44,180 | dez/2015; 1 registro mensal | 11 × 11; ~0,1° |
+| GLDAS Noah mensal 2.1 | 1 | 83,186 | dez/2015; 1 registro mensal | 4 × 4; 0,25° |
+| MERRA-2 mensal 5.12.4 | 1 | 86,639 | dez/2015; 1 registro mensal | 21 lat × 81 lon; 0,5° × 0,625° |
+| MUR SST 4.1 | 2 | 10,448,477 | 01–02/12/2015, às 09h; 2 registros | 1001 lat × 5001 lon; ~0,01° |
 
-Total obtido: **2 arquivos, 112.812 bytes**. Hashes e unidades RONI (°C conforme a
-definição NOAA) estão no manifesto. RONI é índice regional, sem dimensões de grade;
-o HTML é evidência da classificação oficial, sem contagem de registros extraída.
-A coleção de arquivos não apresenta problema de integridade identificado.
+Total: **9 arquivos, 10,846,669 bytes** (10,85 MB decimais). Os arquivos brutos ficam em `data/raw/<dataset>/<produto>/<região>/`, fora do Git. O manifesto local está em `data/metadata/manifest.json`.
 
-Os dados ficam em `data/raw/noaa_roni/RONI/global_index/`. Cada arquivo recebeu
-SHA-256 e horários UTC/America/Sao_Paulo. Os arquivos originais não foram alterados,
-e a segunda execução reutilizou ambos após conferir os hashes. A data de coleta
-não é a data das observações. RONI e classificação histórica podem ser revisados
-pela fonte; `--refresh` preserva novas revisões por conteúdo.
+## Variáveis e unidades confirmadas nos arquivos
 
-A última execução de coleta completa registrou quatro falhas explícitas por
-`EARTHDATA_TOKEN` ausente, com código de saída 1. Não foi submetido nenhum job
-NASA. O modo público confirmou nomes/versões/variáveis, capacidade de recorte e
-grânulos disponíveis; isso não comprova continuidade nem download autenticado.
+- RONI: °C conforme a definição NOAA. Série ASCII e tabela HTML originais preservadas; nenhuma fase foi inferida localmente.
+- IMERG diário: `precipitation`, `mm/day`. Mensal: `Grid/precipitation`, `mm/hr`; taxa média mensal preservada, sem conversão para acumulado.
+- GLDAS: quatro camadas `SoilMoi*` e `RootMoist_inst`, `kg m-2`; `Evap_tavg`, `kg m-2 s-1`; `Qs_acc` e `Qsb_acc`, `kg m-2`. São estimativas de modelo, não medições diretas em poços ou lotes.
+- MERRA-2: `U10M`, `V10M`, `m s-1`; `SLP`, `Pa`; `T2M`, `K`; `TQV`, `kg m-2`. Produto de reanálise.
+- MUR: `analysed_sst` e `analysis_error`, ambas `kelvin`. Dados analisados de nível 4; não substituem RONI.
 
-Região terrestre padrão: `brasilia_smoke`, caixa técnica provisória. A seleção
-científica de bacia/região brasileira e a auditoria de estações ANA/INMET seguem
-pendentes. Os recortes poligonais atualmente usam o envelope, sem máscara, e os
-registros temporais de cada grânulo são preservados completos.
+## Integridade, tempo e proveniência
 
-Para reproduzir, consultar o [README](../README.md). Para verificar os arquivos
-locais sem rede:
+Todos os nove hashes SHA-256 foram conferidos. Os sete NetCDF foram abertos e todos os blocos das variáveis solicitadas puderam ser lidos. Nenhuma ausência por NaN/FillValue/missing_value foi encontrada nessas amostras; não houve preenchimento nem aplicação de máscaras de qualidade. Isso não comprova qualidade regional ou continuidade histórica.
+
+O manifesto registra produto, versão, coleção, DOI, variáveis, unidades, dimensões, resolução, região/CRS, pedido, cobertura do grânulo, tempos lidos, endpoint/parâmetros, job, tamanho/hash e coleta UTC/America/Sao_Paulo. Os horários de coleta não são os tempos das observações. Queries assinadas e tokens não são persistidos.
+
+Os três produtos mensais têm um timestamp representativo por arquivo; sua cobertura catalogada é dezembro/2015. O recorte temporal seleciona grânulos que intersectam a consulta e preserva seus registros nativos completos. Por isso o pedido MUR de 01/12 também inclui o registro de 02/12 às 09h. Os períodos pedido e retornado permanecem distintos.
+
+## Reexecução e problemas resolvidos
+
+As três execuções NASA foram repetidas com todos os sete arquivos reutilizados, sem novas transferências científicas ou novos jobs; hashes e conjunto de jobs permaneceram iguais. A execução de inventário sem rede confirmou todos os nove arquivos e ausência de temporários incompletos.
+
+Falhas iniciais resolvidas: aceite EULA GES DISC pelo titular; parâmetros de variável repetidos no Harmony; comparação exata da relação ESIP `data#`; autenticação nos links de resultado do próprio Harmony. HTML de login foi rejeitado e nunca promovido a dado científico. Detalhes e commits estão no [diário](diario_execucao.md).
+
+## Limites e próximos passos
+
+A caixa terrestre `brasilia_smoke` serve somente a testes de transferência. Não é bacia nem região científica definitiva; nenhuma estação ANA/INMET foi auditada. MERRA-2 e MUR usam Niño 3.4. Polígonos configuráveis são extraídos pelo envelope, sem máscara.
+
+Amostras pequenas não bastam para análise de tendência ou comparação de episódios. A automação está preparada para novos períodos, com limite explícito de grânulos, mas a extração histórica depende de uma região de estudo fundamentada. Nenhuma limpeza, conversão de unidades, EDA ou estatística foi aplicada. O próximo passo deve ser discutido em conjunto.
+
+Para conferir os arquivos locais sem rede:
 
 ```bash
 .venv/bin/python scripts/fetch_mvp_data.py --inventory-only
 ```
-
-Próximo passo de coleta: configurar o token localmente e executar as amostras
-NASA documentadas no README. EDA, limpeza e estatística permanecem fora desta entrega.
