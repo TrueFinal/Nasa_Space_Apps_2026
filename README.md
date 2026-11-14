@@ -4,6 +4,26 @@ Ingestão de dados científicos do MVP NASA Space Apps 2026. Esta entrega cobre
 coleta, proveniência e auditoria técnica. O documento de referência está em
 [`docs/earth_detectives_enso.pdf`](docs/earth_detectives_enso.pdf).
 
+## Caderno de inspeção dos dados
+
+Abra [`notebooks/01_inspecao_dados.ipynb`](notebooks/01_inspecao_dados.ipynb).
+O notebook já inclui saídas executadas, tabelas de cobertura, conferência dos hashes,
+ausências/faixas declaradas, atributos e cinco figuras para inspecionar as amostras.
+Ele não altera os arquivos brutos nem aplica limpeza. Mostra explicitamente o que
+foi baixado, o que ficou de fora e a diferença entre unidades e períodos nativos.
+
+Para reexecutar, instale as dependências opcionais no ambiente do projeto e selecione
+esse interpretador como kernel no VS Code/Jupyter:
+
+```bash
+uv pip install --python .venv/bin/python -r requirements-notebook-lock.txt
+```
+
+A reexecução usa somente dados locais, sem token ou rede. É necessário ter os nove
+arquivos referenciados em `data/metadata/manifest.json`; os gráficos salvos podem ser
+vistos sem baixar novamente os dados. As dependências de notebook são separadas das
+dependências do coletor.
+
 ## Instalação
 
 Python 3.12 recomendado. Com [uv](https://docs.astral.sh/uv/):

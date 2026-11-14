@@ -189,3 +189,19 @@ Repetidas as três execuções NASA com os mesmos parâmetros. A verificação b
 Atualizados inventários Markdown/JSON, fontes, arquitetura e README para refletir a coleta real. Snapshot JSON guarda arquivos, proveniência, último resultado por dataset e verificação de repetição. Dados brutos e credenciais permanecem ignorados. A extração histórica completa não foi realizada: a caixa brasileira continua provisória e a escolha científica de região ainda deve ser discutida. Nenhuma EDA foi iniciada.
 
 Unidade: `docs: publish verified NASA sample inventory`. Arquivos: README, arquitetura, fontes, inventários e diário. Verificações: todos os arquivos/hashes, períodos/variáveis/unidades lidos dos NetCDF, reexecução sem transferências, JSON válido, ausência do token nos arquivos versionáveis e `git diff --check`. Código já validado por 26 testes e CI no commit anterior; esta unidade altera somente documentos. O hash desta última unidade será informado na entrega após confirmar o push.
+
+### Confirmação da publicação do inventário
+
+Commit `48be2f5d3cfb47b0e8f2531cfa2d1503654d4c15` enviado; CI [43635387048](https://github.com/TrueFinal/Nasa_Space_Apps_2026/actions/runs/43635387048) concluiu com sucesso.
+
+## 2026-11-14, 20:10 UTC / Europe/Lisbon — notebook de inspeção solicitado pelo usuário
+
+Usuário solicitou esclarecimento do período, omissões e notebook para avaliar eventual limpeza. Esse pedido autoriza a inspeção descritiva conjunta; nenhuma limpeza ou análise inferencial foi iniciada. Conferidos os períodos no manifesto: RONI janeiro/1950 a setembro/2026; IMERG diário e MUR 01–02/12/2015; IMERG mensal, GLDAS e MERRA-2 dezembro/2015, com timestamps representativos. Histórico NASA completo, região brasileira definitiva e fontes complementares permanecem fora da coleta.
+
+Criado `notebooks/01_inspecao_dados.ipynb`, com 17 células (8 de código): cobertura baixada versus catálogo, lista explícita de omissões, hashes, série RONI, auditoria de todas as variáveis selecionadas, atributos/proveniência e cinco figuras. As figuras mostram RONI e mapas de IMERG, GLDAS, MERRA-2 e MUR. MUR usa seleção regular de pontos apenas para exibição; a auditoria lê a grade completa.
+
+Ausências e faixas válidas são verificadas nos valores empacotados. A decodificação de scale_factor/add_offset ocorre somente em memória para exibir valores físicos, na unidade original. NaN/FillValue são mascarados apenas nas figuras, sem preenchimento, interpolação, remoção de linhas ou alteração do arquivo. Não são inferidas fases ENSO. Uma tabela de anotações permite discutir tratamentos e necessidades de coleta antes de decidir limpeza.
+
+Dependências opcionais declaradas em `requirements-notebook.txt` e lock próprio, sem mudar o ambiente mínimo do coletor. README inclui instalação e seleção do kernel. Notebook executado integralmente com nbclient; oito células de código e cinco figuras concluídas sem erros. Validação nbformat passou; conferência final confirmou os nove arquivos brutos idênticos ao manifesto. Uma figura foi inspecionada visualmente. Saídas públicas salvas no notebook para revisão imediata; nenhum token ou arquivo .env é lido pelo caderno.
+
+Unidade: `feat: add executed data inspection notebook`. Arquivos: notebook, dependências opcionais/lock, README e diário. Verificações: execução integral, validação do formato, hashes preservados, revisão de conteúdo e segredos e `git diff --check`. Hash e push serão informados após confirmação.
