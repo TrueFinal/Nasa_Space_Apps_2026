@@ -75,3 +75,25 @@ Transporte usa timeout, três tentativas limitadas, espera progressiva, arquivos
 Execução real: NOAA ASCII (14.752 bytes, SHA-256 com prefixo `1297887f581b6190`) e HTML original (98.060 bytes, prefixo `45a29af6d57b0a23`) baixados e validados. Série com 921 trimestres sobrepostos, de janeiro/1950 a setembro/2026, usando o mês central como rótulo. HTML oficial preservado integralmente; nenhuma fase foi inferida localmente. Dados estão em `data/raw/noaa_roni/RONI/global_index`, fora do Git. Segunda execução reutilizou ambos os arquivos sem novas transferências.
 
 Validação: sete testes passaram (formato, registros inválidos/duplicados, ausência preservada, HTML indevido, corrupção e fusos); Ruff e `git diff --check` passaram. Unidade: `feat: collect and validate official NOAA RONI snapshots`. Arquivos: configuração, dependências/lock, módulos core/NOAA, testes e diário. Hash/push serão registrados após confirmação.
+
+### Publicação confirmada da coleta NOAA
+
+Commit `7e47644d1993d3eba116c74c2b24695137be38ff` (`feat: collect and validate official NOAA RONI snapshots`) enviado; `git ls-remote` confirmou o mesmo hash na branch de desenvolvimento.
+
+## 2026-11-14, 19:36 UTC / Europe/Lisbon — descoberta e coletor NASA, CLI e inventário
+
+Implementados `nasa.py`, CLI e script executável. As consultas CMR/Harmony confirmaram produtos/versões/variáveis e disponibilidade; a janela comum vem dos primeiros/últimos grânulos. A consulta regional registra a quantidade exata, pagina resultados e recusa coleções maiores que `--max-granules` (padrão 50, sem truncamento silencioso). MUR é opcional.
+
+Harmony solicita um recorte por grânulo, preserva ID de job e retoma polling entre execuções. A submissão não tem retry automático após timeout, para evitar duplicar jobs de estado desconhecido. Retentativas HTTP de consultas e transferências são limitadas; respostas externas não são copiadas aos logs. O token só é passado ao endpoint Harmony, nunca à NOAA ou aos links assinados de staging, e não é persistido no manifesto.
+
+Seleção temporal ocorre no CMR por interseção com o intervalo. Cada grânulo mantém seus registros nativos completos, inclusive se o período de uma observação mensal ultrapassar o intervalo pedido. Isso é explicitado no plano e manifesto; evita eliminar registros mensais pelo timestamp representativo ou cortar incorretamente dias MUR cujo intervalo catalogado atravessa meia-noite. O recorte do provedor é espacial e por variável, sem agregação. O inventário preserva tanto o intervalo do grânulo quanto os tempos lidos do arquivo.
+
+Polígonos GeoJSON são validados em WGS84, preservados com hash e extraídos pelo envelope; não há máscara de polígono nesta entrega. Validação NetCDF lê todos os blocos das variáveis pedidas, conta ausências sem substituí-las, registra unidades/dimensões/atributos/resolução de coordenadas e rejeita recortes totalmente vazios ou fora da região.
+
+Execução pública real de `--dry-run` (2015-12-01 a 2015-12-02): 2 grânulos IMERG diários, 1 mensal IMERG, 1 GLDAS, 1 MERRA-2 e 3 MUR por interseção temporal. Nenhum job ou download científico é submetido nesse modo. A CLI NOAA foi executada e reutilizou os arquivos íntegros.
+
+Problema encontrado nos testes: uma tolerância espacial de uma célula poderia aceitar uma grade ampla demais. Corrigida para meio espaçamento; teste com arquivo sintético fora da região passou após correção. Arquivos sintéticos são gerados apenas em diretórios temporários de teste, nunca apresentados como dados reais.
+
+Validação: 20 testes passaram, incluindo reexecução com job salvo sem nova submissão, limite de volume, paginação, modo dry-run sem transferência, corrupção, ausências e remoção de queries assinadas dos metadados. Ruff passou. Unidade: `feat: add CMR discovery and resumable NASA subset collection`; inclui NASA/CLI/script, novos testes e diário. Hash e resultado do push serão registrados após confirmação.
+
+Execução real da CLI completa em janela curta: NOAA reutilizada e quatro datasets NASA registrados como falha por `EARTHDATA_TOKEN` ausente, com saída de processo 1. Inventário e manifesto gerados apesar das falhas parciais. Nenhum conteúdo NASA foi baixado e nenhum job foi submetido. README incluído nesta unidade com instalação, comandos, autenticação, limites e comportamento de recortes.
