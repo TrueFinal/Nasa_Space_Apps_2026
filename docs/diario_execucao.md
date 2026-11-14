@@ -113,3 +113,13 @@ Removidas dependências não utilizadas Xarray/Pandas e explicitados NumPy/tzdat
 Criado GitHub Actions para testes, Ruff e ajuda da CLI em Python 3.12 a cada push/PR. Actions checkout/setup-python foram consultadas em seus releases oficiais e fixadas por SHA de commit (v7.0.1 e v7.1.0). Workflow usa somente permissão de leitura do conteúdo, não requer credenciais Earthdata e não transfere dados científicos.
 
 Unidade: `chore: add reproducible checks and collection evidence`. Arquivos: workflow, README, arquitetura/decisões/fontes/diário, snapshot de inventário, ajuste de parâmetros NASA/teste e dependências/lock. Verificações: 20 testes, Ruff, ajuda CLI, inventário com hashes, revisão de diff, JSON/YAML e busca de segredos. Hash, push e execução remota serão registrados após confirmação.
+
+### Publicação e CI confirmados
+
+Commit `b9ba10bab87c1d3eca69edf206f1c5b0cea21ca5` (`chore: add reproducible checks and collection evidence`) enviado; `git ls-remote` confirmou o hash. GitHub Actions [43633505673](https://github.com/TrueFinal/Nasa_Space_Apps_2026/actions/runs/43633505673) concluiu com `success`, confirmado por `gh run watch --exit-status`. O mesmo conjunto de 20 testes, Ruff e ajuda da CLI foi aprovado no runner remoto.
+
+## 2026-11-14, 19:43 UTC / Europe/Lisbon — apresentação do inventário e encerramento da execução disponível
+
+Criado `docs/inventario_coleta.md` para leitura rápida dos arquivos reais, bytes, período, integridade e limitações, com referência às evidências JSON. README atualizado com o link. Repositório e branch oficiais sincronizados; dados brutos, logs, ambiente e credenciais fora do Git. A configuração Earthdata continua pendente; não declarar concluída a aquisição NASA nem a etapa 1 integralmente. Nenhuma EDA foi iniciada.
+
+Unidade: `docs: report collection inventory and verified publication`. Arquivos: inventário Markdown, README e diário. Verificação aplicável: correspondência da tabela com o inventário JSON, links locais e `git diff --check`; sem mudança de código. O hash desta última unidade pode ser recuperado com `git log -1 --format=%H` e será informado na entrega. Conforme o procedimento do diário, um commit não inclui seu próprio hash; seu hash é registrado na próxima entrada ou no relato da entrega após confirmar o remoto.
