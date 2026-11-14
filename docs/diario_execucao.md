@@ -61,3 +61,17 @@ Usuário informou configuração concluída. `gh auth status` confirmou sessão 
 Identidade configurada somente neste repositório a partir da conta autenticada retornada por `gh api user`: Lucas P. Nunes, com endereço privado GitHub `152216002+LucasPNunes1@users.noreply.github.com`. Criados `.gitignore` para dados/segredos/cache e `.env.example` sem credenciais. Nenhuma stack existente foi substituída.
 
 Unidade de commit: `chore: initialize ingestion branch and technical plan`. Arquivos: PDF, cinco documentos de preflight, `.gitignore` e `.env.example`. Verificações: JSON de auditoria parseável, remoto vazio confirmado, revisão de arquivos e busca de segredos; não há código executável nesta unidade. Hash e confirmação do push serão registrados na próxima entrada após a operação.
+
+### Publicação confirmada da unidade inicial
+
+Commit `90dd7cecb91825d8315c3f758ab04f041c71878e` (`chore: initialize ingestion branch and technical plan`) enviado a `origin/feature/data-ingestion-mvp`; `git ls-remote` confirmou o mesmo hash. Branch com upstream configurado.
+
+## 2026-11-14 — transporte, configuração e primeira coleta NOAA
+
+Criados ambiente isolado Python 3.12 via uv (sem alterar o Python do sistema), dependências declaradas e lock das versões instaladas. Os módulos `core` e `noaa` separam transporte/proveniência da validação específica do índice. Configuração YAML contém produtos e regiões; caixa `brasilia_smoke` é provisória e exclusivamente técnica. Metadados de polígonos serão preservados; a primeira extração usa bounding box sem alegar máscara.
+
+Transporte usa timeout, três tentativas limitadas, espera progressiva, arquivos `.part` descartados em falhas, validação antes da promoção atômica e nomes com hash para preservar revisões. Não há retomada por byte: temporários reiniciam, pois não foi validado suporte consistente a Range/ETag pelos provedores. Manifesto guarda SHA-256 e horários UTC/America/Sao_Paulo; reexecução confere conteúdo antes de reutilizar. Logs não recebem cabeçalhos ou queries assinadas.
+
+Execução real: NOAA ASCII (14.752 bytes, SHA-256 com prefixo `1297887f581b6190`) e HTML original (98.060 bytes, prefixo `45a29af6d57b0a23`) baixados e validados. Série com 921 trimestres sobrepostos, de janeiro/1950 a setembro/2026, usando o mês central como rótulo. HTML oficial preservado integralmente; nenhuma fase foi inferida localmente. Dados estão em `data/raw/noaa_roni/RONI/global_index`, fora do Git. Segunda execução reutilizou ambos os arquivos sem novas transferências.
+
+Validação: sete testes passaram (formato, registros inválidos/duplicados, ausência preservada, HTML indevido, corrupção e fusos); Ruff e `git diff --check` passaram. Unidade: `feat: collect and validate official NOAA RONI snapshots`. Arquivos: configuração, dependências/lock, módulos core/NOAA, testes e diário. Hash/push serão registrados após confirmação.

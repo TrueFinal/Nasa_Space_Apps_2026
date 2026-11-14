@@ -1,0 +1,16 @@
+[project]
+name = "earth-detectives-ingestion"
+version = "0.1.0"
+description = "Coleta rastreável dos dados do MVP Earth Detectives"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]

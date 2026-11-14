@@ -1,0 +1,64 @@
+datasets:
+  noaa_roni:
+    organization: NOAA Climate Prediction Center
+    product: RONI
+    version: official-revisable
+    region: global_index
+    variables: [RONI]
+    spatial_resolution: Niño 3.4 relative to tropical SST
+    temporal_resolution: overlapping 3-month seasons
+    sources:
+      series: https://www.cpc.ncep.noaa.gov/data/indices/RONI.ascii.txt
+      classification: https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso/roni/
+  gpm_daily:
+    organization: NASA GES DISC
+    product: GPM_3IMERGDF
+    version: '07'
+    region: brasilia_smoke
+    variables: [precipitation]
+    spatial_resolution: 0.1 degree
+    temporal_resolution: daily
+    run: Final
+  gpm_monthly:
+    organization: NASA GES DISC
+    product: GPM_3IMERGM
+    version: '07'
+    region: brasilia_smoke
+    variables: [Grid/precipitation]
+    spatial_resolution: 0.1 degree
+    temporal_resolution: monthly
+    run: Final
+  gldas:
+    organization: NASA GES DISC
+    product: GLDAS_NOAH025_M
+    version: '2.1'
+    region: brasilia_smoke
+    variables:
+      - SoilMoi0_10cm_inst
+      - SoilMoi10_40cm_inst
+      - SoilMoi40_100cm_inst
+      - SoilMoi100_200cm_inst
+      - RootMoist_inst
+      - Evap_tavg
+      - Qs_acc
+      - Qsb_acc
+    spatial_resolution: 0.25 degree
+    temporal_resolution: monthly
+    domain: land
+  merra2:
+    organization: NASA GES DISC
+    product: M2TMNXSLV
+    version: '5.12.4'
+    region: nino34
+    variables: [U10M, V10M, SLP, T2M, TQV]
+    spatial_resolution: 0.5 latitude x 0.625 longitude degree
+    temporal_resolution: monthly
+  mur_sst:
+    organization: NASA JPL PO.DAAC
+    product: MUR-JPL-L4-GLOB-v4.1
+    version: '4.1'
+    region: nino34
+    variables: [analysed_sst, analysis_error]
+    spatial_resolution: 0.01 degree
+    temporal_resolution: daily
+    optional: true
