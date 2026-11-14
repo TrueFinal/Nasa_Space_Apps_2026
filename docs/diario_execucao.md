@@ -123,3 +123,19 @@ Commit `b9ba10bab87c1d3eca69edf206f1c5b0cea21ca5` (`chore: add reproducible chec
 Criado `docs/inventario_coleta.md` para leitura rápida dos arquivos reais, bytes, período, integridade e limitações, com referência às evidências JSON. README atualizado com o link. Repositório e branch oficiais sincronizados; dados brutos, logs, ambiente e credenciais fora do Git. A configuração Earthdata continua pendente; não declarar concluída a aquisição NASA nem a etapa 1 integralmente. Nenhuma EDA foi iniciada.
 
 Unidade: `docs: report collection inventory and verified publication`. Arquivos: inventário Markdown, README e diário. Verificação aplicável: correspondência da tabela com o inventário JSON, links locais e `git diff --check`; sem mudança de código. O hash desta última unidade pode ser recuperado com `git log -1 --format=%H` e será informado na entrega. Conforme o procedimento do diário, um commit não inclui seu próprio hash; seu hash é registrado na próxima entrada ou no relato da entrega após confirmar o remoto.
+
+### Confirmação da publicação anterior
+
+Commit `1cafd9fcd4a8aebc023957adce73c3821e223830` enviado e confirmado; CI [43633629342](https://github.com/TrueFinal/Nasa_Space_Apps_2026/actions/runs/43633629342) passou. Nenhuma alteração local pendente ao retomar a coleta.
+
+## 2026-11-14, 19:48 UTC / Europe/Lisbon — execução autenticada e correção do contrato Harmony
+
+Usuário confirmou configuração Earthdata. Presença do token verificada sem exibir seu conteúdo; `.env` continua ignorado pelo Git. Executada amostra mensal dezembro/2015 de IMERG, GLDAS e MERRA-2. Token aceito e jobs criados.
+
+Encontrado desvio entre documentação textual e comportamento real: passar múltiplas variáveis separadas por vírgula em um único parâmetro `variable` retorna HTTP 400 (coverages não encontradas). Corrigido para parâmetros `variable` repetidos. Teste de regressão incluído; 21 testes e Ruff passaram. Após a correção, GLDAS e MERRA-2 aceitaram as requisições.
+
+Jobs autenticados falharam no serviço HOSS: IMERG `a0c6fd3d-8ae9-433f-8cd4-dc2165d641f5`, GLDAS `75775008-b158-4c52-9c32-dd5c619ae4a9`, MERRA-2 `e5be210b-236c-4c40-baf1-f1ffa67dea97`. O diagnóstico do job IMERG e GET direto do `.dmr.xml` indicam HTTP 403 interno ao ler o arquivo `.dmrpp` na origem. Isso não é evidência de token ausente/inválido.
+
+Investigada alternativa oficial: URLs HTTPS publicadas pelo CMR responderam HEAD 200 com ETag e Accept-Ranges bytes. Tamanhos globais anunciados: IMERG mensal 18.667.200 bytes; GLDAS 24.888.811; MERRA-2 78.811.779. Não foram baixados esses arquivos completos. Próxima unidade avaliará leitura de blocos HDF5 por HTTP Range, com recorte espacial local e preservação dos valores/metadados; o manifesto deverá distinguir esse método de um recorte feito pelo Harmony.
+
+Unidade: `fix: serialize Harmony variables as repeated parameters`. Arquivos: coletor NASA, teste e diário. Verificações: 21 testes, Ruff, revisão de diff e execução autenticada descrita acima. Push/hash registrados após confirmação.

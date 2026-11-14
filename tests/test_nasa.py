@@ -214,3 +214,10 @@ def test_saved_job_resumes_without_submission_and_preserves_source(tmp_path, mon
 def test_limit_refuses_large_collection_without_submitting(tmp_path):
     with pytest.raises(IngestionError, match="excedem"):
         nasa.fetch_nasa({}, {"matching_granules": 51}, None, Store(tmp_path), "token")
+
+
+def test_multiple_variables_use_repeated_parameters():
+    params = nasa.harmony_parameters(
+        {"region": REGION, "variables_requested": ["U10M", "V10M", "SLP"]}, {"id": "G1"}
+    )
+    assert [value for key, value in params if key == "variable"] == ["U10M", "V10M", "SLP"]

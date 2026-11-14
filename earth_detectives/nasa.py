@@ -245,7 +245,7 @@ def harmony_parameters(plan, granule):
     return [
         ("subset", f"lat({south}:{north})"),
         ("subset", f"lon({west}:{east})"),
-        ("variable", ",".join(plan["variables_requested"])),
+        *[("variable", variable) for variable in plan["variables_requested"]],
         ("granuleId", granule["id"]),
         ("format", "application/netcdf"),
         ("forceAsync", "true"),
