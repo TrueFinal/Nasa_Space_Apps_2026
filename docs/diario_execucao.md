@@ -139,3 +139,29 @@ Jobs autenticados falharam no serviço HOSS: IMERG `a0c6fd3d-8ae9-433f-8cd4-dc21
 Investigada alternativa oficial: URLs HTTPS publicadas pelo CMR responderam HEAD 200 com ETag e Accept-Ranges bytes. Tamanhos globais anunciados: IMERG mensal 18.667.200 bytes; GLDAS 24.888.811; MERRA-2 78.811.779. Não foram baixados esses arquivos completos. Próxima unidade avaliará leitura de blocos HDF5 por HTTP Range, com recorte espacial local e preservação dos valores/metadados; o manifesto deverá distinguir esse método de um recorte feito pelo Harmony.
 
 Unidade: `fix: serialize Harmony variables as repeated parameters`. Arquivos: coletor NASA, teste e diário. Verificações: 21 testes, Ruff, revisão de diff e execução autenticada descrita acima. Push/hash registrados após confirmação.
+
+### Publicação da correção de parâmetros
+
+Commit `d7bdb0035aa2482872610a246775809ad7b4220b` (`fix: serialize Harmony variables as repeated parameters`) enviado; referência remota confirmou o mesmo hash.
+
+## 2026-11-14, 19:55 UTC / Europe/Lisbon — causa do 403 e preflight de autorização
+
+GET autenticado da origem retornou JSON com `error_description: EULA Acceptance Failure` e URL oficial `https://urs.earthdata.nasa.gov/approve_app?client_id=e2WVk8Pw6weeLUKZYOxvTQ`. O HEAD 200 não garantia acesso; a causa do 403 envolve as condições pendentes da aplicação GES DISC, e não apenas indisponibilidade de metadados no HOSS. Solicitado ao titular ler e aceitar as condições na página oficial, sem transmitir credenciais.
+
+A alternativa de leitura HDF5 por Range foi avaliada e descartada antes de versionar: o GET também é bloqueado pela mesma EULA. Código exploratório removido e dependências de exploração desinstaladas; nenhuma grade global foi baixada. Não há tentativa de contornar a autorização do provedor.
+
+Implementada verificação mínima de conteúdo antes da submissão: GET streaming com Range bytes=0-7, somente nas origens NASA permitidas, valida assinatura do formato e fecha a resposta sem consumir o arquivo global. HTTP 403 com EULA produz mensagem própria com link de aceite. O identificador público da aplicação pode ser mantido; queries adicionais e tokens não são expostos. Isso evita novos jobs destinados a falhar por esse motivo.
+
+Execução real confirmou essa mensagem para IMERG diário e mensal, GLDAS e MERRA-2. Não foram criados novos jobs nesses preflights. Amostras: diário em 2015-12-01 a 2015-12-02 e mensais em dezembro/2015. Nenhum conteúdo científico dessas quatro coleções foi obtido. Teste independente de MUR em andamento; resultado será registrado ao terminar.
+
+Validação: 24 testes passaram, incluindo link EULA sanitizado, leitura mínima e recusa de envio de token a origem não permitida; Ruff passou. Unidade prevista: `fix: preflight NASA data access and explain pending EULA`. Arquivos: core/NASA, testes, README, decisões, diário e evidências de inventário. Push/hash registrados após confirmação.
+
+## 2026-11-14, 19:57 UTC / Europe/Lisbon — aceite confirmado e autenticação dos resultados Harmony
+
+Usuário informou aceite concluído. Iniciada nova execução mensal com `--refresh`, porque os três jobs anteriores estavam definitivamente falhos. A confirmação anterior por token não foi tratada como aceite de condições; o titular realizou a ação na página oficial.
+
+Teste MUR independente criou job `874ec672-8db8-4b12-8c43-bddfaea10708`, concluído com sucesso pelo provedor. Encontradas duas incompatibilidades de execução: seleção de URL por sufixo `data#` também correspondia a `metadata#` (corrigida para igualdade exata da relação ESIP); e o link Harmony `service-results` exigia autenticação antes do redirecionamento ao arquivo. Sem header retornava HTML de login HTTP 200, corretamente rejeitado pelo validador NetCDF. Com header no host Harmony retornou NetCDF de 5.234.208 bytes. Nenhum HTML foi promovido a dado científico.
+
+Transporte agora permite headers explícitos no download. O coletor envia o token somente quando o resultado permanece no host Harmony; links externos recebem nenhum header de autorização e redirecionamentos entre hosts seguem a remoção de Authorization feita pelo requests. URLs assinadas continuam sem query no manifesto/log. Teste parametrizado cobre link Harmony versus link externo. MUR será retomado pelo job existente após a amostra mensal, sem duplicar o job.
+
+Validação: 26 testes e Ruff passaram. Unidade consolidada: `fix: validate NASA access and authenticate Harmony results`. Arquivos: core/NASA, testes, README, decisões e diário. Inclui preflight EULA, relação ESIP exata e autenticação no resultado Harmony. Resultado das coletas reais e hashes serão registrados na próxima unidade de inventário.

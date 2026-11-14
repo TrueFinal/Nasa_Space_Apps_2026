@@ -53,6 +53,15 @@ autorize as aplicações NASA solicitadas pelo provedor. Nunca envie tokens por
 mensagem ou os inclua no Git. O coletor aceita também a variável de ambiente;
 variáveis já definidas têm precedência sobre `.env`. Não há prompt interativo.
 
+O GES DISC também pode exigir aceite das condições da aplicação na conta Earthdata.
+Um token aceito pelo Harmony não comprova acesso ao conteúdo. Se a CLI indicar
+`EULA Acceptance Failure`, abra o link de aprovação informado pelo servidor,
+leia as condições e aceite se concordar. A aplicação atualmente indicada pelo
+GES DISC está em
+https://urs.earthdata.nasa.gov/approve_app?client_id=e2WVk8Pw6weeLUKZYOxvTQ.
+O coletor verifica somente os primeiros oito bytes da origem antes de criar jobs;
+HEAD isoladamente pode anunciar um arquivo mesmo com essa autorização pendente.
+
 Primeiro teste mensal, de baixo volume:
 
 ```bash
@@ -85,6 +94,8 @@ ou expirados exigem revisão em https://harmony.earthdata.nasa.gov/; `--refresh`
 solicita novos jobs. Em timeout na **submissão**, confira os jobs da conta antes de
 reexecutar: a resposta pode ter se perdido após o servidor aceitar o trabalho.
 Downloads incompletos são descartados e reiniciados, sem retomada por byte.
+Se um job anterior falhou por EULA, depois do aceite reexecute a coleta NASA com
+`--refresh` para criar um novo job. O `--refresh` preserva snapshots de dados anteriores.
 
 ## Regiões e seleção temporal
 

@@ -255,6 +255,37 @@ def harmony_parameters(plan, granule):
     ]
 
 
+def source_urls(granule):
+    return [
+        public_url(link["href"])
+        for link in granule.get("links", [])
+        if not link.get("inherited")
+        and link.get("rel") == "http://esipfed.org/ns/fedsearch/1.1/data#"
+        and urlsplit(link["href"]).scheme == "https"
+    ]
+
+
+def preflight_source(http, urls, token):
+    """Confere autorização de conteúdo; HEAD pode retornar 200 mesmo com EULA pendente."""
+    allowed = {"data.gesdisc.earthdata.nasa.gov", "archive.podaac.earthdata.nasa.gov"}
+    urls = [url for url in urls if urlsplit(url).hostname in allowed]
+    if not urls:
+        raise IngestionError("Grânulo sem URL oficial compatível com preflight autenticado")
+    with http.get(
+        urls[0],
+        stream=True,
+        headers={
+            "Authorization": f"Bearer {token}",
+            "Range": "bytes=0-7",
+            "Accept-Encoding": "identity",
+        },
+    ) as response:
+        # Não consome arquivo global se a origem ignorar Range.
+        header = next(response.iter_content(8), b"")
+        if header != b"\x89HDF\r\n\x1a\n" and not header.startswith(b"CDF"):
+            raise IngestionError("Origem retornou conteúdo inesperado no preflight de dados")
+
+
 def fetch_nasa(
     dataset, plan, http, store, token, *, max_granules=50, wait_seconds=120, refresh=False
 ):
@@ -282,6 +313,8 @@ def fetch_nasa(
         if not refresh and (cached := store.cached(key)):
             entries.append(cached)
             continue
+        sources = source_urls(granule)
+        preflight_source(http, sources, token)
         params = harmony_parameters(plan, granule)
         endpoint = (
             f"{HARMONY}/{plan['collection_id']}/ogc-api-coverages/1.0.0/"
@@ -327,20 +360,14 @@ def fetch_nasa(
                 url,
                 path,
                 lambda path: inspect_netcdf(path, plan["variables_requested"], plan["region"]),
+                headers=headers if urlsplit(url).netloc == urlsplit(HARMONY).netloc else None,
             )
-            source_urls = [
-                public_url(x["href"])
-                for x in granule.get("links", [])
-                if not x.get("inherited")
-                and x.get("rel", "").endswith("data#")
-                and urlsplit(x["href"]).scheme == "https"
-            ]
             metadata = {
                 **{k: v for k, v in plan.items() if k != "cmr_parameters"},
                 "organization": dataset["organization"],
                 "spatial_resolution": dataset["spatial_resolution"],
                 "temporal_resolution": dataset["temporal_resolution"],
-                "source_url": source_urls,
+                "source_url": sources,
                 "endpoint": endpoint,
                 "result_url_without_query": public_url(url),
                 "harmony_job_id": job["id"],

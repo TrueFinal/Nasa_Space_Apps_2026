@@ -143,7 +143,10 @@ def test_dry_run_cannot_submit_or_download(tmp_path, monkeypatch):
     assert not (tmp_path / "raw").exists()
 
 
-def test_saved_job_resumes_without_submission_and_preserves_source(tmp_path, monkeypatch):
+@pytest.mark.parametrize("result_host", ["example.org", "harmony.earthdata.nasa.gov"])
+def test_saved_job_resumes_without_submission_and_preserves_source(
+    tmp_path, monkeypatch, result_host
+):
     source = tmp_path / "synthetic.nc4"
     synthetic_file(source)
     granule = {
@@ -153,6 +156,7 @@ def test_saved_job_resumes_without_submission_and_preserves_source(tmp_path, mon
         "links": [],
     }
     monkeypatch.setattr(nasa, "granules", lambda *_: iter([granule]))
+    monkeypatch.setattr(nasa, "preflight_source", lambda *_: None)
     plan = {
         "dataset": "gpm_daily",
         "matching_granules": 1,
@@ -183,11 +187,16 @@ def test_saved_job_resumes_without_submission_and_preserves_source(tmp_path, mon
             return {
                 "status": "successful" if self.ready else "running",
                 "links": [
-                    {"rel": "data", "href": "https://example.org/file.nc4?secret=signed"},
+                    {"rel": "data", "href": f"https://{result_host}/file.nc4?secret=signed"},
                 ],
             }
 
-        def download(self, url, path, validator):
+        def download(self, url, path, validator, *, headers=None):
+            assert headers == (
+                {"Authorization": "Bearer test-secret"}
+                if result_host == "harmony.earthdata.nasa.gov"
+                else None
+            )
             Path(path).parent.mkdir(parents=True, exist_ok=True)
             Path(path).write_bytes(source.read_bytes())
             return Path(path), validator(Path(path))
@@ -221,3 +230,44 @@ def test_multiple_variables_use_repeated_parameters():
         {"region": REGION, "variables_requested": ["U10M", "V10M", "SLP"]}, {"id": "G1"}
     )
     assert [value for key, value in params if key == "variable"] == ["U10M", "V10M", "SLP"]
+
+
+def test_preflight_checks_content_with_minimal_range():
+    class Response:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            pass
+
+        def iter_content(self, size):
+            assert size == 8
+            yield b"\x89HDF\r\n\x1a\n"
+
+    class HTTP:
+        def get(self, url, **kwargs):
+            assert kwargs["headers"]["Range"] == "bytes=0-7"
+            assert kwargs["stream"] is True
+            return Response()
+
+    nasa.preflight_source(HTTP(), ["https://data.gesdisc.earthdata.nasa.gov/data/file"], "test")
+
+
+def test_preflight_refuses_sending_token_to_untrusted_source():
+    with pytest.raises(IngestionError, match="URL oficial"):
+        nasa.preflight_source(None, ["https://example.org/data"], "test")
+
+
+def test_scientific_source_does_not_confuse_metadata_links():
+    root = "https://archive.podaac.earthdata.nasa.gov/"
+    assert nasa.source_urls(
+        {
+            "links": [
+                {
+                    "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+                    "href": root + "data.nc.md5",
+                },
+                {"rel": "http://esipfed.org/ns/fedsearch/1.1/data#", "href": root + "data.nc"},
+            ]
+        }
+    ) == [root + "data.nc"]

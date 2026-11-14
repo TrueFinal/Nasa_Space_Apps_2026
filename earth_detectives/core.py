@@ -9,7 +9,7 @@ import os
 import time
 from datetime import datetime, timezone
 from pathlib import Path
-from urllib.parse import urlsplit, urlunsplit
+from urllib.parse import parse_qs, urlencode, urlsplit, urlunsplit
 from zoneinfo import ZoneInfo
 
 import requests
@@ -77,6 +77,30 @@ class HTTP:
             if response is not None and response.ok:
                 return response
             status = response.status_code if response is not None else "connection_error"
+            if status == 403:
+                try:
+                    error = response.json()
+                except ValueError:
+                    error = {}
+                if not isinstance(error, dict):
+                    error = {}
+                if error.get("error_description") == "EULA Acceptance Failure":
+                    resolution = urlsplit(error.get("resolution_url", ""))
+                    client = parse_qs(resolution.query).get("client_id", [""])[0]
+                    link = "https://urs.earthdata.nasa.gov/profile"
+                    if (
+                        resolution.scheme == "https"
+                        and resolution.hostname == "urs.earthdata.nasa.gov"
+                        and resolution.path == "/approve_app"
+                        and client
+                    ):
+                        link = "https://urs.earthdata.nasa.gov/approve_app?" + urlencode(
+                            {
+                                "client_id": client,
+                            }
+                        )
+                    response.close()
+                    raise IngestionError(f"NASA exige aceite de EULA na conta Earthdata: {link}")
             retry = response is None or status in (408, 429) or status >= 500
             if response is not None:
                 response.close()
@@ -93,14 +117,14 @@ class HTTP:
             except ValueError as exc:
                 raise IngestionError("O serviço não retornou JSON válido") from exc
 
-    def download(self, url, destination, validator):
+    def download(self, url, destination, validator, *, headers=None):
         """Reinicia temporários; só promove arquivos após validar todo o conteúdo."""
         destination = Path(destination)
         destination.parent.mkdir(parents=True, exist_ok=True)
         temporary = destination.with_suffix(destination.suffix + ".part")
         for attempt in range(1, self.attempts + 1):
             try:
-                with self.get(url, stream=True, attempts=1) as response:
+                with self.get(url, stream=True, attempts=1, headers=headers) as response:
                     expected = response.headers.get("Content-Length")
                     encoded = response.headers.get("Content-Encoding")
                     with temporary.open("wb") as stream:

@@ -39,3 +39,13 @@ Selecionar temporalmente por interseção CMR e preservar os registros nativos c
 ## 2026-11-14 — execução limitada e verificável
 
 Recusar datasets acima do limite de grânulos configurado em vez de truncar. Um resultado por grânulo é esperado; múltiplos links, resultados vazios ou fora da região são reportados como erro para revisão. Jobs são persistidos e retomados; arquivos temporários reiniciam porque suporte consistente a retomada por byte não foi comprovado. Scripts usam um processo por diretório de saída, sem prometer concorrência no manifesto.
+
+## 2026-11-14 — validar acesso ao conteúdo antes de submeter jobs
+
+Execução autenticada revelou que HEAD 200 no arquivo científico não comprova autorização. GET retornou HTTP 403, `EULA Acceptance Failure` e link oficial de aceite. Isso também fez o HOSS falhar ao ler `.dmrpp`. O coletor agora pede somente os primeiros oito bytes (Range com streaming) e fecha a resposta sem consumir o arquivo global. Apenas origens NASA permitidas recebem o token nessa verificação. A resposta de EULA é explicada ao usuário, com query restrita ao identificador público da aplicação; segredos e demais parâmetros nunca são persistidos.
+
+Não implementar um método alternativo de download para contornar esse bloqueio: tanto HOSS quanto o acesso direto dependem do mesmo aceite. Uma implementação exploratória de leitura HDF5 por Range foi descartada antes de versionar, pois não resolve a autorização. Nenhuma nova dependência foi mantida. O aceite deve ser feito pelo titular da conta na página oficial.
+
+## 2026-11-14 — autenticar resultados no host correto
+
+Links `https://harmony.earthdata.nasa.gov/service-results/...` exigem token antes do redirecionamento ao NetCDF. Sem autenticação, retornam HTML de login com status 200. Passar header somente ao host Harmony e deixar requests remover Authorization ao redirecionar para outro host; não enviar token diretamente a links externos de staging. A validação do conteúdo continua obrigatória mesmo após HTTP 200. Relações CMR devem ser comparadas exatamente: `metadata#` não é `data#`.

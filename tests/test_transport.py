@@ -57,3 +57,20 @@ def test_url_redaction():
     assert public_url("https://user:pass@example.org/data?token=secret#fragment") == (
         "https://example.org/data"
     )
+
+
+def test_eula_error_exposes_only_public_approval_link(monkeypatch):
+    http = HTTP(attempts=1)
+    response = Response()
+    response.ok, response.status_code = False, 403
+    response.json = lambda: {
+        "error_description": "EULA Acceptance Failure",
+        "resolution_url": (
+            "https://urs.earthdata.nasa.gov/approve_app?client_id=public-app&token=secret"
+        ),
+    }
+    monkeypatch.setattr(http.session, "get", lambda *a, **k: response)
+    with pytest.raises(IngestionError, match="aceite de EULA") as exc:
+        http.get("https://data.gesdisc.earthdata.nasa.gov/data/file.nc4")
+    assert "client_id=public-app" in str(exc.value)
+    assert "secret" not in str(exc.value)
