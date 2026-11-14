@@ -1,0 +1,404 @@
+{
+  "snapshot_created": {
+    "retrieved_at_utc": "2026-11-14T19:40:51.942330+00:00",
+    "retrieved_at_local": "2026-11-14T16:40:51.942330-03:00"
+  },
+  "scope": "real NOAA collection and public NASA metadata; authenticated NASA collection blocked",
+  "branch": "feature/data-ingestion-mvp",
+  "observational_files_obtained": [
+    {
+      "dataset": "noaa_roni",
+      "organization": "NOAA Climate Prediction Center",
+      "product": "RONI",
+      "version": "official-revisable",
+      "collection_id": null,
+      "doi": null,
+      "variables_requested": [
+        "RONI"
+      ],
+      "spatial_resolution": "Niño 3.4 relative to tropical SST",
+      "temporal_resolution": "overlapping 3-month seasons",
+      "requested_period": null,
+      "region": {
+        "id": "global_index",
+        "crs": "EPSG:4326",
+        "index_region_bbox": [
+          -170,
+          -5,
+          -120,
+          5
+        ]
+      },
+      "source_url": "https://www.cpc.ncep.noaa.gov/data/indices/RONI.ascii.txt",
+      "endpoint": "https://www.cpc.ncep.noaa.gov/data/indices/RONI.ascii.txt",
+      "request_parameters": {},
+      "access_method": "HTTPS_original_full_history",
+      "quality": "revisable official series; no local phase classification",
+      "transformations": [],
+      "retrieved_at_utc": "2026-11-14T19:30:25.076820+00:00",
+      "retrieved_at_local": "2026-11-14T16:30:25.076820-03:00",
+      "request_key": "2fc4b8c66e6d2c688ed373297a214fc2b5e28d54a3550783ca4946491db31400",
+      "path": "raw/noaa_roni/RONI/global_index/series-1297887f581b6190.txt",
+      "size_bytes": 14752,
+      "sha256": "1297887f581b6190e459cbbf8bdec9a703ff65c1a229e2de4dd94285254f35c8",
+      "status": "complete",
+      "audit": {
+        "variables": {
+          "RONI": {
+            "units": "degree_Celsius",
+            "source": "NOAA definition"
+          }
+        },
+        "dimensions": {
+          "overlapping_season": 921
+        },
+        "temporal_records": 921,
+        "observation_period": {
+          "start": "1950-01",
+          "end": "2026-09"
+        },
+        "time_convention": "year and central month of official overlapping season",
+        "missing_values": 0,
+        "classification": "preserved in companion official HTML; not inferred",
+        "integrity": "valid_ASCII_records"
+      }
+    },
+    {
+      "dataset": "noaa_roni",
+      "organization": "NOAA Climate Prediction Center",
+      "product": "RONI",
+      "version": "official-revisable",
+      "collection_id": null,
+      "doi": null,
+      "variables_requested": [],
+      "spatial_resolution": "Niño 3.4 relative to tropical SST",
+      "temporal_resolution": "overlapping 3-month seasons",
+      "requested_period": null,
+      "region": {
+        "id": "global_index",
+        "crs": "EPSG:4326",
+        "index_region_bbox": [
+          -170,
+          -5,
+          -120,
+          5
+        ]
+      },
+      "source_url": "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso/roni/",
+      "endpoint": "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso/roni/",
+      "request_parameters": {},
+      "access_method": "HTTPS_original_full_history",
+      "quality": "revisable official series; no local phase classification",
+      "transformations": [],
+      "retrieved_at_utc": "2026-11-14T19:30:25.373874+00:00",
+      "retrieved_at_local": "2026-11-14T16:30:25.373874-03:00",
+      "request_key": "ab8df636fa84fc6d6caa64865b3a7db1ba44e7aa1bb99f178cf59941515ec287",
+      "path": "raw/noaa_roni/RONI/global_index/classification-45a29af6d57b0a23.html",
+      "size_bytes": 98060,
+      "sha256": "45a29af6d57b0a231dcc2fd50b636e823c43d591208e9dd6196358bfaed85834",
+      "status": "complete",
+      "audit": {
+        "integrity": "HTML_historical_table_present",
+        "classification": "original HTML retained verbatim, including official styling",
+        "variables": {},
+        "temporal_records": null,
+        "missing_values": null
+      }
+    }
+  ],
+  "download_inventory": {
+    "noaa_roni": {
+      "file_count": 2,
+      "total_bytes": 112812,
+      "files": [
+        {
+          "path": "raw/noaa_roni/RONI/global_index/series-1297887f581b6190.txt",
+          "size_bytes": 14752,
+          "sha256": "1297887f581b6190e459cbbf8bdec9a703ff65c1a229e2de4dd94285254f35c8",
+          "sha256_verified": true,
+          "variables": {
+            "RONI": {
+              "units": "degree_Celsius",
+              "source": "NOAA definition"
+            }
+          },
+          "dimensions": {
+            "overlapping_season": 921
+          },
+          "temporal_records": 921,
+          "observation_period": {
+            "start": "1950-01",
+            "end": "2026-09"
+          },
+          "time_convention": "year and central month of official overlapping season",
+          "missing_values": 0,
+          "classification": "preserved in companion official HTML; not inferred",
+          "integrity": "valid_ASCII_records"
+        },
+        {
+          "path": "raw/noaa_roni/RONI/global_index/classification-45a29af6d57b0a23.html",
+          "size_bytes": 98060,
+          "sha256": "45a29af6d57b0a231dcc2fd50b636e823c43d591208e9dd6196358bfaed85834",
+          "sha256_verified": true,
+          "integrity": "HTML_historical_table_present",
+          "classification": "original HTML retained verbatim, including official styling",
+          "variables": {},
+          "temporal_records": null,
+          "missing_values": null
+        }
+      ],
+      "integrity_problems": []
+    }
+  },
+  "last_executed_fetch": {
+    "retrieved_at_utc": "2026-11-14T19:36:18.557549+00:00",
+    "retrieved_at_local": "2026-11-14T16:36:18.557549-03:00",
+    "mode": "fetch",
+    "requested_datasets": [
+      "noaa_roni",
+      "gpm_daily",
+      "gpm_monthly",
+      "gldas",
+      "merra2"
+    ],
+    "common_window_of_discovered_NASA_products": {
+      "start": "2000-01-01 00:00:00+00:00",
+      "end": "2025-09-30 23:59:59.999000+00:00",
+      "all_selected_products_discovered": true
+    },
+    "plans": {
+      "gpm_daily": {
+        "dataset": "gpm_daily",
+        "product": "GPM_3IMERGDF",
+        "version": "07",
+        "collection_id": "C2723754864-GES_DISC",
+        "doi": "10.5067/GPM/IMERGDF/DAY/07",
+        "variables_requested": [
+          "precipitation"
+        ],
+        "available_period": {
+          "start": "1998-01-01T00:00:00.000Z",
+          "end": "2025-09-30T23:59:59.999Z"
+        },
+        "requested_period": {
+          "start": "2015-12-01T00:00:00+00:00",
+          "end": "2015-12-02T23:59:59.999999+00:00"
+        },
+        "effective_query_period": {
+          "start": "2015-12-01T00:00:00+00:00",
+          "end": "2015-12-02T23:59:59.999999+00:00"
+        },
+        "region": {
+          "description": "Caixa provisória de 1 grau próxima de Brasília, somente para verificar transferência de grades terrestres com baixo volume; não é área de estudo aprovada, polígono de bacia nem evidência de cobertura de estações ANA.",
+          "crs": "EPSG:4326",
+          "domain": "land",
+          "provisional": true,
+          "bbox": [
+            -48.25,
+            -16.25,
+            -47.25,
+            -15.25
+          ],
+          "id": "brasilia_smoke",
+          "extraction": "bounding_box",
+          "geometry_id": "e2ae1810deb9b58ce574a78359b0c6aeca602b2638695ca5b3aaaea044727cab"
+        },
+        "matching_granules": 2,
+        "cmr_parameters": {
+          "collection_concept_id": "C2723754864-GES_DISC",
+          "temporal": "2015-12-01T00:00:00+00:00,2015-12-02T23:59:59.999999+00:00",
+          "bounding_box": "-48.25,-16.25,-47.25,-15.25",
+          "page_size": 1,
+          "sort_key": "start_date"
+        },
+        "access_method": "Harmony_provider_bbox_subset_without_aggregation",
+        "authentication_required": true
+      },
+      "gpm_monthly": {
+        "dataset": "gpm_monthly",
+        "product": "GPM_3IMERGM",
+        "version": "07",
+        "collection_id": "C2723754851-GES_DISC",
+        "doi": "10.5067/GPM/IMERG/3B-MONTH/07",
+        "variables_requested": [
+          "Grid/precipitation"
+        ],
+        "available_period": {
+          "start": "1998-01-01T00:00:00.000Z",
+          "end": "2025-09-30T23:59:59.999Z"
+        },
+        "requested_period": {
+          "start": "2015-12-01T00:00:00+00:00",
+          "end": "2015-12-02T23:59:59.999999+00:00"
+        },
+        "effective_query_period": {
+          "start": "2015-12-01T00:00:00+00:00",
+          "end": "2015-12-02T23:59:59.999999+00:00"
+        },
+        "region": {
+          "description": "Caixa provisória de 1 grau próxima de Brasília, somente para verificar transferência de grades terrestres com baixo volume; não é área de estudo aprovada, polígono de bacia nem evidência de cobertura de estações ANA.",
+          "crs": "EPSG:4326",
+          "domain": "land",
+          "provisional": true,
+          "bbox": [
+            -48.25,
+            -16.25,
+            -47.25,
+            -15.25
+          ],
+          "id": "brasilia_smoke",
+          "extraction": "bounding_box",
+          "geometry_id": "e2ae1810deb9b58ce574a78359b0c6aeca602b2638695ca5b3aaaea044727cab"
+        },
+        "matching_granules": 1,
+        "cmr_parameters": {
+          "collection_concept_id": "C2723754851-GES_DISC",
+          "temporal": "2015-12-01T00:00:00+00:00,2015-12-02T23:59:59.999999+00:00",
+          "bounding_box": "-48.25,-16.25,-47.25,-15.25",
+          "page_size": 1,
+          "sort_key": "start_date"
+        },
+        "access_method": "Harmony_provider_bbox_subset_without_aggregation",
+        "authentication_required": true
+      },
+      "gldas": {
+        "dataset": "gldas",
+        "product": "GLDAS_NOAH025_M",
+        "version": "2.1",
+        "collection_id": "C1342986036-GES_DISC",
+        "doi": "10.5067/SXAVCZFAQLNO",
+        "variables_requested": [
+          "SoilMoi0_10cm_inst",
+          "SoilMoi10_40cm_inst",
+          "SoilMoi40_100cm_inst",
+          "SoilMoi100_200cm_inst",
+          "RootMoist_inst",
+          "Evap_tavg",
+          "Qs_acc",
+          "Qsb_acc"
+        ],
+        "available_period": {
+          "start": "2000-01-01T00:00:00.000Z",
+          "end": "2026-07-31T23:59:59.000Z"
+        },
+        "requested_period": {
+          "start": "2015-12-01T00:00:00+00:00",
+          "end": "2015-12-02T23:59:59.999999+00:00"
+        },
+        "effective_query_period": {
+          "start": "2015-12-01T00:00:00+00:00",
+          "end": "2015-12-02T23:59:59.999999+00:00"
+        },
+        "region": {
+          "description": "Caixa provisória de 1 grau próxima de Brasília, somente para verificar transferência de grades terrestres com baixo volume; não é área de estudo aprovada, polígono de bacia nem evidência de cobertura de estações ANA.",
+          "crs": "EPSG:4326",
+          "domain": "land",
+          "provisional": true,
+          "bbox": [
+            -48.25,
+            -16.25,
+            -47.25,
+            -15.25
+          ],
+          "id": "brasilia_smoke",
+          "extraction": "bounding_box",
+          "geometry_id": "e2ae1810deb9b58ce574a78359b0c6aeca602b2638695ca5b3aaaea044727cab"
+        },
+        "matching_granules": 1,
+        "cmr_parameters": {
+          "collection_concept_id": "C1342986036-GES_DISC",
+          "temporal": "2015-12-01T00:00:00+00:00,2015-12-02T23:59:59.999999+00:00",
+          "bounding_box": "-48.25,-16.25,-47.25,-15.25",
+          "page_size": 1,
+          "sort_key": "start_date"
+        },
+        "access_method": "Harmony_provider_bbox_subset_without_aggregation",
+        "authentication_required": true
+      },
+      "merra2": {
+        "dataset": "merra2",
+        "product": "M2TMNXSLV",
+        "version": "5.12.4",
+        "collection_id": "C1276812859-GES_DISC",
+        "doi": "10.5067/AP1B0BA5PD2K",
+        "variables_requested": [
+          "U10M",
+          "V10M",
+          "SLP",
+          "T2M",
+          "TQV"
+        ],
+        "available_period": {
+          "start": "1980-01-01T00:00:00.000Z",
+          "end": "2026-09-30T23:59:59.000Z"
+        },
+        "requested_period": {
+          "start": "2015-12-01T00:00:00+00:00",
+          "end": "2015-12-02T23:59:59.999999+00:00"
+        },
+        "effective_query_period": {
+          "start": "2015-12-01T00:00:00+00:00",
+          "end": "2015-12-02T23:59:59.999999+00:00"
+        },
+        "region": {
+          "description": "Região Niño 3.4 definida na especificação",
+          "crs": "EPSG:4326",
+          "domain": "ocean",
+          "bbox": [
+            -170,
+            -5,
+            -120,
+            5
+          ],
+          "id": "nino34",
+          "extraction": "bounding_box",
+          "geometry_id": "0f29a8f695bd2547ccc3ec7b6764cb6bd83d58da16cf7db944d99605d2d15254"
+        },
+        "matching_granules": 1,
+        "cmr_parameters": {
+          "collection_concept_id": "C1276812859-GES_DISC",
+          "temporal": "2015-12-01T00:00:00+00:00,2015-12-02T23:59:59.999999+00:00",
+          "bounding_box": "-170,-5,-120,5",
+          "page_size": 1,
+          "sort_key": "start_date"
+        },
+        "access_method": "Harmony_provider_bbox_subset_without_aggregation",
+        "authentication_required": true
+      },
+      "noaa_roni": {
+        "dataset": "noaa_roni",
+        "sources": {
+          "series": "https://www.cpc.ncep.noaa.gov/data/indices/RONI.ascii.txt",
+          "classification": "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso/roni/"
+        },
+        "access_method": "HTTPS_original_full_history",
+        "authentication_required": false,
+        "requested_period": {
+          "start": "2015-12-01T00:00:00+00:00",
+          "end": "2015-12-02T23:59:59.999999+00:00"
+        },
+        "note": "Preserva toda a fonte, sem filtrar a série nem inferir fases"
+      }
+    },
+    "results": {
+      "noaa_roni": {
+        "status": "complete",
+        "files": 2
+      }
+    },
+    "failures": {
+      "gpm_daily": "EARTHDATA_TOKEN ausente: configure localmente no .env",
+      "gpm_monthly": "EARTHDATA_TOKEN ausente: configure localmente no .env",
+      "gldas": "EARTHDATA_TOKEN ausente: configure localmente no .env",
+      "merra2": "EARTHDATA_TOKEN ausente: configure localmente no .env"
+    }
+  },
+  "NASA_authenticated_downloads_completed": 0,
+  "NASA_jobs_submitted": 0,
+  "limitations": [
+    "EARTHDATA_TOKEN not configured at execution",
+    "No NASA scientific file content or file units validated remotely",
+    "Brazil region remains a provisional technical bounding box",
+    "No EDA, phase inference, climate trends or causal claims"
+  ]
+}

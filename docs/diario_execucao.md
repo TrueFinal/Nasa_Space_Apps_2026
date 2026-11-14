@@ -54,7 +54,7 @@ Validação executada: leitura do JSON, confirmação de cinco produtos, corresp
 
 Resultado: preflight e documentação local concluídos; implementação da etapa 1 e exame do histórico oficial continuam pendentes do acesso GitHub. Nenhuma branch, commit ou push foi criado. Nenhum job autenticado NASA foi submetido e nenhum arquivo científico foi salvo no projeto. Esta entrada não representa entrega da etapa 1.
 
-## 2026-11-14 — retomada após autenticação GitHub
+## 2026-11-14, 19:27 UTC / Europe/Lisbon — retomada após autenticação GitHub
 
 Usuário informou configuração concluída. `gh auth status` confirmou sessão e `gh repo view` retornou `viewerPermission: WRITE`, `isEmpty: true`, sem branch padrão. `git ls-remote` confirmou ausência de referências. Como o remoto está vazio e a pasta contém o PDF e documentos locais, executados `git init`, configuração de `origin`, `git fetch` e criação de `feature/data-ingestion-mvp` nesta mesma pasta, sem mover ou sobrescrever arquivos.
 
@@ -66,7 +66,7 @@ Unidade de commit: `chore: initialize ingestion branch and technical plan`. Arqu
 
 Commit `90dd7cecb91825d8315c3f758ab04f041c71878e` (`chore: initialize ingestion branch and technical plan`) enviado a `origin/feature/data-ingestion-mvp`; `git ls-remote` confirmou o mesmo hash. Branch com upstream configurado.
 
-## 2026-11-14 — transporte, configuração e primeira coleta NOAA
+## 2026-11-14, 19:30 UTC / Europe/Lisbon — transporte, configuração e primeira coleta NOAA
 
 Criados ambiente isolado Python 3.12 via uv (sem alterar o Python do sistema), dependências declaradas e lock das versões instaladas. Os módulos `core` e `noaa` separam transporte/proveniência da validação específica do índice. Configuração YAML contém produtos e regiões; caixa `brasilia_smoke` é provisória e exclusivamente técnica. Metadados de polígonos serão preservados; a primeira extração usa bounding box sem alegar máscara.
 
@@ -97,3 +97,19 @@ Problema encontrado nos testes: uma tolerância espacial de uma célula poderia 
 Validação: 20 testes passaram, incluindo reexecução com job salvo sem nova submissão, limite de volume, paginação, modo dry-run sem transferência, corrupção, ausências e remoção de queries assinadas dos metadados. Ruff passou. Unidade: `feat: add CMR discovery and resumable NASA subset collection`; inclui NASA/CLI/script, novos testes e diário. Hash e resultado do push serão registrados após confirmação.
 
 Execução real da CLI completa em janela curta: NOAA reutilizada e quatro datasets NASA registrados como falha por `EARTHDATA_TOKEN` ausente, com saída de processo 1. Inventário e manifesto gerados apesar das falhas parciais. Nenhum conteúdo NASA foi baixado e nenhum job foi submetido. README incluído nesta unidade com instalação, comandos, autenticação, limites e comportamento de recortes.
+
+### Publicação confirmada do coletor NASA
+
+Commit `84a52257dac3e5b8bd9c6206a74241e04caf8c96`, de 19:38 UTC, (`feat: add CMR discovery and resumable NASA subset collection`) enviado; referência remota confirmou o mesmo hash.
+
+## 2026-11-14, 19:41 UTC / Europe/Lisbon — evidências, revisão de dependências e CI
+
+Conferido o formato de submissão no código oficial de `nasa/harmony-py` (`harmony/client.py`) e adotado `collections/parameter_vars` com parâmetro `variable`, evitando nomes de grupos HDF5 embutidos no caminho. Teste verifica o contrato e a preservação da seleção temporal por grânulo.
+
+Removidas dependências não utilizadas Xarray/Pandas e explicitados NumPy/tzdata. Lock regenerado e ambiente sincronizado; 20 testes e Ruff passaram novamente após essas alterações. Script `--help` validado. Documentos de arquitetura e decisões atualizados para refletir a implementação real.
+
+`--inventory-only` confirmou dois arquivos NOAA, 112.812 bytes, ambos com SHA-256 válido; série com 921 registros, janeiro/1950 a setembro/2026 e zero sentinelas ausentes reconhecidas. Não há problemas de integridade identificados. A classificação está preservada no HTML original e não foi convertida em fases locais. Criado `docs/inventario_coleta.json` com cópia de manifesto/inventário e último resultado de execução para o time acompanhar sem versionar dados brutos. Campos científicos NASA permanecem não verificados.
+
+Criado GitHub Actions para testes, Ruff e ajuda da CLI em Python 3.12 a cada push/PR. Actions checkout/setup-python foram consultadas em seus releases oficiais e fixadas por SHA de commit (v7.0.1 e v7.1.0). Workflow usa somente permissão de leitura do conteúdo, não requer credenciais Earthdata e não transfere dados científicos.
+
+Unidade: `chore: add reproducible checks and collection evidence`. Arquivos: workflow, README, arquitetura/decisões/fontes/diário, snapshot de inventário, ajuste de parâmetros NASA/teste e dependências/lock. Verificações: 20 testes, Ruff, ajuda CLI, inventário com hashes, revisão de diff, JSON/YAML e busca de segredos. Hash, push e execução remota serão registrados após confirmação.

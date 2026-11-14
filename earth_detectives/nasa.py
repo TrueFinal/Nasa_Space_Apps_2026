@@ -5,7 +5,7 @@ from __future__ import annotations
 import re
 import time
 from datetime import datetime, timezone
-from urllib.parse import quote, urlsplit
+from urllib.parse import urlsplit
 
 import netCDF4
 import numpy as np
@@ -245,6 +245,7 @@ def harmony_parameters(plan, granule):
     return [
         ("subset", f"lat({south}:{north})"),
         ("subset", f"lon({west}:{east})"),
+        ("variable", ",".join(plan["variables_requested"])),
         ("granuleId", granule["id"]),
         ("format", "application/netcdf"),
         ("forceAsync", "true"),
@@ -282,10 +283,9 @@ def fetch_nasa(
             entries.append(cached)
             continue
         params = harmony_parameters(plan, granule)
-        variable_path = quote(",".join(plan["variables_requested"]), safe=",")
         endpoint = (
             f"{HARMONY}/{plan['collection_id']}/ogc-api-coverages/1.0.0/"
-            f"collections/{variable_path}/coverage/rangeset"
+            "collections/parameter_vars/coverage/rangeset"
         )
         job = store.data["jobs"].get(key)
         if not job or refresh:

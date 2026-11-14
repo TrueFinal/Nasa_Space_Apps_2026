@@ -1,21 +1,21 @@
-# Arquitetura proposta para a ingestão — etapa 1
+# Arquitetura da ingestão — etapa 1
 
-Estado em 2026-11-14: **proposta, ainda sem implementação**. A pasta contém a especificação e documentos de preflight; o clone oficial depende de autenticação. A organização abaixo deve ser ajustada às convenções do repositório assim que ele estiver acessível.
+Estado em 2026-11-14: **implementada na branch `feature/data-ingestion-mvp`**. Remoto oficial inicialmente vazio, com permissão de escrita confirmada. NOAA executada; descoberta pública NASA executada; extrações autenticadas NASA aguardam `EARTHDATA_TOKEN`. Não há EDA ou interface.
 
 ## Fluxo e responsabilidades
 
 1. `config/datasets.yaml`: produtos, versões, variáveis solicitadas e seleção de fontes. Metadados consultados no provedor prevalecem sobre suposições estáticas.
 2. `config/regions.yaml`: regiões identificadas e geometrias GeoJSON em EPSG:4326. Niño 3.4: oeste -170, sul -5, leste -120, norte 5. Região brasileira permanece configurável e sem escolha definitiva.
 3. `scripts/fetch_mvp_data.py`: CLI com seleção de datasets, região, início/fim, diretório de saída e `--dry-run`. Validar parâmetros antes de transferir dados.
-4. Clientes NOAA e NASA: NOAA preserva ASCII e HTML oficial; NASA consulta CMR, verifica capacidades por serviço no Harmony, seleciona variáveis existentes e solicita recortes sem agregação, interpolação ou regradeamento.
+4. `earth_detectives/noaa.py` e `nasa.py`: NOAA preserva ASCII e HTML oficial; NASA consulta CMR, verifica capacidades por serviço no Harmony e seleciona grânulos por interseção temporal. Harmony recorta região/variáveis, mantendo registros temporais nativos completos; não há agregação, interpolação ou regradeamento.
 5. Transferência: timeout, tentativas limitadas com espera progressiva, registro de falhas, arquivo temporário, verificação de conteúdo e publicação atômica do arquivo completo. Retomar transferência somente quando o serviço e seus validadores HTTP permitirem; caso contrário reiniciar o temporário. Guardar o ID de jobs assíncronos para não submetê-los novamente desnecessariamente.
 6. `data/raw/<fonte>/<produto>/<região>/`: arquivos originais recebidos ou recortes produzidos pelo provedor; o manifesto distingue esses dois métodos. Não alterar arquivos após validação. Conferir SHA-256 para reutilização e oferecer atualização explícita das fontes revisáveis, como RONI.
 7. `data/metadata/manifest.json` e `dataset_catalog.csv`: proveniência por arquivo e inventário resumido. `logs/ingestion.log`: tentativas e erros sem credenciais, cabeçalhos de autorização ou URLs assinadas.
-8. Auditoria técnica: leitura de cabeçalhos e integridade NetCDF/HDF5 com xarray e backend compatível; conferir variáveis, unidades, dimensões, coordenadas, tempos, flags e valores ausentes quando viável sem limpeza. Metadados desconhecidos devem ficar nulos com justificativa, nunca inferidos silenciosamente.
+8. Auditoria técnica: leitura de cabeçalhos e todos os blocos das variáveis solicitadas com netCDF4/NumPy, incluindo grupos HDF5 compatíveis com os produtos NASA selecionados. Conferir variáveis, unidades, dimensões, coordenadas, tempos, atributos de qualidade e ausências sem limpeza. Metadados desconhecidos ficam nulos.
 
 Não criar diretórios vazios. Dados, cache, logs, `.env`, `.netrc` e arquivos temporários ficam fora do Git. Código, configuração, testes, documentação e pequenos metadados de auditoria podem ser versionados.
 
-## Ordem de implementação após acesso ao repositório
+## Unidades de implementação
 
 1. Sincronizar referências, examinar histórico/alterações e criar branch própria sem sobrescrever trabalho existente.
 2. Estrutura mínima, configuração, proteção de arquivos e CLI em dry-run.
@@ -24,7 +24,7 @@ Não criar diretórios vazios. Dados, cache, logs, `.env`, `.netrc` e arquivos t
 5. IMERG Final diário/mensal, GLDAS Noah 2.1 e MERRA-2 mensal, começando por amostras pequenas explicitamente identificadas. MUR somente quando solicitado/habilitado, com recorte restrito.
 6. Manifesto, inventário, testes de falhas/corrupção/reexecução, execução real e documentação de reprodução.
 
-As dependências Python e versões serão escolhidas após examinar a stack oficial. Há Python 3.8.10 local e uv disponível; avaliar um ambiente isolado com Python suportado pelas bibliotecas científicas atuais, sem substituir o Python do sistema.
+O repositório não tinha stack existente. Ambiente isolado Python 3.12 criado via uv, sem substituir o Python 3.8 do sistema. Dependências: requests para HTTP, PyYAML/dotenv para configuração, Shapely para validar geometrias e netCDF4/NumPy para auditoria sem transformação. O lock registra versões testadas. Xarray/Pandas foram deixados para uma eventual EDA, pois não são necessários ao coletor.
 
 ## Janela, região e limites
 

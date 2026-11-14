@@ -172,6 +172,11 @@ def test_saved_job_resumes_without_submission_and_preserves_source(tmp_path, mon
 
         def json(self, url, **kwargs):
             if "rangeset" in url:
+                assert "/collections/parameter_vars/" in url
+                assert ("variable", "precipitation") in kwargs["params"]
+                assert not any(
+                    key == "subset" and value.startswith("time(") for key, value in kwargs["params"]
+                )
                 self.submitted += 1
                 return {"jobID": "aabb-1234", "status": "running"}
             assert kwargs["headers"]["Authorization"] == "Bearer test-secret"

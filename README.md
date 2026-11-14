@@ -142,6 +142,7 @@ por diretório de saída; o manifesto não implementa escrita concorrente.
 Os testes usam respostas controladas e NetCDF sintético em pastas temporárias;
 não comprovam uma coleta autenticada NASA. Os resultados reais e limitações estão
 em [`docs/diario_execucao.md`](docs/diario_execucao.md),
+[`docs/inventario_coleta.json`](docs/inventario_coleta.json),
 [`docs/fontes_e_datasets.md`](docs/fontes_e_datasets.md) e
 [`docs/decisoes_tecnicas.md`](docs/decisoes_tecnicas.md).
 

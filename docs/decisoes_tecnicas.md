@@ -1,5 +1,7 @@
 # Decisões técnicas
 
+Estado atual: acesso GitHub resolvido; repositório vazio vinculado e branch publicada. Os registros abaixo preservam o motivo das decisões no momento em que foram tomadas.
+
 ## 2026-11-14 — respeitar o histórico oficial antes de implementar
 
 O prompt exige desenvolvimento em `TrueFinal/Nasa_Space_Apps_2026` e inspeção do código existente. A pasta atual não é um clone e o remoto não está acessível sem autenticação. Manter apenas documentação de preflight e não criar um projeto/histórico Git paralelo. Consequência: implementação e branch aguardam acesso; nenhum push pode ser afirmado.
@@ -25,3 +27,15 @@ A consulta do último grânulo encontrou datas diferentes entre fontes e IMERG a
 ## 2026-11-14 — região brasileira configurável
 
 Não há auditoria de estações ANA suficiente para justificar uma região definitiva. Manter seleção pendente entre bacia com estações, Cerrado agrícola e área ribeirinha. Critérios futuros: continuidade por variável, lacunas, qualidade, compatibilidade de escala e polígono oficial. GLDAS representa modelo de superfície terrestre; não usar extração oceânica vazia para alegar sucesso de coleta.
+
+## 2026-11-14 — implementar ingestão sem camada de análise
+
+Python 3.12 isolado por uv e leitura direta com netCDF4/NumPy permitem preservar valores empacotados, grupos e atributos sem conversões implícitas. Xarray/Pandas não são dependências desta etapa. Requests acessa APIs REST oficiais para manter timeout/retries e sanitização explícitos; Harmony-Py é uma alternativa oficial recomendada pelo provedor, mas não foi necessário adicionar outro cliente nesta implementação. O formato de submissão com `collections/parameter_vars` e parâmetro `variable` também foi conferido no código oficial de `nasa/harmony-py`.
+
+## 2026-11-14 — seleção por grânulo e envelope explícitos
+
+Selecionar temporalmente por interseção CMR e preservar os registros nativos completos de cada grânulo. Um mensal mantém a cobertura mensal mesmo em consulta curta; o manifesto distingue pedido, consulta, cobertura de grânulo e tempos lidos. Não aplicar subset temporal adicional sobre um timestamp representativo do mês ou dia MUR. Recortes de polígonos usam somente o envelope, claramente rotulado; máscara e médias por área são trabalhos posteriores.
+
+## 2026-11-14 — execução limitada e verificável
+
+Recusar datasets acima do limite de grânulos configurado em vez de truncar. Um resultado por grânulo é esperado; múltiplos links, resultados vazios ou fora da região são reportados como erro para revisão. Jobs são persistidos e retomados; arquivos temporários reiniciam porque suporte consistente a retomada por byte não foi comprovado. Scripts usam um processo por diretório de saída, sem prometer concorrência no manifesto.

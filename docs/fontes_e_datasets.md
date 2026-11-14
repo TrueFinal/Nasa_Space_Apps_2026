@@ -2,6 +2,8 @@
 
 Consulta: 2026-11-14. Esta é uma auditoria pública de **metadados**, não um inventário de arquivos científicos baixados. Nenhum download autenticado NASA foi executado. As respostas CMR/Harmony resumidas, parâmetros, datas e hashes das respostas consultadas constam em `auditoria_fontes.json`.
 
+Atualização após implementação: a coleta NOAA foi executada e validada. O inventário e a proveniência dos dois arquivos obtidos, junto às falhas de acesso NASA, estão em [`inventario_coleta.json`](inventario_coleta.json). Os arquivos brutos permanecem locais e ignorados pelo Git.
+
 | Fonte/produto | Versão | Coleção CMR | Último fim de grânulo encontrado (UTC) | Variáveis prioritárias confirmadas no catálogo |
 |---|---|---|---|---|
 | IMERG Final diário / GPM_3IMERGDF | 07 | C2723754864-GES_DISC | 2025-09-30T23:59:59.999Z | precipitation |
