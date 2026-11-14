@@ -17,7 +17,15 @@ esse interpretador como kernel no VS Code/Jupyter:
 
 ```bash
 uv pip install --python .venv/bin/python -r requirements-notebook-lock.txt
+.venv/bin/python -m ipykernel install --user --name earth-detectives \
+  --display-name 'Earth Detectives (.venv Python 3.12)'
 ```
+
+No notebook, clique em **Select Kernel → Select Another Kernel → Jupyter Kernel**
+e escolha **Earth Detectives (.venv Python 3.12)**. O registro local usa o caminho
+explícito da `.venv`; execute novamente o comando de registro se mover o projeto.
+Se o VS Code mantiver uma referência antiga, execute **Developer: Reload Window**
+na paleta de comandos e selecione o kernel novamente.
 
 A reexecução usa somente dados locais, sem token ou rede. É necessário ter os nove
 arquivos referenciados em `data/metadata/manifest.json`; os gráficos salvos podem ser

@@ -205,3 +205,17 @@ Ausências e faixas válidas são verificadas nos valores empacotados. A decodif
 Dependências opcionais declaradas em `requirements-notebook.txt` e lock próprio, sem mudar o ambiente mínimo do coletor. README inclui instalação e seleção do kernel. Notebook executado integralmente com nbclient; oito células de código e cinco figuras concluídas sem erros. Validação nbformat passou; conferência final confirmou os nove arquivos brutos idênticos ao manifesto. Uma figura foi inspecionada visualmente. Saídas públicas salvas no notebook para revisão imediata; nenhum token ou arquivo .env é lido pelo caderno.
 
 Unidade: `feat: add executed data inspection notebook`. Arquivos: notebook, dependências opcionais/lock, README e diário. Verificações: execução integral, validação do formato, hashes preservados, revisão de conteúdo e segredos e `git diff --check`. Hash e push serão informados após confirmação.
+
+### Publicação do notebook
+
+Commit `42e53c6faf911cca517d325b7bb2739cbde5de54` enviado e confirmado; CI [43636077031](https://github.com/TrueFinal/Nasa_Space_Apps_2026/actions/runs/43636077031) passou.
+
+## 2026-11-14, 20:19 UTC / Europe/Lisbon — corrigir seleção do kernel no VS Code
+
+Usuário informou ambiente Python indisponível no notebook. Verificação mostrou que `.venv/bin/python` e seu destino uv existem e executam Python 3.12.16. O registro genérico `python3` usava argv `python`, e o notebook ainda apontava para esse nome; o erro do editor não reproduziu uma ausência real do interpretador na verificação local.
+
+Registrado kernel de usuário `earth-detectives`, com nome visível `Earth Detectives (.venv Python 3.12)` e argv absoluto do Python da `.venv`. Metadados kernelspec do notebook atualizados para o nome dedicado. Configuração local `.vscode/settings.json` recebeu `python.defaultInterpreterPath` apontando para `${workspaceFolder}/.venv/bin/python`, preservando a opção existente de gerenciador de ambientes.
+
+Foram encontradas alterações locais do usuário nas contagens de execução do notebook e um diretório `.vscode` não versionado. Ambas foram preservadas: somente o diff dos metadados de kernel foi colocado no índice Git; as contagens e a configuração local permanecem fora do commit. README documenta registro e seleção do kernel para outros integrantes, sem versionar caminhos absolutos desta máquina.
+
+Verificação real via Jupyter KernelManager: kernel dedicado iniciou, respondeu e importou netCDF4, pandas e matplotlib usando o executável da `.venv`; encerramento limpo. Nenhum arquivo científico foi alterado. Unidade: `fix: bind inspection notebook to project kernel`. Arquivos: metadados do notebook, README e diário. Verificações: interpretador, kernelspec, inicialização real, imports, diff do índice e `git diff --check`. Hash/push informados na entrega.
