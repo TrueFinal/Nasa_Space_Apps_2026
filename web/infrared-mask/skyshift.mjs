@@ -174,6 +174,12 @@ try {
   $('sky-loaded').hidden = false;
   $('sky-object').replaceChildren(...summary.objects.map(o => option(o.slug, o.name)));
   $('sky-object').value = summary.objects.find(o => o.slug === 'barnard')?.slug || summary.objects[0]?.slug;
-  $('sky-analysis').textContent = JSON.stringify(summary.analysis || { status: 'Scripts ainda não executados.' }, null, 2);
+  const analysis = summary.analysis;
+  const names = { build_validation: 'Validações', distant: 'Objetos distantes', native_photometry: 'Fotometria independente' };
+  $('sky-analysis').textContent = analysis ? [
+    ...(analysis.runs || []).map(r => `${names[r.name] || 'Análise'}: ${r.status}`),
+    ...(analysis.checks || []).map(c => `${c.id} · ${c.status}: ${c.headline}`),
+    ...(analysis.not_rerun || []).map(r => `Não recalculado: ${r.reason}`),
+  ].join('\n\n') : 'Análises ainda não executadas.';
   await selectObject();
 } catch (e) { $('sky-status').textContent = e.message; }

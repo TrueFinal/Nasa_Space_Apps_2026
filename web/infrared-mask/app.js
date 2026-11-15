@@ -53,8 +53,8 @@ async function load() {
   $('sky-context-panel').hidden = !external;
   if (external) {
     const compatible = external.matches.filter(m => m.epoch_compatible).length;
-    $('sky-context').textContent = `${external.samples_checked} amostra(s) verificadas · ${external.matches.length} associação(ões) posicionais · ${compatible} compatível(is) em época. SkyShift ${external.commit.slice(0, 7)}. ${external.matches.length ? 'Revise separação, época e detector no JSON.' : 'Nenhum candidato dentro do raio; as medidas locais permanecem preservadas.'}`;
-    if (report.skyshift_photometry) $('sky-context').textContent += ` Fotometria independente pelo script SkyShift: ${report.skyshift_photometry.accepted}/${report.skyshift_photometry.total} exposições aceitas, com recentragem e correção de abertura. Não aplica a nossa máscara Gaia; consulte a coluna adicional e a proveniência.`;
+    $('sky-context').textContent = `${external.samples_checked} amostra(s) verificadas · ${external.matches.length} associação(ões) posicionais · ${compatible} compatível(is) em época. Revisão ${external.commit.slice(0, 7)}. ${external.matches.length ? 'Revise separação, época e detector no JSON.' : 'Nenhum candidato dentro do raio; as medidas locais permanecem preservadas.'}`;
+    if (report.skyshift_photometry) $('sky-context').textContent += ` Fotometria independente de referência: ${report.skyshift_photometry.accepted}/${report.skyshift_photometry.total} exposições aceitas, com recentragem e correção de abertura. Não aplica a nossa máscara Gaia; consulte a coluna adicional e a proveniência.`;
   }
   const excluded = report.frames.filter(f => f.plot?.eligible === false);
   allFrames = report.frames.filter(f => f.plot?.eligible !== false);

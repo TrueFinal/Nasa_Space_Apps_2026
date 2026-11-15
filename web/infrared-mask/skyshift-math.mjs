@@ -3,7 +3,7 @@ import { stretch, plateRGB } from './plate.mjs';
 
 export function decode(buffer, epoch, size) {
   const n = size[0] * size[1];
-  if (buffer.byteLength !== 2 * n || !Number.isFinite(epoch.scale) || !Number.isFinite(epoch.zero)) throw new Error('Imagem SkyShift inválida');
+  if (buffer.byteLength !== 2 * n || !Number.isFinite(epoch.scale) || !Number.isFinite(epoch.zero)) throw new Error('Imagem de referência inválida');
   const input = new DataView(buffer), out = new Float32Array(n);
   for (let i = 0; i < n; i++) {
     const raw = input.getUint16(i * 2, true);

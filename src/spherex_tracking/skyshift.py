@@ -47,10 +47,10 @@ def source_git(source, *args):
 def inside(root, name):
     """Accept local relative paths only, including on Windows."""
     if not isinstance(name, str) or "\\" in name or ":" in name:
-        raise ValueError("Caminho SkyShift inválido")
+        raise ValueError("Caminho de dados inválido")
     path = (Path(root) / name).resolve()
     if not path.is_relative_to(Path(root).resolve()):
-        raise ValueError("Caminho fora dos dados SkyShift")
+        raise ValueError("Caminho fora dos dados de referência")
     return path
 
 
@@ -175,10 +175,10 @@ class PublicData:
 
     def file(self, name):
         if name not in self.manifest["files"]:
-            raise ValueError("Arquivo fora do manifesto SkyShift")
+            raise ValueError("Arquivo fora do manifesto de referência")
         path = inside(self.root / "public", name)
         if digest(path) != self.manifest["files"][name]["sha256"]:
-            raise ValueError("Arquivo SkyShift alterado; importe novamente a origem")
+            raise ValueError("Arquivo de referência alterado; importe novamente a origem")
         return path
 
     def read(self, name):
@@ -198,7 +198,7 @@ class PublicData:
     def object(self, slug, frames=None):
         entry = next((o for o in self.manifest["objects"] if o["slug"] == slug), None)
         if not entry:
-            raise ValueError("Objeto SkyShift não importado")
+            raise ValueError("Objeto de referência não importado")
         obj = self.read(f"{slug}/object.json")
         obj["spectrum"] = [p for p in obj.get("spectrum", []) if 0.75 <= p["um"] <= 5]
         if not entry["sets"] and not frames:

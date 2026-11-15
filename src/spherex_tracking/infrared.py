@@ -258,13 +258,13 @@ def make_handler(state):
                         return self._send(
                             200, data.file(name).read_bytes(), "application/octet-stream"
                         )
-                    return self._send(404, {"error": "Rota SkyShift inexistente"})
+                    return self._send(404, {"error": "Rota de dados inexistente"})
                 except FileNotFoundError:
                     return self._send(
                         404,
                         {
-                            "error": "Dados SkyShift não importados. "
-                            "Execute scripts/skyshift_import.py."
+                            "error": "Observações de referência não importadas. "
+                            "Consulte a documentação de importação."
                         },
                     )
                 except (ValueError, KeyError) as exc:
