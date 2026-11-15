@@ -97,9 +97,6 @@
         .hero-status { display: flex; align-items: center; gap: 9px; font-size: 9px; letter-spacing: .18em; color: #95a6b6; margin-top: 26px; text-transform: uppercase; }
         .status-light { width: 5px; height: 5px; border-radius: 50%; background: #8dcbed; box-shadow: 0 0 12px #8dcbed88; }
         .earth-horizon-curve { height: 190px; bottom: -80px; left: -20%; width: 150%; transform: rotate(9deg); background: radial-gradient(ellipse at 50% 0, rgba(48,83,112,.12), transparent 68%); box-shadow: 0 -3px 18px rgba(107,163,200,.2), 0 -14px 55px rgba(51,94,130,.12); mask-image: linear-gradient(90deg, transparent, #000 25%, #000 72%, transparent); }
-        .instrument-tools { display: flex; justify-content: flex-end; gap: 9px; margin-top: 4px; position: relative; z-index: 30; }
-        .instrument-tools button { font-size: 10px; border: 1px solid #8fbbd538; background: #0a1721b3; padding: 8px 12px; border-radius: 4px; color: #b3c5d3; }
-        .instrument-tools button:hover { border-color: #94d8fc; color: #fff; }
         .model-status { font-size: 10px; line-height: 1.8; color: #8aa0b0; text-align: center; margin-top: 8px; }
         .pillar-col { background: transparent; border: 0; color: inherit; font: inherit; }
         .pillar-col>div:first-child { width: 90px; height: 90px; margin-bottom: 12px; }
@@ -159,8 +156,7 @@
             .mission-section { padding: 55px 22px; } .mission-heading { display: block; } .mission-heading>p { margin-top: 20px; }
             .mission-facts { gap: 15px; } .mission-facts strong { font-size: 23px; } .mission-facts>div { padding: 0 10px; } .mission-facts span { font-size: 9px; line-height: 1.7; }
             .data-explorer { grid-template-columns: 1fr; } .explorer-copy { padding: 24px; border-right: 0; border-bottom: 1px solid #82b5d022; } .explorer-controls { padding: 24px; }
-            .instrument-tools { justify-content: center; } .section-kicker { font-size: 10px; } .mission-heading h2 { font-size: 32px; }
-        }
+            }
         @media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto!important; } .animate-spin { animation:none!important; } }
     </style>
 </head>
@@ -287,20 +283,12 @@
                     <div class="relative w-full max-w-[560px] aspect-square flex items-center justify-center">
                         
                         <!-- WebGL 3D Canvas wrapper -->
-                        <div id="spherex-3d-wrapper" class="w-full h-full cursor-grab active:cursor-grabbing relative z-20">
+                        <div id="spherex-3d-wrapper" class="w-full h-full cursor-default relative z-20">
                             <canvas id="spherex-canvas" class="w-full h-full block"></canvas>
                         </div>
 
-                        <!-- Drag to rotate pill on bottom right -->
-                        <div class="absolute bottom-2 right-4 flex items-center gap-2 text-gray-400 text-[11px] font-sans tracking-wide z-30 pointer-events-none">
-                            <svg class="w-4 h-4 text-sky-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                                <path d="M8 12V6a2 2 0 0 1 4 0v5-2a2 2 0 0 1 4 0v3a2 2 0 0 1 4 0v5l-3 4H9l-5-7a2 2 0 0 1 3-2l1 1"/>
-                            </svg>
-                            <span>Drag to Rotate</span>
-                        </div>
                     </div>
-                    <div class="instrument-tools"><button type="button" id="rotation-toggle" aria-pressed="true">Pause rotation</button><button type="button" id="reset-view">Reset view ↗</button></div>
-                    <p class="model-status" id="model-status" role="status">Interactive model · Artist's reconstruction of SPHEREx</p>
+                    <p class="model-status" id="model-status" role="status">SPHEREx model · Artist's reconstruction of SPHEREx</p>
 
                 </div>
 
@@ -752,19 +740,16 @@
             spherexControls = new THREE.OrbitControls(spherexCamera, canvas);
             spherexControls.enableDamping = true;
             spherexControls.dampingFactor = 0.06;
-            spherexControls.enableZoom = true;
+            spherexControls.enableZoom = false;
+            spherexControls.enableRotate = false;
             spherexControls.minDistance = 4.2;
             spherexControls.maxDistance = 8.0;
             spherexControls.autoRotate = rotationEnabled;
             spherexControls.enablePan = false;
             spherexControls.autoRotateSpeed = 0.8;
             spherexControls.maxPolarAngle = Math.PI / 1.7;
-            spherexControls.addEventListener('start', () => {
-                rotationEnabled = false;
-                spherexControls.autoRotate = false;
-                updateRotationButton();
-            });
-            updateRotationButton();
+
+
 
             // Lights
             const ambient = new THREE.AmbientLight(0x202b3d, 1.4);
@@ -1068,23 +1053,6 @@
             }
         });
 
-        function updateRotationButton() {
-            const button = document.getElementById('rotation-toggle');
-            button.textContent = rotationEnabled ? 'Pause rotation' : 'Resume rotation';
-            button.setAttribute('aria-pressed', String(rotationEnabled));
-        }
-        document.getElementById('rotation-toggle').addEventListener('click', () => {
-            if (!spherexControls) return;
-            rotationEnabled = !rotationEnabled;
-            spherexControls.autoRotate = rotationEnabled;
-            updateRotationButton();
-        });
-        document.getElementById('reset-view').addEventListener('click', () => {
-            if (!spherexControls) return;
-            spherexCamera.position.set(3.5, 2.6, 4.4);
-            spherexControls.target.set(0, 0, 0);
-            spherexControls.update();
-        });
         function updateWavelength() {
             const value = Number(document.getElementById('wavelength').value) / 100;
             document.getElementById('wavelength-value').textContent = value.toFixed(2) + ' μm';
@@ -1102,7 +1070,7 @@
             updateWavelength();
         }));
         updateWavelength();
-        updateRotationButton();
+
 
         // Initialize 3D SPHEREx engine
         window.onload = function() {
