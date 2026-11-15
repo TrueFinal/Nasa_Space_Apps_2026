@@ -1,0 +1,766 @@
+{
+  "targets": [
+    {
+      "id": "wise0855",
+      "name": "WISE 0855",
+      "ra": 133.7951291667,
+      "dec": -7.2451472222,
+      "detector": 6,
+      "description": "An\u00e3 marrom fria \u2022 coordenada do desafio"
+    },
+    {
+      "id": "barnard",
+      "name": "Estrela de Barnard",
+      "ra": 269.4462685027,
+      "dec": 4.7682044788,
+      "detector": 3,
+      "description": "Movimento pr\u00f3prio alto \u2022 centro aproximado em 2026"
+    },
+    {
+      "id": "epsilon",
+      "name": "Epsilon Indi B",
+      "ra": 331.0966438523,
+      "dec": -56.800660204,
+      "detector": 6,
+      "description": "Par de an\u00e3s marrons \u2022 centro aproximado em 2026"
+    },
+    {
+      "id": "rwaur",
+      "name": "RW Aurigae",
+      "ra": 76.9565260346,
+      "dec": 30.4014381739,
+      "detector": 3,
+      "description": "Estrela jovem vari\u00e1vel"
+    },
+    {
+      "id": "rdra",
+      "name": "R Draconis",
+      "ra": 248.1676108329,
+      "dec": 66.7549794172,
+      "detector": 3,
+      "description": "Estrela vari\u00e1vel Mira"
+    }
+  ],
+  "channels": [
+    {
+      "WAVELENGTH": 0.753000020980835,
+      "WL_MIN": 0.7429999709129333,
+      "WL_MAX": 0.7620000243186951,
+      "DETECTOR": 1.0,
+      "SUBCHAN": 1.0
+    },
+    {
+      "WAVELENGTH": 0.7710000276565552,
+      "WL_MIN": 0.7609999775886536,
+      "WL_MAX": 0.781000018119812,
+      "DETECTOR": 1.0,
+      "SUBCHAN": 2.0
+    },
+    {
+      "WAVELENGTH": 0.7900000214576721,
+      "WL_MIN": 0.7799999713897705,
+      "WL_MAX": 0.800000011920929,
+      "DETECTOR": 1.0,
+      "SUBCHAN": 3.0
+    },
+    {
+      "WAVELENGTH": 0.8090000152587891,
+      "WL_MIN": 0.7979999780654907,
+      "WL_MAX": 0.8190000057220459,
+      "DETECTOR": 1.0,
+      "SUBCHAN": 4.0
+    },
+    {
+      "WAVELENGTH": 0.828000009059906,
+      "WL_MIN": 0.8169999718666077,
+      "WL_MAX": 0.8389999866485596,
+      "DETECTOR": 1.0,
+      "SUBCHAN": 5.0
+    },
+    {
+      "WAVELENGTH": 0.8479999899864197,
+      "WL_MIN": 0.8370000123977661,
+      "WL_MAX": 0.859000027179718,
+      "DETECTOR": 1.0,
+      "SUBCHAN": 6.0
+    },
+    {
+      "WAVELENGTH": 0.8679999709129333,
+      "WL_MIN": 0.8569999933242798,
+      "WL_MAX": 0.8790000081062317,
+      "DETECTOR": 1.0,
+      "SUBCHAN": 7.0
+    },
+    {
+      "WAVELENGTH": 0.8889999985694885,
+      "WL_MIN": 0.8769999742507935,
+      "WL_MAX": 0.8999999761581421,
+      "DETECTOR": 1.0,
+      "SUBCHAN": 8.0
+    },
+    {
+      "WAVELENGTH": 0.9100000262260437,
+      "WL_MIN": 0.8980000019073486,
+      "WL_MAX": 0.921999990940094,
+      "DETECTOR": 1.0,
+      "SUBCHAN": 9.0
+    },
+    {
+      "WAVELENGTH": 0.9319999814033508,
+      "WL_MIN": 0.9200000166893005,
+      "WL_MAX": 0.9440000057220459,
+      "DETECTOR": 1.0,
+      "SUBCHAN": 10.0
+    },
+    {
+      "WAVELENGTH": 0.9549999833106995,
+      "WL_MIN": 0.9419999718666077,
+      "WL_MAX": 0.9670000076293945,
+      "DETECTOR": 1.0,
+      "SUBCHAN": 11.0
+    },
+    {
+      "WAVELENGTH": 0.9779999852180481,
+      "WL_MIN": 0.9639999866485596,
+      "WL_MAX": 0.9900000095367432,
+      "DETECTOR": 1.0,
+      "SUBCHAN": 12.0
+    },
+    {
+      "WAVELENGTH": 1.0010000467300415,
+      "WL_MIN": 0.9879999756813049,
+      "WL_MAX": 1.0140000581741333,
+      "DETECTOR": 1.0,
+      "SUBCHAN": 13.0
+    },
+    {
+      "WAVELENGTH": 1.024999976158142,
+      "WL_MIN": 1.0119999647140503,
+      "WL_MAX": 1.0390000343322754,
+      "DETECTOR": 1.0,
+      "SUBCHAN": 14.0
+    },
+    {
+      "WAVELENGTH": 1.0499999523162842,
+      "WL_MIN": 1.0360000133514404,
+      "WL_MAX": 1.0640000104904175,
+      "DETECTOR": 1.0,
+      "SUBCHAN": 15.0
+    },
+    {
+      "WAVELENGTH": 1.0750000476837158,
+      "WL_MIN": 1.0609999895095825,
+      "WL_MAX": 1.090000033378601,
+      "DETECTOR": 1.0,
+      "SUBCHAN": 16.0
+    },
+    {
+      "WAVELENGTH": 1.1019999980926514,
+      "WL_MIN": 1.0859999656677246,
+      "WL_MAX": 1.1160000562667847,
+      "DETECTOR": 1.0,
+      "SUBCHAN": 17.0
+    },
+    {
+      "WAVELENGTH": 1.1130000352859497,
+      "WL_MIN": 1.0989999771118164,
+      "WL_MAX": 1.1260000467300415,
+      "DETECTOR": 2.0,
+      "SUBCHAN": 1.0
+    },
+    {
+      "WAVELENGTH": 1.1390000581741333,
+      "WL_MIN": 1.125,
+      "WL_MAX": 1.152999997138977,
+      "DETECTOR": 2.0,
+      "SUBCHAN": 2.0
+    },
+    {
+      "WAVELENGTH": 1.1670000553131104,
+      "WL_MIN": 1.1519999504089355,
+      "WL_MAX": 1.1820000410079956,
+      "DETECTOR": 2.0,
+      "SUBCHAN": 3.0
+    },
+    {
+      "WAVELENGTH": 1.1950000524520874,
+      "WL_MIN": 1.1799999475479126,
+      "WL_MAX": 1.2100000381469727,
+      "DETECTOR": 2.0,
+      "SUBCHAN": 4.0
+    },
+    {
+      "WAVELENGTH": 1.2239999771118164,
+      "WL_MIN": 1.2089999914169312,
+      "WL_MAX": 1.2400000095367432,
+      "DETECTOR": 2.0,
+      "SUBCHAN": 5.0
+    },
+    {
+      "WAVELENGTH": 1.253999948501587,
+      "WL_MIN": 1.2380000352859497,
+      "WL_MAX": 1.2690000534057617,
+      "DETECTOR": 2.0,
+      "SUBCHAN": 6.0
+    },
+    {
+      "WAVELENGTH": 1.284000039100647,
+      "WL_MIN": 1.2669999599456787,
+      "WL_MAX": 1.2999999523162842,
+      "DETECTOR": 2.0,
+      "SUBCHAN": 7.0
+    },
+    {
+      "WAVELENGTH": 1.315000057220459,
+      "WL_MIN": 1.2979999780654907,
+      "WL_MAX": 1.3309999704360962,
+      "DETECTOR": 2.0,
+      "SUBCHAN": 8.0
+    },
+    {
+      "WAVELENGTH": 1.3459999561309814,
+      "WL_MIN": 1.3289999961853027,
+      "WL_MAX": 1.3630000352859497,
+      "DETECTOR": 2.0,
+      "SUBCHAN": 9.0
+    },
+    {
+      "WAVELENGTH": 1.378000020980835,
+      "WL_MIN": 1.3600000143051147,
+      "WL_MAX": 1.3960000276565552,
+      "DETECTOR": 2.0,
+      "SUBCHAN": 10.0
+    },
+    {
+      "WAVELENGTH": 1.4119999408721924,
+      "WL_MIN": 1.3930000066757202,
+      "WL_MAX": 1.4299999475479126,
+      "DETECTOR": 2.0,
+      "SUBCHAN": 11.0
+    },
+    {
+      "WAVELENGTH": 1.4459999799728394,
+      "WL_MIN": 1.4259999990463257,
+      "WL_MAX": 1.4639999866485596,
+      "DETECTOR": 2.0,
+      "SUBCHAN": 12.0
+    },
+    {
+      "WAVELENGTH": 1.4809999465942383,
+      "WL_MIN": 1.4609999656677246,
+      "WL_MAX": 1.5,
+      "DETECTOR": 2.0,
+      "SUBCHAN": 13.0
+    },
+    {
+      "WAVELENGTH": 1.5169999599456787,
+      "WL_MIN": 1.496000051498413,
+      "WL_MAX": 1.5369999408721924,
+      "DETECTOR": 2.0,
+      "SUBCHAN": 14.0
+    },
+    {
+      "WAVELENGTH": 1.5540000200271606,
+      "WL_MIN": 1.5329999923706055,
+      "WL_MAX": 1.5750000476837158,
+      "DETECTOR": 2.0,
+      "SUBCHAN": 15.0
+    },
+    {
+      "WAVELENGTH": 1.5920000076293945,
+      "WL_MIN": 1.5700000524520874,
+      "WL_MAX": 1.6130000352859497,
+      "DETECTOR": 2.0,
+      "SUBCHAN": 16.0
+    },
+    {
+      "WAVELENGTH": 1.63100004196167,
+      "WL_MIN": 1.6080000400543213,
+      "WL_MAX": 1.6510000228881836,
+      "DETECTOR": 2.0,
+      "SUBCHAN": 17.0
+    },
+    {
+      "WAVELENGTH": 1.656000018119812,
+      "WL_MIN": 1.6360000371932983,
+      "WL_MAX": 1.6759999990463257,
+      "DETECTOR": 3.0,
+      "SUBCHAN": 1.0
+    },
+    {
+      "WAVELENGTH": 1.6950000524520874,
+      "WL_MIN": 1.6749999523162842,
+      "WL_MAX": 1.715000033378601,
+      "DETECTOR": 3.0,
+      "SUBCHAN": 2.0
+    },
+    {
+      "WAVELENGTH": 1.7350000143051147,
+      "WL_MIN": 1.7139999866485596,
+      "WL_MAX": 1.75600004196167,
+      "DETECTOR": 3.0,
+      "SUBCHAN": 3.0
+    },
+    {
+      "WAVELENGTH": 1.774999976158142,
+      "WL_MIN": 1.753999948501587,
+      "WL_MAX": 1.7970000505447388,
+      "DETECTOR": 3.0,
+      "SUBCHAN": 4.0
+    },
+    {
+      "WAVELENGTH": 1.8179999589920044,
+      "WL_MIN": 1.7949999570846558,
+      "WL_MAX": 1.840000033378601,
+      "DETECTOR": 3.0,
+      "SUBCHAN": 5.0
+    },
+    {
+      "WAVELENGTH": 1.8609999418258667,
+      "WL_MIN": 1.8380000591278076,
+      "WL_MAX": 1.8839999437332153,
+      "DETECTOR": 3.0,
+      "SUBCHAN": 6.0
+    },
+    {
+      "WAVELENGTH": 1.9049999713897705,
+      "WL_MIN": 1.88100004196167,
+      "WL_MAX": 1.9279999732971191,
+      "DETECTOR": 3.0,
+      "SUBCHAN": 7.0
+    },
+    {
+      "WAVELENGTH": 1.9490000009536743,
+      "WL_MIN": 1.9249999523162842,
+      "WL_MAX": 1.9730000495910645,
+      "DETECTOR": 3.0,
+      "SUBCHAN": 8.0
+    },
+    {
+      "WAVELENGTH": 1.9950000047683716,
+      "WL_MIN": 1.9700000286102295,
+      "WL_MAX": 2.0190000534057617,
+      "DETECTOR": 3.0,
+      "SUBCHAN": 9.0
+    },
+    {
+      "WAVELENGTH": 2.0409998893737793,
+      "WL_MIN": 2.015000104904175,
+      "WL_MAX": 2.066999912261963,
+      "DETECTOR": 3.0,
+      "SUBCHAN": 10.0
+    },
+    {
+      "WAVELENGTH": 2.0889999866485596,
+      "WL_MIN": 2.062000036239624,
+      "WL_MAX": 2.115000009536743,
+      "DETECTOR": 3.0,
+      "SUBCHAN": 11.0
+    },
+    {
+      "WAVELENGTH": 2.1389999389648438,
+      "WL_MIN": 2.1110000610351562,
+      "WL_MAX": 2.1659998893737793,
+      "DETECTOR": 3.0,
+      "SUBCHAN": 12.0
+    },
+    {
+      "WAVELENGTH": 2.188999891281128,
+      "WL_MIN": 2.1600000858306885,
+      "WL_MAX": 2.2160000801086426,
+      "DETECTOR": 3.0,
+      "SUBCHAN": 13.0
+    },
+    {
+      "WAVELENGTH": 2.240000009536743,
+      "WL_MIN": 2.2109999656677246,
+      "WL_MAX": 2.2679998874664307,
+      "DETECTOR": 3.0,
+      "SUBCHAN": 14.0
+    },
+    {
+      "WAVELENGTH": 2.2920000553131104,
+      "WL_MIN": 2.26200008392334,
+      "WL_MAX": 2.321000099182129,
+      "DETECTOR": 3.0,
+      "SUBCHAN": 15.0
+    },
+    {
+      "WAVELENGTH": 2.3450000286102295,
+      "WL_MIN": 2.313999891281128,
+      "WL_MAX": 2.375,
+      "DETECTOR": 3.0,
+      "SUBCHAN": 16.0
+    },
+    {
+      "WAVELENGTH": 2.3989999294281006,
+      "WL_MIN": 2.367000102996826,
+      "WL_MAX": 2.440000057220459,
+      "DETECTOR": 3.0,
+      "SUBCHAN": 17.0
+    },
+    {
+      "WAVELENGTH": 2.444999933242798,
+      "WL_MIN": 2.421999931335449,
+      "WL_MAX": 2.4739999771118164,
+      "DETECTOR": 4.0,
+      "SUBCHAN": 1.0
+    },
+    {
+      "WAVELENGTH": 2.50600004196167,
+      "WL_MIN": 2.4700000286102295,
+      "WL_MAX": 2.5420000553131104,
+      "DETECTOR": 4.0,
+      "SUBCHAN": 2.0
+    },
+    {
+      "WAVELENGTH": 2.575000047683716,
+      "WL_MIN": 2.5380001068115234,
+      "WL_MAX": 2.611999988555908,
+      "DETECTOR": 4.0,
+      "SUBCHAN": 3.0
+    },
+    {
+      "WAVELENGTH": 2.6459999084472656,
+      "WL_MIN": 2.6070001125335693,
+      "WL_MAX": 2.684000015258789,
+      "DETECTOR": 4.0,
+      "SUBCHAN": 4.0
+    },
+    {
+      "WAVELENGTH": 2.7190001010894775,
+      "WL_MIN": 2.677999973297119,
+      "WL_MAX": 2.757999897003174,
+      "DETECTOR": 4.0,
+      "SUBCHAN": 5.0
+    },
+    {
+      "WAVELENGTH": 2.7939999103546143,
+      "WL_MIN": 2.752000093460083,
+      "WL_MAX": 2.8350000381469727,
+      "DETECTOR": 4.0,
+      "SUBCHAN": 6.0
+    },
+    {
+      "WAVELENGTH": 2.871000051498413,
+      "WL_MIN": 2.828000068664551,
+      "WL_MAX": 2.9140000343322754,
+      "DETECTOR": 4.0,
+      "SUBCHAN": 7.0
+    },
+    {
+      "WAVELENGTH": 2.9509999752044678,
+      "WL_MIN": 2.9059998989105225,
+      "WL_MAX": 2.994999885559082,
+      "DETECTOR": 4.0,
+      "SUBCHAN": 8.0
+    },
+    {
+      "WAVELENGTH": 3.0329999923706055,
+      "WL_MIN": 2.984999895095825,
+      "WL_MAX": 3.0789999961853027,
+      "DETECTOR": 4.0,
+      "SUBCHAN": 9.0
+    },
+    {
+      "WAVELENGTH": 3.118000030517578,
+      "WL_MIN": 3.069000005722046,
+      "WL_MAX": 3.1640000343322754,
+      "DETECTOR": 4.0,
+      "SUBCHAN": 10.0
+    },
+    {
+      "WAVELENGTH": 3.2039999961853027,
+      "WL_MIN": 3.1549999713897705,
+      "WL_MAX": 3.252000093460083,
+      "DETECTOR": 4.0,
+      "SUBCHAN": 11.0
+    },
+    {
+      "WAVELENGTH": 3.2929999828338623,
+      "WL_MIN": 3.242000102996826,
+      "WL_MAX": 3.3420000076293945,
+      "DETECTOR": 4.0,
+      "SUBCHAN": 12.0
+    },
+    {
+      "WAVELENGTH": 3.382999897003174,
+      "WL_MIN": 3.3299999237060547,
+      "WL_MAX": 3.434000015258789,
+      "DETECTOR": 4.0,
+      "SUBCHAN": 13.0
+    },
+    {
+      "WAVELENGTH": 3.4760000705718994,
+      "WL_MIN": 3.421999931335449,
+      "WL_MAX": 3.5280001163482666,
+      "DETECTOR": 4.0,
+      "SUBCHAN": 14.0
+    },
+    {
+      "WAVELENGTH": 3.569999933242798,
+      "WL_MIN": 3.5139999389648438,
+      "WL_MAX": 3.624000072479248,
+      "DETECTOR": 4.0,
+      "SUBCHAN": 15.0
+    },
+    {
+      "WAVELENGTH": 3.6670000553131104,
+      "WL_MIN": 3.609999895095825,
+      "WL_MAX": 3.7230000495910645,
+      "DETECTOR": 4.0,
+      "SUBCHAN": 16.0
+    },
+    {
+      "WAVELENGTH": 3.7679998874664307,
+      "WL_MIN": 3.7070000171661377,
+      "WL_MAX": 3.8269999027252197,
+      "DETECTOR": 4.0,
+      "SUBCHAN": 17.0
+    },
+    {
+      "WAVELENGTH": 3.8269999027252197,
+      "WL_MIN": 3.808000087738037,
+      "WL_MAX": 3.8450000286102295,
+      "DETECTOR": 5.0,
+      "SUBCHAN": 1.0
+    },
+    {
+      "WAVELENGTH": 3.8610000610351562,
+      "WL_MIN": 3.8429999351501465,
+      "WL_MAX": 3.878999948501587,
+      "DETECTOR": 5.0,
+      "SUBCHAN": 2.0
+    },
+    {
+      "WAVELENGTH": 3.8949999809265137,
+      "WL_MIN": 3.875999927520752,
+      "WL_MAX": 3.9130001068115234,
+      "DETECTOR": 5.0,
+      "SUBCHAN": 3.0
+    },
+    {
+      "WAVELENGTH": 3.928999900817871,
+      "WL_MIN": 3.9100000858306885,
+      "WL_MAX": 3.947000026702881,
+      "DETECTOR": 5.0,
+      "SUBCHAN": 4.0
+    },
+    {
+      "WAVELENGTH": 3.9639999866485596,
+      "WL_MIN": 3.944000005722046,
+      "WL_MAX": 3.9820001125335693,
+      "DETECTOR": 5.0,
+      "SUBCHAN": 5.0
+    },
+    {
+      "WAVELENGTH": 3.999000072479248,
+      "WL_MIN": 3.9790000915527344,
+      "WL_MAX": 4.01800012588501,
+      "DETECTOR": 5.0,
+      "SUBCHAN": 6.0
+    },
+    {
+      "WAVELENGTH": 4.033999919891357,
+      "WL_MIN": 4.013999938964844,
+      "WL_MAX": 4.052999973297119,
+      "DETECTOR": 5.0,
+      "SUBCHAN": 7.0
+    },
+    {
+      "WAVELENGTH": 4.070000171661377,
+      "WL_MIN": 4.048999786376953,
+      "WL_MAX": 4.089000225067139,
+      "DETECTOR": 5.0,
+      "SUBCHAN": 8.0
+    },
+    {
+      "WAVELENGTH": 4.105999946594238,
+      "WL_MIN": 4.085000038146973,
+      "WL_MAX": 4.125,
+      "DETECTOR": 5.0,
+      "SUBCHAN": 9.0
+    },
+    {
+      "WAVELENGTH": 4.142000198364258,
+      "WL_MIN": 4.119999885559082,
+      "WL_MAX": 4.160999774932861,
+      "DETECTOR": 5.0,
+      "SUBCHAN": 10.0
+    },
+    {
+      "WAVELENGTH": 4.177999973297119,
+      "WL_MIN": 4.156000137329102,
+      "WL_MAX": 4.197000026702881,
+      "DETECTOR": 5.0,
+      "SUBCHAN": 11.0
+    },
+    {
+      "WAVELENGTH": 4.214000225067139,
+      "WL_MIN": 4.192999839782715,
+      "WL_MAX": 4.234000205993652,
+      "DETECTOR": 5.0,
+      "SUBCHAN": 12.0
+    },
+    {
+      "WAVELENGTH": 4.250999927520752,
+      "WL_MIN": 4.229000091552734,
+      "WL_MAX": 4.270999908447266,
+      "DETECTOR": 5.0,
+      "SUBCHAN": 13.0
+    },
+    {
+      "WAVELENGTH": 4.288000106811523,
+      "WL_MIN": 4.264999866485596,
+      "WL_MAX": 4.307000160217285,
+      "DETECTOR": 5.0,
+      "SUBCHAN": 14.0
+    },
+    {
+      "WAVELENGTH": 4.324999809265137,
+      "WL_MIN": 4.302000045776367,
+      "WL_MAX": 4.34499979019165,
+      "DETECTOR": 5.0,
+      "SUBCHAN": 15.0
+    },
+    {
+      "WAVELENGTH": 4.361999988555908,
+      "WL_MIN": 4.339000225067139,
+      "WL_MAX": 4.381999969482422,
+      "DETECTOR": 5.0,
+      "SUBCHAN": 16.0
+    },
+    {
+      "WAVELENGTH": 4.39900016784668,
+      "WL_MIN": 4.375999927520752,
+      "WL_MAX": 4.420000076293945,
+      "DETECTOR": 5.0,
+      "SUBCHAN": 17.0
+    },
+    {
+      "WAVELENGTH": 4.428999900817871,
+      "WL_MIN": 4.4120001792907715,
+      "WL_MAX": 4.446000099182129,
+      "DETECTOR": 6.0,
+      "SUBCHAN": 1.0
+    },
+    {
+      "WAVELENGTH": 4.460999965667725,
+      "WL_MIN": 4.443999767303467,
+      "WL_MAX": 4.478000164031982,
+      "DETECTOR": 6.0,
+      "SUBCHAN": 2.0
+    },
+    {
+      "WAVELENGTH": 4.49399995803833,
+      "WL_MIN": 4.47599983215332,
+      "WL_MAX": 4.511000156402588,
+      "DETECTOR": 6.0,
+      "SUBCHAN": 3.0
+    },
+    {
+      "WAVELENGTH": 4.5269999504089355,
+      "WL_MIN": 4.508999824523926,
+      "WL_MAX": 4.544000148773193,
+      "DETECTOR": 6.0,
+      "SUBCHAN": 4.0
+    },
+    {
+      "WAVELENGTH": 4.559999942779541,
+      "WL_MIN": 4.541999816894531,
+      "WL_MAX": 4.578000068664551,
+      "DETECTOR": 6.0,
+      "SUBCHAN": 5.0
+    },
+    {
+      "WAVELENGTH": 4.593999862670898,
+      "WL_MIN": 4.576000213623047,
+      "WL_MAX": 4.611999988555908,
+      "DETECTOR": 6.0,
+      "SUBCHAN": 6.0
+    },
+    {
+      "WAVELENGTH": 4.629000186920166,
+      "WL_MIN": 4.609000205993652,
+      "WL_MAX": 4.646999835968018,
+      "DETECTOR": 6.0,
+      "SUBCHAN": 7.0
+    },
+    {
+      "WAVELENGTH": 4.663000106811523,
+      "WL_MIN": 4.64300012588501,
+      "WL_MAX": 4.682000160217285,
+      "DETECTOR": 6.0,
+      "SUBCHAN": 8.0
+    },
+    {
+      "WAVELENGTH": 4.697999954223633,
+      "WL_MIN": 4.677999973297119,
+      "WL_MAX": 4.7170000076293945,
+      "DETECTOR": 6.0,
+      "SUBCHAN": 9.0
+    },
+    {
+      "WAVELENGTH": 4.732999801635742,
+      "WL_MIN": 4.7129998207092285,
+      "WL_MAX": 4.751999855041504,
+      "DETECTOR": 6.0,
+      "SUBCHAN": 10.0
+    },
+    {
+      "WAVELENGTH": 4.767000198364258,
+      "WL_MIN": 4.747000217437744,
+      "WL_MAX": 4.785999774932861,
+      "DETECTOR": 6.0,
+      "SUBCHAN": 11.0
+    },
+    {
+      "WAVELENGTH": 4.802000045776367,
+      "WL_MIN": 4.7820000648498535,
+      "WL_MAX": 4.821000099182129,
+      "DETECTOR": 6.0,
+      "SUBCHAN": 12.0
+    },
+    {
+      "WAVELENGTH": 4.836999893188477,
+      "WL_MIN": 4.815999984741211,
+      "WL_MAX": 4.855999946594238,
+      "DETECTOR": 6.0,
+      "SUBCHAN": 13.0
+    },
+    {
+      "WAVELENGTH": 4.873000144958496,
+      "WL_MIN": 4.85099983215332,
+      "WL_MAX": 4.89300012588501,
+      "DETECTOR": 6.0,
+      "SUBCHAN": 14.0
+    },
+    {
+      "WAVELENGTH": 4.908999919891357,
+      "WL_MIN": 4.88700008392334,
+      "WL_MAX": 4.929999828338623,
+      "DETECTOR": 6.0,
+      "SUBCHAN": 15.0
+    },
+    {
+      "WAVELENGTH": 4.945000171661377,
+      "WL_MIN": 4.923999786376953,
+      "WL_MAX": 4.966000080108643,
+      "DETECTOR": 6.0,
+      "SUBCHAN": 16.0
+    },
+    {
+      "WAVELENGTH": 4.98199987411499,
+      "WL_MIN": 4.960000038146973,
+      "WL_MAX": 5.002999782562256,
+      "DETECTOR": 6.0,
+      "SUBCHAN": 17.0
+    }
+  ],
+  "badMask": 4292870143,
+  "sources": {
+    "archive": "https://irsa.ipac.caltech.edu/spherex-archive-documentation/spherex-data-access/",
+    "tutorial": "https://caltech-ipac.github.io/irsa-tutorials/spherex-mosaic/",
+    "coordinates": "https://simbad.cds.unistra.fr/simbad/"
+  }
+}

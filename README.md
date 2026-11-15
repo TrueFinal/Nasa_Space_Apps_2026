@@ -1,3 +1,19 @@
+# Aplicação web SPHEREx
+
+A aplicação está em **[web/sky-explorer](web/sky-explorer)**. Ela oferece busca por coordenadas,
+animação temporal com banda fixa, seis detectores/102 canais, campo ajustável, média/diferença,
+GIF, espectro em abertura e sobreposições Aladin/Gaia/WISE. Há cinco exemplos reais prontos: 
+Barnard, Epsilon Indi B, WISE 0855, RW Aur e R Dra.
+
+```bash
+cd web/sky-explorer
+npm ci
+npm run build
+npm run dev
+```
+
+Acesse http://localhost:4173. Consulte o README da aplicação para métodos, testes e limites.
+
 # SPHEREx: três mosaicos processados e um GIF
 
 O resultado principal é o **[GIF das três visitas processadas](outputs/three_visits/spherex_three_visits.gif)**.

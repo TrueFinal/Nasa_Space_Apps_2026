@@ -1,0 +1,37 @@
+[
+  {
+    "archive_count": 38,
+    "n_selected": 6,
+    "errors": [],
+    "target": "rwaur",
+    "downloaded": 6
+  },
+  {
+    "archive_count": 42,
+    "n_selected": 10,
+    "errors": [],
+    "target": "barnard",
+    "downloaded": 10
+  },
+  {
+    "archive_count": 71,
+    "n_selected": 9,
+    "errors": [],
+    "target": "rdra",
+    "downloaded": 9
+  },
+  {
+    "archive_count": 57,
+    "n_selected": 15,
+    "errors": [],
+    "target": "epsilon",
+    "downloaded": 15
+  },
+  {
+    "archive_count": 45,
+    "n_selected": 12,
+    "errors": [],
+    "target": "wise0855",
+    "downloaded": 12
+  }
+]
