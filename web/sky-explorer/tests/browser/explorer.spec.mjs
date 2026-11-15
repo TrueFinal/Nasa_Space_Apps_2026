@@ -78,3 +78,14 @@ test('contextual glossary works with hover, keyboard and touch without changing 
  expect(await phone.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
  await context.close();
 });
+
+test('Zephyr logo loads and returns to the initial view without a self navigation link',async({page})=>{
+ await page.goto('/');await expect(page.locator('#source-badge')).toHaveText('SAVED REAL OBSERVATIONS');
+ await expect(page.locator('#navigation a')).toHaveCount(1);
+ await expect(page.locator('#navigation')).not.toContainText('Sky explorer');
+ await expect(page.locator('.brand img')).toHaveAttribute('alt','Zephyr');
+ await expect.poll(()=>page.locator('.brand img').evaluate(im=>im.complete&&im.naturalWidth>0)).toBe(true);
+ await page.locator('[data-id="barnard"]').click();await expect(page.locator('#target-title')).toHaveText('Barnard’s Star');
+ await page.locator('.brand').click();await expect(page).toHaveURL(/\/$/);
+ await expect(page.locator('#target-title')).toHaveText('WISE 0855');
+});

@@ -265,15 +265,15 @@ def make_handler(state):
             if route in ("/", "/index.html", "/lab", "/lab/", "/sky", "/sky/", "/mpc", "/mpc/") or route.startswith("/sky-assets/"):
                 base = ROOT / "web/sky-explorer/worker"
                 name = route.removeprefix("/sky-assets/") if route.startswith("/sky-assets/") else "index.html"
-                allowed = {"index.html", "app.js", "astro.js", "catalogue.js", "style.css", "config.json", "gifenc.js", "gifenc.LICENSE.txt", "help.js"}
+                allowed = {"index.html", "app.js", "astro.js", "catalogue.js", "style.css", "config.json", "gifenc.js", "gifenc.LICENSE.txt", "help.js", "zephyr-logo.svg"}
                 allowed |= {f"samples/{n}.json" for n in ("barnard", "epsilon", "wise0855", "rwaur", "rdra")}
                 if name not in allowed:
                     return self._send(404, {"error":"Asset not found."})
                 path = base / name
                 data = path.read_bytes()
                 if name == "index.html":
-                    data = data.replace(b'href="/style.css"', b'href="/sky-assets/style.css"').replace(b'src="/app.js"', b'src="/sky-assets/app.js"')
-                kind = "text/html" if name.endswith('.html') else "text/css" if name.endswith('.css') else "application/json" if name.endswith('.json') else "text/javascript"
+                    data = data.replace(b'href="/style.css"', b'href="/sky-assets/style.css"').replace(b'src="/app.js"', b'src="/sky-assets/app.js"').replace(b'src="/zephyr-logo.svg"', b'src="/sky-assets/zephyr-logo.svg"')
+                kind = "image/svg+xml" if name.endswith(".svg") else "text/html" if name.endswith('.html') else "text/css" if name.endswith('.css') else "application/json" if name.endswith('.json') else "text/javascript"
                 return self._send(200,data,kind+"; charset=utf-8",sky=True)
             if route.startswith('/sky-api/'):
                 from .sky_proxy import proxy

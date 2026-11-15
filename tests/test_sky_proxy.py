@@ -46,7 +46,11 @@ def test_primary_lab_serves_coordinates_and_all_five_observed_targets(tmp_path):
             page=res.read()
             assert b'id="ra"' in page and b'id="dec"' in page
             assert b'/sky-assets/app.js' in page
+            assert b'/sky-assets/zephyr-logo.svg' in page
             assert 'frame-ancestors *' in res.headers['Content-Security-Policy']
+        with urllib.request.urlopen(base+'/sky-assets/zephyr-logo.svg') as res:
+            assert res.headers['Content-Type'].startswith('image/svg+xml')
+            assert b'<svg' in res.read()
         for name,count in [('barnard',10),('epsilon',15),('wise0855',12),('rwaur',6),('rdra',9)]:
             with urllib.request.urlopen(base+f'/sky-assets/samples/{name}.json') as res:
                 d=json.load(res)
