@@ -109,4 +109,4 @@ Primary references: [IRSA data access](https://irsa.ipac.caltech.edu/spherex-arc
 
 ## Contextual glossary
 
-Small question-mark buttons beside the controls explain coordinates, units, detectors, channels, frames, stacks, differences, spectra and data quality. Hover or keyboard focus opens a brief explanation; tap works on mobile. Escape, a second tap or clicking outside closes it.
+Eight subtle question-mark buttons explain sky coordinates, field of view, detectors, spectral channels, motion trails, astronomical surveys and spectra. Generic interface actions have no glossary icons. Hover or keyboard focus opens a brief explanation; tap works on mobile. Escape, a second tap or clicking outside closes it.
