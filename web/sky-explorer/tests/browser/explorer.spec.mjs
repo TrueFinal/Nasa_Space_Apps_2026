@@ -1,4 +1,5 @@
 import {test,expect} from '@playwright/test';
+test.beforeEach(async({page})=>{await page.addInitScript(()=>localStorage.setItem('zephyr-lab-tour-v1','test'));});
 
 test('five real targets animate, stack, subtract, measure and export',async({page})=>{
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
