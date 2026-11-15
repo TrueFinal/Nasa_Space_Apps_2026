@@ -1,5 +1,6 @@
 import {test,expect} from '@playwright/test';
 import {readFileSync} from 'node:fs';
+test.beforeEach(async({page})=>{await page.addInitScript(()=>localStorage.setItem('zephyr-lab-tour-v1','test'));});
 const observed=readFileSync(new URL('../fixtures/spherex_cutout.fits',import.meta.url));
 test('no sampling by default; complete catalogue paginates and opens images outside the loaded detector',async({page})=>{
  let cutouts=0;const collections=[];

@@ -9,3 +9,4 @@ data/
 outputs/
 *.fits
 *.fits.gz
+.idea/

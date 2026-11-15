@@ -266,7 +266,7 @@ def make_handler(state):
             if route in ("/lab", "/lab/", "/sky", "/sky/") or route.startswith("/sky-assets/"):
                 base = ROOT / "web/sky-explorer/worker"
                 name = route.removeprefix("/sky-assets/") if route.startswith("/sky-assets/") else "index.html"
-                allowed = {"index.html", "app.js", "astro.js", "catalogue.js", "style.css", "config.json", "gifenc.js", "gifenc.LICENSE.txt"}
+                allowed = {"index.html", "app.js", "astro.js", "catalogue.js", "tour.js", "style.css", "config.json", "gifenc.js", "gifenc.LICENSE.txt"}
                 allowed |= {f"samples/{n}.json" for n in ("barnard", "epsilon", "wise0855", "rwaur", "rdra")}
                 if name not in allowed:
                     return self._send(404, {"error":"Asset not found."})

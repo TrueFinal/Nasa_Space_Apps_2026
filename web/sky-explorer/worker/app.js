@@ -1,3 +1,4 @@
+import './tour.js';
 import {ArchiveBrowser} from './catalogue.js';
 import {readFits,projectExposure,coadd,groupEpochs,quantile,parseCoordinate,imageFits,intervalStack} from './astro.js';
 import {GIFEncoder,quantize,applyPalette} from './gifenc.js';
