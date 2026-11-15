@@ -5,7 +5,7 @@
 .nav-toggle[aria-expanded=true] span:nth-child(2){opacity:0}
 .nav-toggle[aria-expanded=true] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 .nav-toggle:focus-visible{outline:2px solid #91d4f5;outline-offset:3px}
-@media(max-width:767px){
+@media(max-width:899px){
  header.site-header{position:relative;display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;align-items:center!important;justify-content:space-between!important;padding:14px 20px!important;gap:0!important}
  header.site-header .site-brand{margin:0!important;width:108px!important}
  header.site-header .nav-toggle{display:flex;margin-left:auto}
