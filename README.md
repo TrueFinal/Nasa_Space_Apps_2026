@@ -6,12 +6,12 @@ uv run python -m spherex_tracking.infrared serve
 ```
 
 Open **http://127.0.0.1:8766/lab**. Search RA/Dec or use the five observed challenge
-targets. This is the only web frontend; `/` and `/lab` open the same coordinate/time viewer. Hover, focus or tap the small “?” buttons for plain-language help.
+targets. The home page is at `/`; the coordinate/time laboratory is at `/lab`. Hover, focus or tap the small “?” buttons for plain-language help.
 See [challenge requirements, validation and deployment](docs/challenge_requirements.md).
 
 # Aplicação web SPHEREx
 
-O frontend atual está somente em `web/sky-explorer`. As versões antigas da home e do laboratório foram removidas. Os botões “?” junto aos controles explicam os termos técnicos sem sair da tela.
+A home atual está em `web/site` e o laboratório em `web/sky-explorer`. A versão antiga `web/infrared-mask` foi removida. Os botões “?” junto aos controles explicam os termos técnicos sem sair da tela.
 
 As rotinas científicas de análise por pixels nativos continuam disponíveis pela linha de comando Python: [máscaras e calibração](docs/infrared_mask.md) e [visualização de cubos FITS](docs/infrared_color.md).
 

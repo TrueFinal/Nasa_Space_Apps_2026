@@ -35,10 +35,10 @@ export default {
         upstream.search='';upstream.searchParams.set('center',center);upstream.searchParams.set('size',size.toFixed(6));
       } else if(u.pathname==='/health')return json({ok:true,source:'IRSA',version:'1.0.0'});
       else {
-        const path=u.pathname==='/'?'/index.html':u.pathname;
+        const path=['/','/index.html'].includes(u.pathname)?'/home.html':['/lab','/lab/','/sky','/sky/'].includes(u.pathname)?'/index.html':u.pathname;
         const asset=ASSETS[path];
         if(!asset)return json({error:'Não encontrado'},404);
-        return new Response(asset.body,{headers:{'content-type':asset.type,'cache-control':path.endsWith('.json')?'public,max-age=300':'public,max-age=600','x-content-type-options':'nosniff','referrer-policy':'strict-origin-when-cross-origin'}});
+        return new Response(asset.binary?Uint8Array.from(atob(asset.body),c=>c.charCodeAt(0)):asset.body,{headers:{'content-type':asset.type,'cache-control':path.endsWith('.json')?'public,max-age=300':'public,max-age=600','x-content-type-options':'nosniff','referrer-policy':'strict-origin-when-cross-origin'}});
       }
       const key=new Request(upstream.toString());
       // Some managed Worker runtimes prohibit Cache API access. Caching must

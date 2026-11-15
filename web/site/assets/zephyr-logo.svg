@@ -1,0 +1,49 @@
+<svg id="zephyrLogo" viewBox="0 0 1100 620" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="zephyrLogoTitle" style="display:block;width:100%;height:auto">
+                <title id="zephyrLogoTitle">ZEPHYR: satélite branco sobre o horizonte, com feixe vermelho</title>
+                <defs>
+                    <linearGradient id="zephyrBeam" x1="963" y1="406" x2="792" y2="554" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#ff1424"/>
+                        <stop offset=".42" stop-color="#d41421"/>
+                        <stop offset="1" stop-color="#d41421" stop-opacity="0"/>
+                    </linearGradient>
+                </defs>
+                <g transform="translate(-220 -180)">
+                    <path d="M405 627C404 449 575 280 784 280C842 280 904 299 938 321C880 298 832 290 781 291C586 283 429 451 405 627Z" fill="#fff"/>
+                    <path d="M1022 398C1088 458 1119 556 1127 627C1112 540 1071 461 1022 398Z" fill="#fff"/>
+                    <path d="M452 625C621 503 884 500 1083 627C895 515 671 513 452 625Z" fill="#fff"/>
+                    <path d="M950 401L972 413L907 537C849 520 800 516 751 522Z" fill="url(#zephyrBeam)"/>
+                    <g fill="#fff">
+                        <path d="M664 366C660 400 657 403 622 409C657 414 660 419 664 454C668 419 671 414 706 409C671 403 668 400 664 366Z"/>
+                        <path d="M769 370C767 376 765 377 760 378C765 380 767 381 769 387C771 381 773 380 778 378C773 377 771 376 769 370Z"/>
+                        <path d="M723 465C721 470 719 472 715 473C719 475 721 477 723 481C725 477 727 475 731 473C727 472 725 470 723 465Z"/>
+                        <path d="M1013 487C1011 496 1009 498 1003 500C1009 502 1011 504 1013 513C1015 504 1017 502 1023 500C1017 498 1015 496 1013 487Z"/>
+                        <path d="M615 490L620 495L615 501L610 495Z"/>
+                        <path d="M570 445L574 450L570 454L566 450Z"/>
+                        <circle cx="518" cy="487" r="3"/>
+                        <circle cx="819" cy="339" r="3.5"/>
+                        <circle cx="854" cy="408" r="3"/>
+                    </g>
+                    <g fill="#fff" stroke="#fff" stroke-linejoin="round">
+                        <path d="M875 202L972 265Q976 268 973 272L948 309Q946 313 942 310L845 249Q842 247 845 243L872 203Q873 201 875 202Z"/>
+                        <path d="M1090 341L1186 402Q1191 405 1188 409L1161 449Q1159 453 1155 450L1058 388Z"/>
+                    </g>
+                    <g stroke="#080808" stroke-width="3" fill="none">
+                        <path d="M858 223L961 290M907 220L875 269M943 243L910 292"/>
+                        <path d="M1075 364L1176 429M1123 362L1091 412M1158 384L1126 435"/>
+                    </g>
+                    <g stroke="#fff" stroke-width="6" fill="none">
+                        <path d="M959 290L978 303M1051 349L1073 363"/>
+                    </g>
+                    <path d="M977 278C994 294 1051 327 1082 331L1017 381L963 347Z" fill="#fff"/>
+                    <ellipse cx="1032" cy="302" rx="63" ry="25" transform="rotate(29 1032 302)" fill="#030408" stroke="#fff" stroke-width="9"/>
+                    <path d="M955 360L1007 391Q1010 393 1007 397L998 410Q996 413 992 410L946 381Q943 379 946 375Z" fill="#fff"/>
+                    <g fill="none" stroke="#fff" stroke-width="15" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M267 672H376L266 753H376"/>
+                        <path d="M553 672H473Q452 672 452 693V732Q452 753 473 753H553M452 712H550"/>
+                        <path d="M638 753V714H714Q746 714 746 693Q746 672 714 672H638"/>
+                        <path d="M815 672V753M919 672V753M815 714H919"/>
+                        <path d="M986 672L1040 718L1096 672M1040 718V753"/>
+                        <path d="M1164 672H1245Q1278 672 1278 694Q1278 715 1245 715H1164V753M1236 715L1279 753"/>
+                    </g>
+                </g>
+            </svg>

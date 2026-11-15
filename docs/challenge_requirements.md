@@ -1,6 +1,6 @@
 # SPHEREx challenge: implemented and verified
 
-The main application is **`/lab`**, a coordinate-based sky explorer. It is the only web frontend: `/` and `/lab` open the same explorer. The older landing page and MPC web interface have been removed; native-pixel analysis remains available through the Python CLI.
+The main application is **`/lab`**, a coordinate-based sky explorer. The Zephyr home page is at `/` (`web/site`); the coordinate explorer is at `/lab` (`web/sky-explorer`). The obsolete MPC web interface has been removed; native-pixel analysis remains available through the Python CLI.
 
 ```bash
 uv sync

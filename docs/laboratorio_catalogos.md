@@ -1,4 +1,4 @@
-> Legacy UI references below describe the earlier prototype. The only current frontend is `web/sky-explorer`, served at `/` and `/lab`.
+> Legacy UI references below describe the earlier prototype. The home is `web/site` at `/`; the current laboratory is `web/sky-explorer` at `/lab`.
 
 # Preparar observações: MPC e amostras cruzadas
 

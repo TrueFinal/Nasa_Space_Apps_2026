@@ -1,0 +1,13 @@
+{
+  "name": "zephyr-local-home",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local Zephyr homepage assets, preserving the interactive reference design.",
+  "scripts": {
+    "build": "node scripts/build.cjs",
+    "check": "node scripts/check.cjs"
+  },
+  "devDependencies": {
+    "tailwindcss": "3.4.17"
+  }
+}

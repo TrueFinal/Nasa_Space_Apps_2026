@@ -1,4 +1,4 @@
-> The legacy web interface has been removed. Use the current sky explorer at `/` or `/lab`; native-pixel Python analysis commands remain available.
+> The legacy web interface has been removed. The home is at `/`; use the current sky explorer at `/lab`; native-pixel Python analysis commands remain available.
 
 # SPHEREx time player
 

@@ -262,7 +262,15 @@ def make_handler(state):
             if not self._local_request():
                 return self._send(403, {"error": "Origem não autorizada"})
             route = unquote(urlsplit(self.path).path)
-            if route in ("/", "/index.html", "/lab", "/lab/", "/sky", "/sky/", "/mpc", "/mpc/") or route.startswith("/sky-assets/"):
+            if route in ("/", "/index.html"):
+                return self._send(200, (ROOT / "web/site/index.html").read_bytes(), "text/html; charset=utf-8", home=True)
+            if route.startswith("/site-assets/"):
+                name = route.removeprefix("/site-assets/")
+                assets = {"home.css":"text/css", "theme.css":"text/css", "navigation.css":"text/css", "navigation.js":"text/javascript", "spherex-cutout.png":"image/png", "zephyr-logo.svg":"image/svg+xml", "manifest.json":"application/json"}
+                if name not in assets:
+                    return self._send(404, {"error":"Asset not found."})
+                return self._send(200, (ROOT / "web/site/assets" / name).read_bytes(), assets[name])
+            if route in ("/lab", "/lab/", "/sky", "/sky/", "/mpc", "/mpc/") or route.startswith("/sky-assets/"):
                 base = ROOT / "web/sky-explorer/worker"
                 name = route.removeprefix("/sky-assets/") if route.startswith("/sky-assets/") else "index.html"
                 allowed = {"index.html", "app.js", "astro.js", "catalogue.js", "style.css", "config.json", "gifenc.js", "gifenc.LICENSE.txt", "help.js", "zephyr-logo.svg"}

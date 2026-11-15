@@ -226,14 +226,16 @@ def test_local_api_exposes_report_not_arbitrary_files(fixture, tmp_path):
     try:
         with urllib.request.urlopen(base + "/api/report") as r:
             assert json.load(r)["synthetic"]
-        for route in ('/', '/lab', '/mpc'):
+        for route in ('/lab', '/mpc'):
             with urllib.request.urlopen(base + route) as r:
                 page = r.read()
                 assert b'id="ra"' in page and b'/sky-assets/app.js' in page
                 assert "script-src 'self' https://cdn.jsdelivr.net" in r.headers["Content-Security-Policy"]
+        with urllib.request.urlopen(base + '/') as r:
+            assert b'spherex-cutout.png' in r.read()
         with urllib.request.urlopen(base + '/sky-assets/help.js') as r:
             assert b'export function installHelp' in r.read()
-        for route in ('/plate.mjs', '/inferno.mjs', '/site-assets/home.css'):
+        for route in ('/plate.mjs', '/inferno.mjs'):
             with pytest.raises(urllib.error.HTTPError) as error:
                 urllib.request.urlopen(base + route)
             assert error.value.code == 404
