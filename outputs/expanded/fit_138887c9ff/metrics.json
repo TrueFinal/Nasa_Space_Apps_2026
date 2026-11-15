@@ -1,0 +1,39 @@
+{
+  "status": "complete",
+  "fit_seconds": 0.22000051300710766,
+  "n_train": 21435,
+  "n_validation": 5177,
+  "n_test": 8239,
+  "roc_auc": 0.9984893656416279,
+  "average_precision": 0.997455933231544,
+  "precision": 0.977424023154848,
+  "recall": 0.989162272993556,
+  "f1": 0.9832581161741156,
+  "confusion_matrix": [
+    [
+      4747,
+      78
+    ],
+    [
+      37,
+      3377
+    ]
+  ],
+  "boosting_rounds": 197,
+  "feature_importance": {
+    "abs_scorr": 511.5299377441406,
+    "d_peak": 12.614542961120605,
+    "d_min": 26.2828426361084,
+    "local_rms": 28.751977920532227,
+    "positive_fraction": 10.9578218460083,
+    "negative_positive_ratio": 74.1620864868164,
+    "psf_correlation": 21.896669387817383,
+    "psf_residual": 12.568641662597656,
+    "width": 12.864572525024414,
+    "ellipticity": 10.716734886169434,
+    "asymmetry": 7.11708927154541,
+    "concentration": 131.38087463378906,
+    "mask_distance": 30.866374969482422
+  },
+  "evaluation_domain": "Observed SPHEREx/Gaia sources vs contamination; independent sky fields"
+}

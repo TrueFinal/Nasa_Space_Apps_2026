@@ -1,3 +1,6 @@
+> The current explorer remains at `/lab`; the complementary native FITS/MPC laboratory is available at `/native-lab`, using the same server.
+
+
 # Preparar observações: MPC e amostras cruzadas
 
 O laboratório foi incorporado à branch `dessinha` preservando o coletor, notebooks,
@@ -13,7 +16,7 @@ python -m venv .venv
 .\start-infrared.ps1
 ```
 
-Abra **http://127.0.0.1:8766/lab**. Para escolher outra porta:
+Abra **http://127.0.0.1:8766/native-lab**. Para escolher outra porta:
 `./start-infrared.ps1 -Port 8771`. O servidor escuta apenas em `127.0.0.1` e deve
 permanecer aberto enquanto o laboratório estiver em uso. As calibrações D1–D6 são
 armazenadas em `data/infrared/calibrations` (aproximadamente 200 MB no total).
@@ -97,7 +100,7 @@ Falhas não geram dados sintéticos nem preenchem canais sem cobertura.
   [Máscara infravermelha](infrared_mask.md) e [Mosaico estético](infrared_color.md).
 - `GET /api/channels`: tabela oficial de 102 canais.
 - `GET /api/mpc?object=1766`: consulta de identidade e possíveis escolhas.
-- `POST /api/run`: aceita adicionalmente `channel_id` (0–102), `sample_id` e
+- `POST /api/native-run`: aceita adicionalmente `channel_id` (0–102), `sample_id` e
   `include_context` (booleano). Uma amostra inexistente é rejeitada antes da aquisição.
 
 CLI: `scripts/infrared_lab.py archive --channel-id 65 --max-exposures 4`.
@@ -109,8 +112,8 @@ catálogos já adquiridos, enquanto sua ausência produz associações externas 
 ```powershell
 .venv\Scripts\python.exe -m pip install -r requirements-dev.txt -r requirements-infrared.txt
 .venv\Scripts\python.exe -m pytest -q
-node --test web/infrared-mask/app.test.mjs web/infrared-mask/plate.test.mjs
-npm.cmd run check --prefix web/site
+npm --prefix web/sky-explorer test
+npm --prefix web/sky-explorer run build
 ```
 
 Em 15/11/2026, MPC resolveu 1766 como Slipher. Uma consulta espacial de teste retornou

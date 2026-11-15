@@ -212,23 +212,12 @@ def test_no_output_overwrites_original(fixture):
         run_manifest(fixture, fixture.parent)
 
 
-def test_local_api_exposes_report_not_arbitrary_files(fixture, tmp_path, monkeypatch):
+def test_local_api_exposes_report_not_arbitrary_files(fixture, tmp_path):
     output = tmp_path / "out"
     report = run_manifest(fixture, output)
     from spherex_tracking.infrared_color import render_color_mosaic
 
     render_color_mosaic(report, output)
-    from spherex_tracking import infrared_catalogs
-
-    monkeypatch.setattr(
-        infrared_catalogs,
-        "resolve_mpc",
-        lambda name, cache: {
-            "status": "resolved",
-            "query": name,
-            "items": [{"identifier": "1766"}],
-        },
-    )
     state = LabState(output)
     server = LocalServer(("127.0.0.1", 0), make_handler(state))
     thread = threading.Thread(target=server.serve_forever, daemon=True)
@@ -237,28 +226,19 @@ def test_local_api_exposes_report_not_arbitrary_files(fixture, tmp_path, monkeyp
     try:
         with urllib.request.urlopen(base + "/api/report") as r:
             assert json.load(r)["synthetic"]
-        with urllib.request.urlopen(base + "/api/channels") as r:
-            assert len(json.load(r)["channels"]) == 102
-        with urllib.request.urlopen(base + "/api/mpc?object=Slipher") as r:
-            assert json.load(r)["items"][0]["identifier"] == "1766"
-        with urllib.request.urlopen(base + "/files/joined_samples.json") as r:
-            assert json.load(r)["samples"]
-        with urllib.request.urlopen(base + "/plate.mjs") as r:
-            assert r.headers["Content-Type"] == "text/javascript; charset=utf-8"
-            assert b"export function cropFor" in r.read()
-        with urllib.request.urlopen(base + "/") as r:
-            assert b"spherex-canvas" in r.read()
-            assert "script-src 'self' 'unsafe-inline'" in r.headers["Content-Security-Policy"]
-        with urllib.request.urlopen(base + "/lab") as r:
-            assert b'id="detector-view"' in r.read()
-            assert "script-src 'self';" in r.headers["Content-Security-Policy"]
-        for asset, kind in (
-            ("theme.css", "text/css"),
-            ("zephyr-logo.svg", "image/svg+xml"),
-            ("three.min.js", "text/javascript"),
-        ):
-            with urllib.request.urlopen(base + "/site-assets/" + asset) as r:
-                assert r.headers["Content-Type"].startswith(kind)
+        for route in ('/lab', '/mpc'):
+            with urllib.request.urlopen(base + route) as r:
+                page = r.read()
+                assert b'id="ra"' in page and b'/sky-assets/app.js' in page
+                assert "script-src 'self' https://cdn.jsdelivr.net" in r.headers["Content-Security-Policy"]
+        with urllib.request.urlopen(base + '/') as r:
+            assert b'spherex-cutout.png' in r.read()
+        with urllib.request.urlopen(base + '/sky-assets/help.js') as r:
+            assert b'export function installHelp' in r.read()
+        for route in ('/plate.mjs', '/inferno.mjs'):
+            with pytest.raises(urllib.error.HTTPError) as error:
+                urllib.request.urlopen(base + route)
+            assert error.value.code == 404
         with urllib.request.urlopen(base + "/files/exposure_00.fits") as r:
             assert r.headers["Content-Type"] == "application/fits"
         for name in ("color_mosaic.png", "color_mosaic_rgba.png"):

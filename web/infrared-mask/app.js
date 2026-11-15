@@ -315,7 +315,7 @@ $('query').addEventListener('submit', async e => {
     const params = Object.fromEntries(new FormData(e.currentTarget));
     for (const k of ['low_um', 'high_um', 'max_exposures', 'detector', 'channel_id']) params[k] = Number(params[k]);
     params.include_context = $('include-context').checked;
-    const { job } = await api('/api/run', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(params) });
+    const { job } = await api('/api/native-run', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(params) });
     for (;;) { const state = await api(`/api/jobs/${job}`); status(state.message, state.status === 'error'); if (state.status === 'error') throw new Error(state.message); if (state.status === 'complete') break; await new Promise(resolve => setTimeout(resolve, 1500)); }
     if (await load()) status('Análise concluída. Confira cobertura, flags e astrometria antes de interpretar as medidas.');
   } catch (err) { status(err.message, true); } finally { $('run').disabled = false; }

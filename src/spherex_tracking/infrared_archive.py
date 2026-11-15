@@ -87,18 +87,7 @@ def download(url, path, max_bytes=64 * 1024 * 1024):
 
 
 def validate_request(params):
-    allowed = {
-        "object",
-        "start",
-        "end",
-        "low_um",
-        "high_um",
-        "max_exposures",
-        "detector",
-        "channel_id",
-        "sample_id",
-        "include_context",
-    }
+    allowed = {"object", "start", "end", "low_um", "high_um", "max_exposures", "detector", "channel_id", "sample_id", "include_context"}
     if set(params) - allowed:
         raise ValueError("Parâmetro de consulta desconhecido.")
     name = str(params.get("object", "1766")).strip()
@@ -116,22 +105,17 @@ def validate_request(params):
         raise ValueError("Detector deve ser inteiro.")
     channel_id = float(params.get("channel_id", 0))
     if not channel_id.is_integer() or not 0 <= channel_id <= 102:
-        raise ValueError("Selecione um canal SPHEREx de 1 a 102, ou todos (0).")
+        raise ValueError("Select a SPHEREx channel from 1 to 102, or all (0).")
     if not isinstance(params.get("include_context", True), bool):
-        raise ValueError("include_context deve ser booleano.")
+        raise ValueError("include_context must be boolean.")
     sample_id = params.get("sample_id", "")
     if not isinstance(sample_id, str) or len(sample_id) > 160:
-        raise ValueError("Amostra inválida.")
+        raise ValueError("Invalid sample selection.")
     low, high = float(params.get("low_um", 0.75)), float(params.get("high_um", 5))
     if channel_id:
         from .infrared_catalogs import channel_grid
-
         channel = channel_grid()["channels"][int(channel_id) - 1]
-        low, high, detector = (
-            max(0.75, channel["low_um"]),
-            min(5.0, channel["high_um"]),
-            channel["detector"],
-        )
+        low, high, detector = max(0.75, channel["low_um"]), min(5.0, channel["high_um"]), channel["detector"]
     cfg = MaskConfig(
         low_um=low,
         high_um=high,
@@ -142,47 +126,25 @@ def validate_request(params):
 
 
 def coordinate_candidates(sample, start, end, cfg, cache):
-    """Find real image footprints at a selected sample; positions remain fixed sky."""
+    """Find real image footprints at a selected fixed ICRS sample position."""
     from astropy.time import Time
-
     rows, queries = [], []
     for collection in ("spherex_dr1", "spherex_qr3"):
-        url = (
-            IRSA
-            + "SIA?"
-            + urllib.parse.urlencode(
-                {
-                    "POS": f"CIRCLE {sample['ra']:.8f} {sample['dec']:.8f} 0.001",
-                    "COLLECTION": collection,
-                    "TIME": f"{Time(start.isoformat()).mjd} {Time(end.isoformat()).mjd}",
-                    "BAND": f"{cfg.low_um * 1e-6} {cfg.high_um * 1e-6}",
-                    "MAXREC": "145",
-                }
-            )
-        )
+        url = IRSA + "SIA?" + urllib.parse.urlencode({
+            "POS": f"CIRCLE {sample['ra']:.8f} {sample['dec']:.8f} 0.001",
+            "COLLECTION": collection,
+            "TIME": f"{Time(start.isoformat()).mjd} {Time(end.isoformat()).mjd}",
+            "BAND": f"{cfg.low_um * 1e-6} {cfg.high_um * 1e-6}", "MAXREC": "145"})
         path = download(url, cache / f"{collection}.xml", 8 * 1024 * 1024)
         table = Table.read(path, format="votable", use_names_over_ids=True)
-        queries.append(
-            {"url": url, "sha256": sha256(path), "possibly_truncated": len(table) >= 145}
-        )
+        queries.append({"url": url, "sha256": sha256(path), "possibly_truncated": len(table) >= 145})
         for row in table:
             match = re.fullmatch(r"SPHEREx-D([1-6])", str(row["energy_bandpassname"]))
-            if not match:
-                continue
+            if not match: continue
             mid = (float(row["t_min"]) + float(row["t_max"])) / 2
-            rows.append(
-                {
-                    "observationid": str(row["obs_id"]),
-                    "productid": "D" + match[1],
-                    "ra_obj": sample["ra"],
-                    "dec_obj": sample["dec"],
-                    "uri": str(row["access_url"]),
-                    "mjd_start": mid,
-                    "mjd_end": mid,
-                    "geo_dist": None,
-                    "match": 1,
-                }
-            )
+            rows.append({"observationid": str(row["obs_id"]), "productid": "D" + match[1],
+                         "ra_obj": sample["ra"], "dec_obj": sample["dec"], "uri": str(row["access_url"]),
+                         "mjd_start": mid, "mjd_end": mid, "geo_dist": None, "match": 1})
     return rows, queries
 
 
@@ -380,13 +342,10 @@ def prepare_archive(
     cache = Path(cache_dir).resolve()
     cache.mkdir(parents=True, exist_ok=True)
     from .infrared_catalogs import fetch_wise_context, resolve_mpc
-
-    progress("Validando identificação na API do Minor Planet Center")
+    progress("Validating object with the Minor Planet Center")
     identity = resolve_mpc(name, cache.parent / "mpc")
     if identity["status"] != "resolved":
-        raise ValueError(
-            "MPC: objeto não encontrado ou ambíguo; use Buscar no MPC e selecione um resultado."
-        )
+        raise ValueError("MPC object not found or ambiguous; search and select an official result.")
     name = identity["items"][0]["identifier"]
     query = {
         "catalog": "spherex",
@@ -408,12 +367,8 @@ def prepare_archive(
     else:
         table_path = download(url, cache / "most.tbl", 10 * 1024 * 1024)
         image_queries = []
-        try:
-            table = Table.read(table_path, format="ascii.ipac")
-        except Exception as exc:
-            raise ValueError(
-                "MOST não retornou tabela de exposições. Verifique objeto e datas."
-            ) from exc
+        try: table = Table.read(table_path, format="ascii.ipac")
+        except Exception as exc: raise ValueError("MOST returned no exposure table. Check object and dates.") from exc
     candidates = balanced_candidates(
         [r for r in table if int(r["match"]) == 1], requested_detectors
     )
@@ -421,7 +376,7 @@ def prepare_archive(
     for row in candidates[:144]:
         obs = str(row["observationid"])
         if not re.fullmatch(r"[A-Za-z0-9_.-]+", obs):
-            raise ValueError("Identificador de observação inválido no arquivo.")
+            raise ValueError("Invalid archive observation identifier.")
         detector = int(str(row["productid"])[1:])
         key = (obs, detector)
         if key in seen:
@@ -495,16 +450,9 @@ def prepare_archive(
             continue
         if params.get("channel_id"):
             from .infrared_catalogs import channel_for
-
-            matched_channel = channel_for(actual, detector)
-            if not matched_channel or matched_channel["id"] != int(params["channel_id"]):
-                rejected.append(
-                    {
-                        "observation": obs,
-                        "detector": detector,
-                        "reason": "calibrated_target_outside_selected_channel",
-                    }
-                )
+            matched = channel_for(actual, detector)
+            if not matched or matched["id"] != int(params["channel_id"]):
+                rejected.append({"observation": obs, "detector": detector, "reason": "calibrated_target_outside_selected_channel"})
                 continue
         selected.append(
             {
@@ -515,18 +463,12 @@ def prepare_archive(
                 "target": {
                     "ra": ra,
                     "dec": dec,
-                    "mjd": mid
-                    if coordinate_sample
-                    else (float(row["mjd_start"]) + float(row["mjd_end"])) / 2,
-                    "provider": "Selected sample / fixed ICRS coordinate"
-                    if coordinate_sample
-                    else "IRSA MOST / MPC orbit input"
+                    "mjd": mid if coordinate_sample else (float(row["mjd_start"]) + float(row["mjd_end"])) / 2,
+                    "provider": "Selected sample / fixed ICRS coordinate" if coordinate_sample else "IRSA MOST / MPC orbit input"
                     if mpc_orbit_line
                     else "IRSA MOST / name resolver",
                     "frame": "ICRS",
-                    "position_status": "fixed_sky_not_moving_ephemeris"
-                    if coordinate_sample
-                    else "observer_not_verified",
+                    "position_status": "fixed_sky_not_moving_ephemeris" if coordinate_sample else "observer_not_verified",
                     "geo_dist_au": None if coordinate_sample else float(row["geo_dist"]),
                     "time_offset_s": 86400
                     * ((float(row["mjd_start"]) + float(row["mjd_end"])) / 2 - mid),
@@ -537,6 +479,17 @@ def prepare_archive(
             break
     if not selected:
         write_json(cache / "selection.json", {"rejected": rejected, "candidates": len(candidates)})
+        if not candidates:
+            raise ValueError(
+                f"MOST returned no matching SPHEREx exposures for {name} from "
+                f"{start.isoformat()} to {end.isoformat()} in the selected detectors. "
+                "Try another date interval or open the tested example."
+            )
+        if rejected and all(r["reason"] == "download_failed" for r in rejected):
+            raise ValueError(
+                f"Found {len(candidates)} candidate exposures, but the IRSA image downloads failed. "
+                "Please retry later or open a saved observation sequence."
+            )
         raise ValueError(
             "Nenhuma exposição coloca o alvo na faixa calibrada. "
             "Altere datas/alvo; não foi substituída por outra banda."
@@ -544,6 +497,7 @@ def prepare_archive(
     progress("Consultando Gaia DR3 para sinalizar contaminação")
     import astropy.units as u
     from astropy.coordinates import SkyCoord
+    from concurrent.futures import ThreadPoolExecutor
 
     gaia_by_id, cones, cone_status = {}, [], []
     for i, entry in enumerate(selected):
@@ -552,10 +506,14 @@ def prepare_archive(
         if any(coord.separation(center).deg < 0.005 for center in cones):
             continue
         cones.append(coord)
-        stars, status = fetch_gaia(target["ra"], target["dec"], cache / f"gaia_{i}")
-        cone_status.append(status)
-        for star in stars:
-            gaia_by_id[star["source_id"]] = star
+    def fetch_stars(item):
+        i, center = item
+        return fetch_gaia(center.ra.deg, center.dec.deg, cache / f"gaia_{i}")
+    with ThreadPoolExecutor(max_workers=3) as pool:
+        for stars, status in pool.map(fetch_stars, enumerate(cones)):
+            cone_status.append(status)
+            for star in stars:
+                gaia_by_id[star["source_id"]] = star
     gaia = list(gaia_by_id.values())
     gaia_status = {
         "status": "loaded"
@@ -566,31 +524,20 @@ def prepare_archive(
     }
     context = {}
     if params.get("include_context", True):
-        progress("Concatenando contexto AllWISE / NEOWISE nas coordenadas SPHEREx")
+        progress("Joining AllWISE / NEOWISE context at SPHEREx positions")
         from concurrent.futures import ThreadPoolExecutor
-
         def fetch_context(item):
             i, center = item
             return fetch_wise_context(center.ra.deg, center.dec.deg, cache / f"wise_{i}")
-
         with ThreadPoolExecutor(max_workers=3) as pool:
             for fetched in pool.map(fetch_context, enumerate(cones)):
                 for key, value in fetched.items():
                     group = context.setdefault(key, {"status": "loaded", "rows": [], "queries": []})
-                    group["queries"].append({k: v for k, v in value.items() if k != "rows"})
-                    if value["status"] != "loaded":
-                        group["status"] = "incomplete"
+                    group["queries"].append({k:v for k,v in value.items() if k != "rows"})
+                    if value["status"] != "loaded": group["status"] = "incomplete"
                     group["rows"].extend(value["rows"])
         for group in context.values():
-            group["rows"] = list(
-                {
-                    r.get("source_id")
-                    or r.get("designation")
-                    or r.get("base_url")
-                    or json.dumps(r, sort_keys=True): r
-                    for r in group["rows"]
-                }.values()
-            )
+            group["rows"] = list({r.get("source_id") or r.get("designation") or r.get("base_url") or json.dumps(r, sort_keys=True): r for r in group["rows"]}.values())
     manifest = {
         "object": name,
         "synthetic": False,
@@ -603,10 +550,7 @@ def prepare_archive(
         "gaia": gaia,
         "gaia_status": gaia_status,
         "context_catalogues": context,
-        "request_selection": {
-            "channel_id": int(params.get("channel_id", 0)),
-            "sample": coordinate_sample,
-        },
+        "request_selection": {"channel_id": int(params.get("channel_id", 0)), "sample": coordinate_sample},
         "exposures": selected,
         "provenance": {
             "images": "SPHEREx IRSA",

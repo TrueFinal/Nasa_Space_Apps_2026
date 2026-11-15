@@ -1,0 +1,67 @@
+{
+  "status": "complete",
+  "fit_seconds": 0.02895486500347033,
+  "n_train": 444,
+  "n_validation": 148,
+  "n_test": 128,
+  "roc_auc": 0.9959935897435898,
+  "average_precision": 0.9792612839781453,
+  "precision": 0.8275862068965517,
+  "recall": 1.0,
+  "f1": 0.9056603773584906,
+  "confusion_matrix": [
+    [
+      99,
+      5
+    ],
+    [
+      0,
+      24
+    ]
+  ],
+  "boosting_rounds": 52,
+  "feature_importance": {
+    "abs_scorr": 27.109107971191406,
+    "d_peak": 2.4791641235351562,
+    "d_min": 2.2493793964385986,
+    "local_rms": 2.355931043624878,
+    "positive_fraction": 1.3393676280975342,
+    "negative_positive_ratio": 5.564652442932129,
+    "psf_correlation": 1.7179360389709473,
+    "psf_residual": 1.8274158239364624,
+    "width": 4.747480869293213,
+    "ellipticity": 1.1002922058105469,
+    "asymmetry": 0.8865201473236084,
+    "concentration": 26.508453369140625
+  },
+  "evaluation_domain": "Observed SPHEREx/Gaia sources versus flagged instrumental contamination",
+  "model_path": "outputs/observed/fit_f04278aebd/model.ubj",
+  "wall_seconds": 1.7148392219969537,
+  "budget_seconds": 120.0,
+  "model_used": true,
+  "split": {
+    "train_groups": [
+      11,
+      12,
+      6,
+      1,
+      2,
+      0,
+      9,
+      14,
+      8,
+      13
+    ],
+    "validation_groups": [
+      3,
+      5,
+      15
+    ],
+    "test_groups": [
+      7,
+      4,
+      10
+    ],
+    "strategy": "Disjoint Gaia IDs and detector coordinates; flags and IDs excluded from features"
+  }
+}

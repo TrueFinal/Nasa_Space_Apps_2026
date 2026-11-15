@@ -1,31 +1,27 @@
 {
-  "threeVersion": "0.128.0",
   "tailwindVersion": "3.4.17",
   "files": {
-    "three.min.js": {
-      "upstream": "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js",
-      "sha256": "9274bbcec8d96168626c732b5d31c775aa8cfb7eaa0599bec0c175908a2c1ce2"
-    },
-    "OrbitControls.js": {
-      "upstream": "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js",
-      "sha256": "02bb4ade710f3e607329e37a21f098bc3ac70eb6e33daf8a65e79f4db785e7b2"
-    },
-    "three-LICENSE.txt": {
-      "upstream": "https://github.com/mrdoob/three.js/blob/r128/LICENSE",
-      "sha256": "7dddf7c5b8fd10ee654db8857d75d104b5557889aa5a91fc4ca545ea7c07062f"
-    },
     "tailwind-LICENSE.txt": {
       "upstream": "https://github.com/tailwindlabs/tailwindcss/blob/v3.4.17/LICENSE",
       "sha256": "60e0b68c0f35c078eef3a5d29419d0b03ff84ec1df9c3f9d6e39a519a5ae7985"
     },
     "home.css": {
-      "sha256": "462e44c7a8b61ec84c75331d1d33a051d256c20f5ab4c65ea68cc380119ea36a"
+      "sha256": "5a7cb41f4094f3b9a64eeb41e3145fec640e3375f837d6b9ec1ae24300a27a9c"
     },
     "theme.css": {
       "sha256": "93826eac18f68a60a49531109d1507e888225d9db0514da0e1b35132f5d1da17"
     },
     "zephyr-logo.svg": {
       "sha256": "74c8109e7304f0294528c57e7806718829b2c26897e697108849b20c8b229fd1"
+    },
+    "spherex-cutout.png": {
+      "sha256": "11ce5e473cd05ef8f80c691a61cdde04e3d22a48e3261d91b760d38caae5ee4e"
+    },
+    "navigation.css": {
+      "sha256": "864ab17aec72213105f129a2bbf555bcdac07abd9522fd7c5e6efff00b02d823"
+    },
+    "navigation.js": {
+      "sha256": "042a79e809bfe7d88499cf72bce6ba50616d74723067915bf850b693f260b23c"
     }
   }
 }

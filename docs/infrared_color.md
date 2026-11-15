@@ -1,3 +1,6 @@
+> The current explorer remains at `/lab`; the complementary native FITS/MPC laboratory is available at `/native-lab`, using the same server.
+
+
 # Mosaico infravermelho em falsas cores
 
 A implementação usa o conceito de cubo `(x, y, λ)` do
@@ -76,8 +79,8 @@ nenhum canal tem cobertura e metadados com SHA-256, canais, limites e cobertura.
 
 ```powershell
 $env:PYTHONPATH='src'
-.venv\Scripts\python.exe -m pytest tests/test_infrared_color.py tests/test_infrared_display.py tests/test_infrared_mask.py tests/test_infrared_bands.py -q
-node --test web/infrared-mask/app.test.mjs web/infrared-mask/plate.test.mjs
+.venv\Scripts\python.exe -m pytest tests/test_infrared_color.py tests/test_infrared_display.py tests/test_infrared_mask.py tests/test_infrared_bands.py tests/test_tracking.py tests/test_differencing.py -q
+npm --prefix web/sky-explorer test
 ```
 
 Os testes verificam alinhamento de WCS distintos, fronteiras espectrais, lacunas,

@@ -78,9 +78,9 @@ def test_channel_grid_selection_uses_official_edges_and_preserves_102_slots():
     assert cfg.detector == 6
     assert cfg.low_um == pytest.approx(grid["channels"][-1]["low_um"])
     for bad in (-1, 103, 1.5):
-        with pytest.raises(ValueError, match="canal"):
+        with pytest.raises(ValueError, match="channel"):
             archive.validate_request({"channel_id": bad})
-    with pytest.raises(ValueError, match="booleano"):
+    with pytest.raises(ValueError, match="boolean"):
         archive.validate_request({"include_context": "true"})
 
 
@@ -209,7 +209,7 @@ def test_sample_requests_use_only_trusted_report_coordinates(tmp_path, monkeypat
     monkeypatch.setattr(state.executor, "submit", lambda *args: calls.append(args))
     sample = report["dataset_join"]["samples"][0]
     try:
-        with pytest.raises(ValueError, match="amostra"):
+        with pytest.raises(ValueError, match="Sample"):
             state.submit({"sample_id": "forged", "detector": 4, "low_um": 3.3, "high_um": 3.5})
         state.submit({"sample_id": sample["id"], "detector": 4, "low_um": 3.3, "high_um": 3.5})
         assert calls[0][3]["ra"] == sample["ra"]
@@ -218,3 +218,16 @@ def test_sample_requests_use_only_trusted_report_coordinates(tmp_path, monkeypat
             archive.validate_request({"sample_id": sample["id"], "ra": 1})
     finally:
         state.executor.shutdown()
+
+
+def test_no_archive_matches_reports_requested_dates_not_calibration_failure(tmp_path, monkeypatch):
+    table = Table({'match': [0], 'observationid': ['none'], 'productid': ['D1']})
+    path = tmp_path / 'most.tbl'
+    table.write(path, format='ascii.ipac')
+    monkeypatch.setattr(archive, 'resolve_calibration', lambda *args: tmp_path / 'cal.fits')
+    monkeypatch.setattr(archive, 'download', lambda *args: path)
+    monkeypatch.setattr('spherex_tracking.infrared_catalogs.resolve_mpc',
+        lambda *args: {'status':'resolved', 'items':[{'identifier':'1766'}]})
+    with pytest.raises(ValueError, match='MOST returned no matching SPHEREx exposures for 1766 from 2026-04-20 to 2026-04-25'):
+        archive.prepare_archive({'object':'1766','start':'2026-04-20','end':'2026-04-25'},
+                                tmp_path/'cache', tmp_path, 'sky')

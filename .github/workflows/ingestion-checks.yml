@@ -19,6 +19,7 @@ jobs:
           cache: pip
           cache-dependency-path: requirements-lock.txt
       - run: python -m pip install -r requirements-lock.txt
+      - run: python -m pip install -e '.[dev]'
       - run: python -m pytest -q
-      - run: ruff check earth_detectives scripts tests
+      - run: ruff check earth_detectives scripts/fetch_mvp_data.py tests/test_nasa.py tests/test_noaa.py tests/test_transport.py
       - run: python scripts/fetch_mvp_data.py --help

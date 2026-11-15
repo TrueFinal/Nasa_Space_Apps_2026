@@ -11,9 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Three.js + OrbitControls -->
-    <script src="/site-assets/three.min.js"></script>
-    <script src="/site-assets/OrbitControls.js"></script>
+
 
     <style>
         * {
@@ -97,9 +95,6 @@
         .hero-status { display: flex; align-items: center; gap: 9px; font-size: 9px; letter-spacing: .18em; color: #95a6b6; margin-top: 26px; text-transform: uppercase; }
         .status-light { width: 5px; height: 5px; border-radius: 50%; background: #8dcbed; box-shadow: 0 0 12px #8dcbed88; }
         .earth-horizon-curve { height: 190px; bottom: -80px; left: -20%; width: 150%; transform: rotate(9deg); background: radial-gradient(ellipse at 50% 0, rgba(48,83,112,.12), transparent 68%); box-shadow: 0 -3px 18px rgba(107,163,200,.2), 0 -14px 55px rgba(51,94,130,.12); mask-image: linear-gradient(90deg, transparent, #000 25%, #000 72%, transparent); }
-        .instrument-tools { display: flex; justify-content: flex-end; gap: 9px; margin-top: 4px; position: relative; z-index: 30; }
-        .instrument-tools button { font-size: 10px; border: 1px solid #8fbbd538; background: #0a1721b3; padding: 8px 12px; border-radius: 4px; color: #b3c5d3; }
-        .instrument-tools button:hover { border-color: #94d8fc; color: #fff; }
         .model-status { font-size: 10px; line-height: 1.8; color: #8aa0b0; text-align: center; margin-top: 8px; }
         .pillar-col { background: transparent; border: 0; color: inherit; font: inherit; }
         .pillar-col>div:first-child { width: 90px; height: 90px; margin-bottom: 12px; }
@@ -147,7 +142,6 @@
         .resource-links a:hover { color: #fff; }
         #modal-container { overflow-y: auto; }
         #modal-box { max-height: 85dvh; overflow-y: auto; }
-        @media(min-width:1024px) { #spherex-3d-wrapper { min-height: 500px; } }
         @media(max-width:767px) {
             header { padding: 20px!important; gap: 18px; flex-wrap: wrap; } header nav { gap: 20px!important; font-size: 11px!important; }
             #hero { padding: 45px 22px 110px; min-height: auto; } #hero h1 { font-size: 43px; } #hero p { font-size: 14px; }
@@ -159,11 +153,25 @@
             .mission-section { padding: 55px 22px; } .mission-heading { display: block; } .mission-heading>p { margin-top: 20px; }
             .mission-facts { gap: 15px; } .mission-facts strong { font-size: 23px; } .mission-facts>div { padding: 0 10px; } .mission-facts span { font-size: 9px; line-height: 1.7; }
             .data-explorer { grid-template-columns: 1fr; } .explorer-copy { padding: 24px; border-right: 0; border-bottom: 1px solid #82b5d022; } .explorer-controls { padding: 24px; }
-            .instrument-tools { justify-content: center; } .section-kicker { font-size: 10px; } .mission-heading h2 { font-size: 32px; }
-        }
+            }
         @media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto!important; } .animate-spin { animation:none!important; } }
+    
+        html,body{max-width:100%}
+        main,section,header,footer{min-width:0}
+        @media(max-width:600px){header.site-header{justify-content:center}header.site-header nav{width:100%;justify-content:center;flex-wrap:wrap;row-gap:12px}#hero h1{font-size:clamp(32px,9vw,43px)}#hero .max-w-\[560px\]{max-width:360px}footer{flex-wrap:wrap;gap:18px;padding-left:20px!important;padding-right:20px!important}.mission-facts{flex-wrap:wrap}.mission-facts>div{flex:1;min-width:0}.resource-links{gap:14px}#modal-box{width:calc(100vw - 24px);padding:24px}}
+    
+        #hero{min-height:calc(100svh - 110px);padding:clamp(28px,4vw,54px) clamp(20px,4vw,48px) 48px;overflow:hidden}
+        #hero>.grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(20px,4vw,60px);align-items:center}
+        #hero>.grid>div{grid-column:auto!important;max-width:none;min-width:0}
+        #hero>.grid>div:first-child{text-align:center;display:flex;flex-direction:column;align-items:center;margin-inline:auto}
+        #hero>.grid>div:first-child p{margin-inline:auto}
+        .hero-spacecraft{margin:0 auto;min-width:0;width:100%;display:flex;align-items:center;justify-content:center}
+        .hero-spacecraft img{width:100%;height:auto;max-height:510px;object-fit:contain;filter:drop-shadow(0 24px 40px #0008)}
+        .site-header{gap:20px;padding-top:12px!important;padding-bottom:12px!important}.site-header .site-brand{width:150px!important}.site-header nav{flex-wrap:wrap;justify-content:flex-end;row-gap:12px}
+        @media(max-width:899px){#hero>.grid{grid-template-columns:minmax(0,1fr)}#hero{min-height:calc(100svh - 90px);padding-bottom:36px}#hero h1{font-size:clamp(34px,7vw,54px)}.hero-spacecraft img{width:min(85%,420px);max-height:340px}.hero-spacecraft{margin-top:4px}.site-header{padding-top:16px!important;padding-bottom:16px!important}.site-header .site-brand{width:120px!important}.site-header nav{gap:16px!important}}
+        @media(max-width:599px){#hero{padding:22px 20px 30px}#hero>.grid{gap:16px}#hero h1{font-size:clamp(30px,9vw,42px)}#hero .space-y-6>:not([hidden])~:not([hidden]){margin-top:16px}#hero p{font-size:14px;line-height:1.65}.hero-spacecraft img{width:100%;max-width:330px;max-height:285px}#hero .flex.flex-wrap>a{flex:1 1 155px;justify-content:center;text-align:center;padding:12px}.planet-section{min-height:690px}.planet-art{width:520px;height:520px;right:-145px;bottom:-175px}.planet-copy{padding-top:42px}.planet-copy h2{font-size:30px}.mission-facts>div{padding:0 8px}.mission-facts strong{font-size:22px}.mission-facts span{font-size:9px}.data-explorer{width:100%;min-width:0}.explorer-controls{padding:20px}.explorer-label{flex-wrap:wrap;gap:10px}#modal-box{max-height:85dvh}.hero-spacecraft img{filter:drop-shadow(0 12px 20px #0006)}}
     </style>
-</head>
+<link rel="stylesheet" href="/site-assets/navigation.css"><script src="/site-assets/navigation.js" defer></script></head>
 <body class="site-home relative min-h-screen text-slate-100 selection:bg-brand-red selection:text-white">
 
     <!-- Starfield Background Canvas -->
@@ -173,9 +181,9 @@
 
     <!-- ================= NAVBAR ================= -->
     <header class="site-header relative z-40 w-full max-w-7xl mx-auto px-8 pt-8 pb-4 flex items-center justify-between">
-        <a href="#hero" class="site-brand block shrink-0 cursor-pointer" aria-label="ZEPHYR — início" style="width:clamp(112px,15vw,184px)">
+        <a href="#hero" class="site-brand block shrink-0 cursor-pointer" aria-label="ZEPHYR — home" style="width:clamp(112px,15vw,184px)">
             <svg id="zephyrLogo" viewBox="0 0 1100 620" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="zephyrLogoTitle" style="display:block;width:100%;height:auto">
-                <title id="zephyrLogoTitle">ZEPHYR: satélite branco sobre o horizonte, com feixe vermelho</title>
+                <title id="zephyrLogoTitle">ZEPHYR: white satellite over the horizon with a red beam</title>
                 <defs>
                     <linearGradient id="zephyrBeam" x1="963" y1="406" x2="792" y2="554" gradientUnits="userSpaceOnUse">
                         <stop stop-color="#ff1424"/>
@@ -226,14 +234,15 @@
         </a>
 
         <!-- Menu links -->
-        <nav aria-label="Main navigation" class="site-nav flex items-center gap-9 text-xs tracking-wider">
+        <button type="button" class="nav-toggle" aria-controls="main-navigation" aria-expanded="false" aria-label="Open navigation menu"><span></span><span></span><span></span></button>
+<nav id="main-navigation" aria-label="Main navigation" class="site-nav flex items-center gap-9 text-xs tracking-wider">
             <a href="#hero" aria-current="page" class="nav-active relative text-white font-medium pb-1.5 transition-colors">
                 Home
                 <!-- Active red line -->
                 <span class="absolute bottom-0 left-0 right-0 h-[2px] bg-brand-red"></span>
             </a>
             <a href="#mission" class="text-gray-300 hover:text-white transition-colors">SPHEREx</a>
-            <a href="/lab" class="text-gray-300 hover:text-white transition-colors" title="Laboratório Python local: imagens FITS, máscaras e medidas">Laboratório</a>
+            <a href="/lab" class="text-gray-300 hover:text-white transition-colors" title="Local Python laboratory: FITS images, masks and measurements">Laboratory</a>
             <a href="#planet-x" class="text-gray-300 hover:text-white transition-colors">Planet X</a>
             <a href="#about" onclick="openModal('about-mission')" class="text-gray-300 hover:text-white transition-colors">About</a>
         </nav>
@@ -244,9 +253,9 @@
 
         <!-- ================= HERO SECTION ================= -->
         <section id="hero" class="relative max-w-7xl mx-auto px-8 pt-10 pb-36 min-h-[82vh] flex flex-col justify-center">
-
+            
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-
+                
                 <!-- Left text column -->
                 <div class="lg:col-span-6 z-20 space-y-6 max-w-xl">
                     <!-- Red dash badge -->
@@ -278,31 +287,11 @@
                             Learn about Planet X
                         </a>
                     </div>
-                    <div class="hero-status"><span class="status-light"></span>Independent mission concept · Built for curiosity</div>
                 </div>
 
-                <!-- Right 3D SPHEREx Column -->
-                <div class="lg:col-span-6 relative flex flex-col items-center justify-center">
-
-                    <div class="relative w-full max-w-[560px] aspect-square flex items-center justify-center">
-
-                        <!-- WebGL 3D Canvas wrapper -->
-                        <div id="spherex-3d-wrapper" class="w-full h-full cursor-grab active:cursor-grabbing relative z-20">
-                            <canvas id="spherex-canvas" class="w-full h-full block"></canvas>
-                        </div>
-
-                        <!-- Drag to rotate pill on bottom right -->
-                        <div class="absolute bottom-2 right-4 flex items-center gap-2 text-gray-400 text-[11px] font-sans tracking-wide z-30 pointer-events-none">
-                            <svg class="w-4 h-4 text-sky-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                                <path d="M8 12V6a2 2 0 0 1 4 0v5-2a2 2 0 0 1 4 0v3a2 2 0 0 1 4 0v5l-3 4H9l-5-7a2 2 0 0 1 3-2l1 1"/>
-                            </svg>
-                            <span>Drag to Rotate</span>
-                        </div>
-                    </div>
-                    <div class="instrument-tools"><button type="button" id="rotation-toggle" aria-pressed="true">Pause rotation</button><button type="button" id="reset-view">Reset view ↗</button></div>
-                    <p class="model-status" id="model-status" role="status">Interactive model · Artist's reconstruction of SPHEREx</p>
-
-                </div>
+                <figure class="hero-spacecraft">
+                    <img src="/site-assets/spherex-cutout.png" alt="SPHEREx spacecraft with its silver thermal shields and telescope" width="1376" height="1143" fetchpriority="high" decoding="async">
+                </figure>
 
             </div>
 
@@ -313,7 +302,7 @@
         <!-- ================= THREE PILLARS / ICONS SECTION ================= -->
         <section class="relative z-30 max-w-5xl mx-auto px-6 py-12 mb-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-0 border-t border-b border-white/[0.08] py-8">
-
+                
                 <!-- Pillar 1: Sky Mapping -->
                 <button type="button" onclick="openModal('sky-mapping-modal')" class="pillar-col flex flex-col items-center text-center cursor-pointer group px-6 py-4">
                     <div class="w-16 h-16 mb-4 flex items-center justify-center text-sky-300/80 group-hover:text-white transition-colors duration-200">
@@ -415,7 +404,7 @@
             <div class="flex items-center gap-3">
                 <span class="font-display font-medium tracking-widest uppercase text-white">ZEPHYR</span>
                 <span>•</span>
-                <span>Independent educational concept · Not affiliated with NASA</span>
+                <span>SPHEREx infrared sky exploration</span>
             </div>
             <div class="flex items-center gap-6 text-gray-400">
                 <button onclick="openModal('explore-spherex')" class="hover:text-white transition-colors">Instrument Specs</button>
@@ -489,503 +478,6 @@
         })();
 
         /* -------------------------------------------------------------
-           2. PROCEDURAL 3D SPHEREx SPACECRAFT (Accurate replication)
-           ------------------------------------------------------------- */
-        let spherexScene, spherexCamera, spherexRenderer, spherexControls, spherexGroup;
-        let rotationEnabled = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-        // Texture generators for realistic space-grade materials
-        function createBrushedMetalTexture() {
-            const c = document.createElement('canvas');
-            c.width = 1024;
-            c.height = 1024;
-            const ctx = c.getContext('2d');
-
-            // Base brushed aluminum
-            ctx.fillStyle = '#c5cdd8';
-            ctx.fillRect(0, 0, 1024, 1024);
-
-            // Radial & vertical panel lines
-            ctx.strokeStyle = 'rgba(70, 80, 95, 0.45)';
-            ctx.lineWidth = 3;
-            for (let x = 0; x < 1024; x += 128) {
-                ctx.beginPath();
-                ctx.moveTo(x, 0); ctx.lineTo(x, 1024);
-                ctx.stroke();
-
-                // Rivets along seams
-                ctx.fillStyle = 'rgba(40, 50, 65, 0.7)';
-                for (let y = 16; y < 1024; y += 32) {
-                    ctx.beginPath();
-                    ctx.arc(x, y, 2.5, 0, Math.PI * 2);
-                    ctx.fill();
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
-                    ctx.beginPath();
-                    ctx.arc(x - 0.7, y - 0.7, 1.2, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-            }
-
-            // Fine brushed streak noise
-            for (let i = 0; i < 4000; i++) {
-                const rx = Math.random() * 1024;
-                const ry = Math.random() * 1024;
-                const len = Math.random() * 60 + 20;
-                ctx.strokeStyle = Math.random() > 0.5 ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)';
-                ctx.lineWidth = Math.random() * 1.5 + 0.5;
-                ctx.beginPath();
-                ctx.moveTo(rx, ry);
-                ctx.lineTo(rx, ry + len);
-                ctx.stroke();
-            }
-
-            const tex = new THREE.CanvasTexture(c);
-            tex.wrapS = THREE.RepeatWrapping;
-            tex.wrapT = THREE.RepeatWrapping;
-            tex.repeat.set(4, 1);
-            return tex;
-        }
-
-        function createGoldMLITexture() {
-            const c = document.createElement('canvas');
-            c.width = 1024;
-            c.height = 1024;
-            const ctx = c.getContext('2d');
-
-            // Rich amber-gold base
-            const grad = ctx.createLinearGradient(0, 0, 1024, 1024);
-            grad.addColorStop(0, '#e5aa28');
-            grad.addColorStop(0.5, '#cca025');
-            grad.addColorStop(1, '#9a7012');
-            ctx.fillStyle = grad;
-            ctx.fillRect(0, 0, 1024, 1024);
-
-            // Quilted MLI grid seams (thermal insulation blankets)
-            const gridSize = 64;
-            ctx.strokeStyle = '#614305';
-            ctx.lineWidth = 2.5;
-            for (let x = 0; x <= 1024; x += gridSize) {
-                ctx.beginPath();
-                ctx.moveTo(x, 0); ctx.lineTo(x, 1024);
-                ctx.stroke();
-            }
-            for (let y = 0; y <= 1024; y += gridSize) {
-                ctx.beginPath();
-                ctx.moveTo(0, y); ctx.lineTo(1024, y);
-                ctx.stroke();
-            }
-
-            // Wrinkles, crinkles and foil cushion specular puffiness
-            for (let x = 0; x < 1024; x += gridSize) {
-                for (let y = 0; y < 1024; y += gridSize) {
-                    const puff = ctx.createRadialGradient(x + gridSize / 2, y + gridSize / 2, 2, x + gridSize / 2, y + gridSize / 2, gridSize / 1.4);
-                    puff.addColorStop(0, 'rgba(255, 235, 150, 0.42)');
-                    puff.addColorStop(0.7, 'rgba(240, 180, 40, 0.15)');
-                    puff.addColorStop(1, 'rgba(60, 40, 5, 0.4)');
-                    ctx.fillStyle = puff;
-                    ctx.fillRect(x + 1, y + 1, gridSize - 2, gridSize - 2);
-
-                    // Stitching tack points in corners
-                    ctx.fillStyle = 'rgba(255,255,255,0.85)';
-                    ctx.beginPath();
-                    ctx.arc(x + 5, y + 5, 1.8, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-            }
-
-            // Foil crinkle micro-creases
-            for (let i = 0; i < 350; i++) {
-                ctx.strokeStyle = Math.random() > 0.4 ? 'rgba(255, 240, 170, 0.28)' : 'rgba(40, 25, 0, 0.35)';
-                ctx.lineWidth = Math.random() * 1.6 + 0.8;
-                ctx.beginPath();
-                const sx = Math.random() * 1024;
-                const sy = Math.random() * 1024;
-                ctx.moveTo(sx, sy);
-                ctx.lineTo(sx + (Math.random() - 0.5) * 40, sy + (Math.random() - 0.5) * 40);
-                ctx.stroke();
-            }
-
-            const tex = new THREE.CanvasTexture(c);
-            tex.wrapS = THREE.RepeatWrapping;
-            tex.wrapT = THREE.RepeatWrapping;
-            tex.repeat.set(3, 3);
-            return tex;
-        }
-
-        function createSolarArrayTexture() {
-            const c = document.createElement('canvas');
-            c.width = 1024;
-            c.height = 1024;
-            const ctx = c.getContext('2d');
-
-            // Deep space iridescent solar cell indigo
-            ctx.fillStyle = '#06132b';
-            ctx.fillRect(0, 0, 1024, 1024);
-
-            const cols = 8;
-            const rows = 16;
-            const cw = 1024 / cols;
-            const rh = 1024 / rows;
-
-            for (let i = 0; i < cols; i++) {
-                for (let j = 0; j < rows; j++) {
-                    const x = i * cw;
-                    const y = j * rh;
-
-                    // Silicon cell gradient
-                    const cellGrad = ctx.createLinearGradient(x, y, x + cw, y + rh);
-                    cellGrad.addColorStop(0, '#0a234e');
-                    cellGrad.addColorStop(0.5, '#071836');
-                    cellGrad.addColorStop(1, '#051126');
-                    ctx.fillStyle = cellGrad;
-                    ctx.fillRect(x + 2, y + 2, cw - 4, rh - 4);
-
-                    // Fine silver contact busbars (conductive fingers)
-                    ctx.strokeStyle = 'rgba(180, 215, 255, 0.45)';
-                    ctx.lineWidth = 1;
-                    for (let fy = y + 8; fy < y + rh - 4; fy += 9) {
-                        ctx.beginPath();
-                        ctx.moveTo(x + 3, fy);
-                        ctx.lineTo(x + cw - 3, fy);
-                        ctx.stroke();
-                    }
-
-                    // Main silver interconnect vertical lines
-                    ctx.strokeStyle = '#cddbe9';
-                    ctx.lineWidth = 2.5;
-                    ctx.beginPath();
-                    ctx.moveTo(x + cw * 0.33, y + 2); ctx.lineTo(x + cw * 0.33, y + rh - 2);
-                    ctx.moveTo(x + cw * 0.66, y + 2); ctx.lineTo(x + cw * 0.66, y + rh - 2);
-                    ctx.stroke();
-
-                    // Corner chamfers / cuts on silicon wafers
-                    ctx.fillStyle = '#030814';
-                    ctx.beginPath(); ctx.moveTo(x + 2, y + 2); ctx.lineTo(x + 8, y + 2); ctx.lineTo(x + 2, y + 8); ctx.fill();
-                    ctx.beginPath(); ctx.moveTo(x + cw - 2, y + 2); ctx.lineTo(x + cw - 8, y + 2); ctx.lineTo(x + cw - 2, y + 8); ctx.fill();
-                    ctx.beginPath(); ctx.moveTo(x + 2, y + rh - 2); ctx.lineTo(x + 8, y + rh - 2); ctx.lineTo(x + 2, y + rh - 8); ctx.fill();
-                    ctx.beginPath(); ctx.moveTo(x + cw - 2, y + rh - 2); ctx.lineTo(x + cw - 8, y + rh - 2); ctx.lineTo(x + cw - 2, y + rh - 8); ctx.fill();
-                }
-            }
-
-            // Outer border grid
-            ctx.strokeStyle = '#5a7696';
-            ctx.lineWidth = 3;
-            for (let i = 0; i <= cols; i++) {
-                ctx.beginPath(); ctx.moveTo(i * cw, 0); ctx.lineTo(i * cw, 1024); ctx.stroke();
-            }
-            for (let j = 0; j <= rows; j++) {
-                ctx.beginPath(); ctx.moveTo(0, j * rh); ctx.lineTo(1024, j * rh); ctx.stroke();
-            }
-
-            return new THREE.CanvasTexture(c);
-        }
-
-        function createBaffleHoneycombTexture() {
-            const c = document.createElement('canvas');
-            c.width = 512;
-            c.height = 512;
-            const ctx = c.getContext('2d');
-            ctx.fillStyle = '#06070a';
-            ctx.fillRect(0, 0, 512, 512);
-
-            // Aeroglaze Z306 flat optical black honeycomb baffle rings
-            ctx.strokeStyle = 'rgba(38, 44, 58, 0.65)';
-            ctx.lineWidth = 2.5;
-            for (let y = 0; y < 512; y += 18) {
-                ctx.beginPath();
-                ctx.moveTo(0, y); ctx.lineTo(512, y);
-                ctx.stroke();
-            }
-            const tex = new THREE.CanvasTexture(c);
-            tex.wrapS = THREE.RepeatWrapping;
-            tex.wrapT = THREE.RepeatWrapping;
-            tex.repeat.set(1, 12);
-            return tex;
-        }
-
-        function initSPHEREx() {
-            const container = document.getElementById('spherex-3d-wrapper');
-            const canvas = document.getElementById('spherex-canvas');
-            const width = container.clientWidth;
-            const height = container.clientHeight;
-
-            spherexScene = new THREE.Scene();
-            spherexCamera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
-
-            // Set initial camera view matching screenshot perspective
-            spherexCamera.position.set(3.5, 2.6, 4.4);
-
-            spherexRenderer = new THREE.WebGLRenderer({
-                canvas: canvas,
-                alpha: true,
-                antialias: true,
-                powerPreference: 'high-performance'
-            });
-            spherexRenderer.setSize(width, height);
-            spherexRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            spherexRenderer.toneMapping = THREE.ACESFilmicToneMapping;
-            spherexRenderer.toneMappingExposure = 1.35;
-            spherexRenderer.outputEncoding = THREE.sRGBEncoding;
-            const reflectionCanvas = document.createElement('canvas');
-            reflectionCanvas.width = 1024;
-            reflectionCanvas.height = 512;
-            const reflection = reflectionCanvas.getContext('2d');
-            const reflectionGradient = reflection.createLinearGradient(0, 0, 0, 512);
-            reflectionGradient.addColorStop(0, '#d9e4f0');
-            reflectionGradient.addColorStop(.3, '#40556d');
-            reflectionGradient.addColorStop(.55, '#0c1522');
-            reflectionGradient.addColorStop(.8, '#35475b');
-            reflectionGradient.addColorStop(1, '#07101a');
-            reflection.fillStyle = reflectionGradient;
-            reflection.fillRect(0, 0, 1024, 512);
-            for (const [x, w, alpha] of [[80, 40, .95], [250, 95, .6], [540, 18, .9], [740, 110, .75], [950, 25, .5]]) {
-                reflection.fillStyle = `rgba(228,241,255,${alpha})`;
-                reflection.fillRect(x, 28, w, 360);
-            }
-            const reflectionTexture = new THREE.CanvasTexture(reflectionCanvas);
-            reflectionTexture.mapping = THREE.EquirectangularReflectionMapping;
-            const environmentGenerator = new THREE.PMREMGenerator(spherexRenderer);
-            spherexScene.environment = environmentGenerator.fromEquirectangular(reflectionTexture).texture;
-            reflectionTexture.dispose();
-            environmentGenerator.dispose();
-
-            spherexControls = new THREE.OrbitControls(spherexCamera, canvas);
-            spherexControls.enableDamping = true;
-            spherexControls.dampingFactor = 0.06;
-            spherexControls.enableZoom = true;
-            spherexControls.minDistance = 4.2;
-            spherexControls.maxDistance = 8.0;
-            spherexControls.autoRotate = rotationEnabled;
-            spherexControls.enablePan = false;
-            spherexControls.autoRotateSpeed = 0.8;
-            spherexControls.maxPolarAngle = Math.PI / 1.7;
-            spherexControls.addEventListener('start', () => {
-                rotationEnabled = false;
-                spherexControls.autoRotate = false;
-                updateRotationButton();
-            });
-            updateRotationButton();
-
-            // Lights
-            const ambient = new THREE.AmbientLight(0x202b3d, 1.4);
-            spherexScene.add(ambient);
-
-            // Sun Key Light
-            const sunLight = new THREE.DirectionalLight(0xfffaec, 3.4);
-            sunLight.position.set(7, 9, 5);
-            spherexScene.add(sunLight);
-
-            // Earth Blues Light
-            const earthBounce = new THREE.DirectionalLight(0x38bdf8, 2.2);
-            earthBounce.position.set(-6, -4, -4);
-            spherexScene.add(earthBounce);
-
-            // Red Nebula back light
-            const redGlow = new THREE.PointLight(0xe11d48, 2.8, 14);
-            redGlow.position.set(4, 5, -3);
-            spherexScene.add(redGlow);
-
-            // MODEL BUILD
-            spherexGroup = new THREE.Group();
-
-            // Materials with generated procedural textures
-            const brushedMetalTex = createBrushedMetalTexture();
-            const goldMliTex = createGoldMLITexture();
-            const solarTex = createSolarArrayTexture();
-            const baffleTex = createBaffleHoneycombTexture();
-
-            // Specular Chrome Conical Radiator Shields with Brushed Metal Map & Bump
-            const chromeShieldMat = new THREE.MeshStandardMaterial({
-                color: 0xe6ecf5,
-                map: brushedMetalTex,
-                bumpMap: brushedMetalTex,
-                bumpScale: 0.015,
-                metalness: 0.96,
-                roughness: 0.18,
-                envMapIntensity: 1.6,
-                side: THREE.DoubleSide
-            });
-
-            // Gold Foil / MLI Blanket Material
-            const goldMliMat = new THREE.MeshStandardMaterial({
-                color: 0xffd24d,
-                map: goldMliTex,
-                bumpMap: goldMliTex,
-                bumpScale: 0.05,
-                roughnessMap: goldMliTex,
-                metalness: 0.88,
-                roughness: 0.28,
-            });
-
-            // Dark avionics chassis
-            const darkBusMat = new THREE.MeshStandardMaterial({
-                color: 0x1a212d,
-                map: brushedMetalTex,
-                bumpMap: brushedMetalTex,
-                bumpScale: 0.01,
-                metalness: 0.75,
-                roughness: 0.35
-            });
-
-            // Matte optical black for baffle interior
-            const baffleBlackMat = new THREE.MeshStandardMaterial({
-                color: 0x080a0f,
-                map: baffleTex,
-                bumpMap: baffleTex,
-                bumpScale: 0.03,
-                roughness: 0.92,
-                metalness: 0.08,
-                side: THREE.DoubleSide
-            });
-
-            // High-detail Solar Array Material
-            const solarMat = new THREE.MeshStandardMaterial({
-                map: solarTex,
-                bumpMap: solarTex,
-                bumpScale: 0.02,
-                metalness: 0.85,
-                roughness: 0.2,
-                emissive: 0x061e38,
-                emissiveIntensity: 0.35
-            });
-
-            // Carbon fiber backing for solar array rear
-            const carbonCanvas = document.createElement('canvas');
-            carbonCanvas.width = 64; carbonCanvas.height = 64;
-            const cCtx = carbonCanvas.getContext('2d');
-            cCtx.fillStyle = '#111317'; cCtx.fillRect(0,0,64,64);
-            cCtx.fillStyle = '#1c2027';
-            cCtx.fillRect(0,0,32,32); cCtx.fillRect(32,32,32,32);
-            const carbonTex = new THREE.CanvasTexture(carbonCanvas);
-            carbonTex.wrapS = THREE.RepeatWrapping; carbonTex.wrapT = THREE.RepeatWrapping;
-            carbonTex.repeat.set(8, 8);
-            const carbonMat = new THREE.MeshStandardMaterial({
-                map: carbonTex,
-                roughness: 0.6,
-                metalness: 0.4
-            });
-
-            /* 1. Concentric Conical Photon / Thermal Radiation Shields */
-            const radiiTop = [1.6, 1.35, 1.1];
-            const radiiBottom = [0.88, 0.75, 0.62];
-            const heights = [1.15, 0.98, 0.82];
-            const yOffsets = [0.5, 0.38, 0.28];
-
-            for (let i = 0; i < 3; i++) {
-                const coneGeom = new THREE.CylinderGeometry(radiiTop[i], radiiBottom[i], heights[i], 42, 1, true);
-                const cone = new THREE.Mesh(coneGeom, chromeShieldMat);
-                cone.position.y = yOffsets[i];
-                spherexGroup.add(cone);
-
-                // Top rim torus
-                const ringGeom = new THREE.TorusGeometry(radiiTop[i], 0.022, 8, 48);
-                ringGeom.rotateX(Math.PI / 2);
-                const ring = new THREE.Mesh(ringGeom, chromeShieldMat);
-                ring.position.y = yOffsets[i] + heights[i] / 2;
-                spherexGroup.add(ring);
-            }
-
-            // Central Telescope Baffle Tube
-            const tubeGeom = new THREE.CylinderGeometry(0.38, 0.34, 1.3, 32, 1, true);
-            const tube = new THREE.Mesh(tubeGeom, baffleBlackMat);
-            tube.position.y = 0.4;
-            spherexGroup.add(tube);
-
-            // Telescope Center Detector Spider
-            const centerHubGeom = new THREE.CylinderGeometry(0.12, 0.12, 0.08, 16);
-            const centerHub = new THREE.Mesh(centerHubGeom, goldMliMat);
-            centerHub.position.y = 0.82;
-            spherexGroup.add(centerHub);
-
-            for (let a = 0; a < 3; a++) {
-                const ang = (a * Math.PI * 2) / 3;
-                const strutGeom = new THREE.BoxGeometry(0.015, 0.025, 0.36);
-                const strut = new THREE.Mesh(strutGeom, chromeShieldMat);
-                strut.position.set(Math.sin(ang) * 0.18, 0.82, Math.cos(ang) * 0.18);
-                strut.rotation.y = ang;
-                spherexGroup.add(strut);
-            }
-
-            /* 2. Hexagonal Service Bus Base */
-            const busGeom = new THREE.CylinderGeometry(0.72, 0.74, 0.68, 6);
-            const bus = new THREE.Mesh(busGeom, darkBusMat);
-            bus.position.y = -0.44;
-            spherexGroup.add(bus);
-
-            // Bus Panels & Gold Foil Thermal Radiators
-            for (let p = 0; p < 6; p++) {
-                const pAng = (p * Math.PI) / 3;
-                const r = 0.71;
-                const panelGeom = new THREE.BoxGeometry(0.52, 0.48, 0.03);
-                const panelMesh = new THREE.Mesh(panelGeom, (p % 2 === 0) ? goldMliMat : darkBusMat);
-                panelMesh.position.set(Math.sin(pAng) * r, -0.44, Math.cos(pAng) * r);
-                panelMesh.rotation.y = pAng;
-                spherexGroup.add(panelMesh);
-            }
-
-            // Payload Adapter / Separation Ring at bottom
-            const adapterGeom = new THREE.CylinderGeometry(0.48, 0.55, 0.22, 24);
-            const adapter = new THREE.Mesh(adapterGeom, goldMliMat);
-            adapter.position.y = -0.88;
-            spherexGroup.add(adapter);
-
-            /* 3. Rectangular Solar Panel (Mounted on the right side) */
-            const solarGroup = new THREE.Group();
-            const panelFrameGeom = new THREE.BoxGeometry(0.95, 1.35, 0.04);
-            const panelFrame = new THREE.Mesh(panelFrameGeom, carbonMat);
-
-            const cellGeom = new THREE.PlaneGeometry(0.9, 1.3);
-            const cells = new THREE.Mesh(cellGeom, solarMat);
-            cells.position.z = 0.025;
-
-            const boomGeom = new THREE.CylinderGeometry(0.035, 0.035, 0.5, 8);
-            boomGeom.rotateZ(Math.PI / 2);
-            const boom = new THREE.Mesh(boomGeom, goldMliMat);
-            boom.position.set(-0.65, 0, 0);
-
-            solarGroup.add(panelFrame);
-            solarGroup.add(cells);
-            solarGroup.add(boom);
-
-            // Orient solar wing exactly as reference image
-            solarGroup.position.set(1.48, -0.22, 0.1);
-            solarGroup.rotation.y = -Math.PI / 5.5;
-            solarGroup.rotation.z = -0.15;
-            spherexGroup.add(solarGroup);
-
-            // S-Band Antenna Dish
-            const dishGeom = new THREE.SphereGeometry(0.24, 16, 8, 0, Math.PI * 2, 0, Math.PI * 0.45);
-            const dish = new THREE.Mesh(dishGeom, chromeShieldMat);
-            dish.position.set(-0.9, -0.42, 0.35);
-            dish.rotation.x = Math.PI * 0.75;
-            dish.rotation.y = -Math.PI * 0.25;
-            spherexGroup.add(dish);
-
-            // Group angle mirroring the photo
-            spherexGroup.rotation.x = 0.2;
-            spherexGroup.rotation.z = -0.12;
-            spherexGroup.position.y = 0.15;
-            spherexScene.add(spherexGroup);
-
-            // Render loop
-            function animate() {
-                requestAnimationFrame(animate);
-                if (document.hidden) return;
-                spherexControls.update();
-                spherexRenderer.render(spherexScene, spherexCamera);
-            }
-            animate();
-
-            window.addEventListener('resize', () => {
-                const w = container.clientWidth;
-                const h = container.clientHeight;
-                spherexCamera.aspect = w / h;
-                spherexCamera.updateProjectionMatrix();
-                spherexRenderer.setSize(w, h);
-            });
-        }
-
-        /* -------------------------------------------------------------
            3. MODAL LOGIC & CONTENT
            ------------------------------------------------------------- */
         const modalContentMap = {
@@ -1002,7 +494,7 @@
             'object-detection-modal': {
                 badge: 'Solar Boundary Astrometry',
                 title: 'Trans-Neptunian Object Detection',
-                body: '<p>A candidate is the beginning of an investigation. Astronomers compare observations, reject artifacts, measure positions, and seek independent follow-up before identifying a distant object.</p><p>This concept page does not run a detection algorithm or display confirmed Planet X candidates.</p>'
+                body: '<p>A candidate is the beginning of an investigation. Astronomers compare observations, reject artifacts, measure positions, and seek independent follow-up before identifying a distant object.</p><p>The laboratory supports observation review; a source must be validated before it can be identified as a candidate.</p>'
             },
             'data-explorer-modal': {
                 badge: 'Spectral Analysis',
@@ -1017,7 +509,7 @@
             'about-mission': {
                 badge: 'Zephyr Initiative',
                 title: 'About Zephyr Space & Research',
-                body: '<p>Zephyr is an independent educational interface inspired by space exploration. It combines an artistic spacecraft model, an introductory wavelength guide, and links to official scientific resources.</p><p>It is not affiliated with NASA, does not claim institutional partnerships, and does not present simulated imagery as scientific evidence.</p>'
+                body: '<p>Zephyr brings together SPHEREx image exploration, an infrared wavelength guide, and a laboratory for inspecting observations.</p><p>It is not affiliated with NASA, does not claim institutional partnerships, and does not present simulated imagery as scientific evidence.</p>'
             }
         };
 
@@ -1068,23 +560,6 @@
             }
         });
 
-        function updateRotationButton() {
-            const button = document.getElementById('rotation-toggle');
-            button.textContent = rotationEnabled ? 'Pause rotation' : 'Resume rotation';
-            button.setAttribute('aria-pressed', String(rotationEnabled));
-        }
-        document.getElementById('rotation-toggle').addEventListener('click', () => {
-            if (!spherexControls) return;
-            rotationEnabled = !rotationEnabled;
-            spherexControls.autoRotate = rotationEnabled;
-            updateRotationButton();
-        });
-        document.getElementById('reset-view').addEventListener('click', () => {
-            if (!spherexControls) return;
-            spherexCamera.position.set(3.5, 2.6, 4.4);
-            spherexControls.target.set(0, 0, 0);
-            spherexControls.update();
-        });
         function updateWavelength() {
             const value = Number(document.getElementById('wavelength').value) / 100;
             document.getElementById('wavelength-value').textContent = value.toFixed(2) + ' μm';
@@ -1102,17 +577,9 @@
             updateWavelength();
         }));
         updateWavelength();
-        updateRotationButton();
 
-        // Initialize 3D SPHEREx engine
-        window.onload = function() {
-            try { initSPHEREx(); }
-            catch (error) {
-                document.getElementById('model-status').textContent = 'The interactive model could not load. Check your connection and WebGL support, then reload the page.';
-                document.getElementById('rotation-toggle').disabled = true;
-                document.getElementById('reset-view').disabled = true;
-            }
-        };
+
+
     </script>
 </body>
 </html>

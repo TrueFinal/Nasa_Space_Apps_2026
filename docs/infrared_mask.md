@@ -1,3 +1,5 @@
+> The legacy web interface has been removed. The home is at `/`; use the current sky explorer at `/lab`; native-pixel Python analysis commands remain available.
+
 # Zephyr · máscara infravermelha SPHEREx / MPC
 
 O laboratório também oferece [mosaico IR em falsas cores](infrared_color.md),
@@ -32,7 +34,7 @@ python -m venv .venv
 .\start-infrared.ps1
 ```
 
-Abra **http://127.0.0.1:8766/**: a página inicial é a versão integrada de `zephyr_spherex_planet_x_interactive.html`, em `web/site/index.html`, com o modelo 3D e a identidade Zephyr preservados. **http://127.0.0.1:8766/lab** abre o laboratório com a mesma logo, tipografia, fundo escuro, bordas e acentos vermelhos. O servidor só escuta na máquina local. O comando `archive` usa o asteroide **1766 / Slipher** e 20–25/07/2026 como caso inicial, sem afirmar detecção. Outros objetos/datas, detectores e janelas podem ser consultados no painel. O intervalo máximo é sete dias. Não encontrar cobertura gera uma mensagem explícita.
+Abra **http://127.0.0.1:8766/** ou **/lab** para o explorador atual por coordenadas. Os frontends antigos foram removidos; os comandos Python de análise por pixels nativos continuam disponíveis.
 
 O download inicial de calibração tem cerca de 33 MB **por detector** (aproximadamente 200 MB para os seis). `calibration` consulta o índice público oficial e registra a versão exata e SHA-256; se houver múltiplas versões, exige seleção explícita. Os arquivos ficam em `data/infrared/calibrations/calibration_D1.fits` até `calibration_D6.fits`. Um arquivo de calibração único só habilita o detector correspondente; detectores incompatíveis são rejeitados. O arquivo de imagem original permanece intacto. O certificado TLS sempre é verificado; no Windows, `truststore` usa as autoridades do sistema.
 
@@ -42,7 +44,7 @@ Para uma janela estreita, por exemplo:
 .venv\Scripts\python.exe scripts/infrared_lab.py archive --detector 4 --low-um 3.35 --high-um 3.45 --max-exposures 4
 ```
 
-Os assets da página inicial já estão compilados e o servidor Python os entrega localmente, incluindo Three.js. Para recompilar o CSS da home: `npm.cmd ci --prefix web/site`, `npm.cmd run build --prefix web/site` e `npm.cmd run check --prefix web/site`. Fontes Google são opcionais e têm fontes locais de fallback.
+Os assets do explorador atual estão em `web/sky-explorer/worker`. O servidor Python os entrega diretamente; o build Worker independente usa `npm --prefix web/sky-explorer run build`.
 
 Para verificar o fluxo sem rede, gere **dados explicitamente sintéticos**, separados da análise real:
 
@@ -170,6 +172,6 @@ Na validação inicial D4, os fluxos e incertezas permaneceram iguais aos da an�
 
 ```powershell
 $env:PYTHONPATH='src'
-.venv\Scripts\python.exe -m pytest tests/test_infrared_bands.py tests/test_infrared_mask.py tests/test_infrared_display.py -q
-node --test web/infrared-mask/app.test.mjs web/infrared-mask/plate.test.mjs
+.venv\Scripts\python.exe -m pytest tests/test_infrared_bands.py tests/test_infrared_mask.py tests/test_infrared_display.py tests/test_tracking.py tests/test_differencing.py -q
+npm --prefix web/sky-explorer test
 ```

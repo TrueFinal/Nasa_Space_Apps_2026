@@ -550,7 +550,6 @@ def run_manifest(manifest_path, output_dir, config=None, progress=lambda text: N
         "frames": frames,
     }
     from .infrared_catalogs import build_join
-
     report["dataset_join"] = build_join(report, manifest.get("context_catalogues"))
     report["request_selection"] = manifest.get("request_selection", {})
     write_json(output / "joined_samples.json", report["dataset_join"])
