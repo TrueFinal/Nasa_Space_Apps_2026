@@ -30,7 +30,7 @@ ROOT = Path(__file__).resolve().parents[2]
 class LocalServer(ThreadingHTTPServer):
     """Windows must not allow two development servers to share one port."""
 
-    allow_reuse_address = False
+    allow_reuse_address = sys.platform != "win32"
     daemon_threads = True
 
     def server_bind(self):
@@ -225,7 +225,7 @@ def make_handler(state):
                 "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
                 f"script-src {scripts}; "
                 "font-src 'self' data: https://fonts.gstatic.com; "
-                "img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'",
+                "img-src 'self' data: blob:; connect-src 'self'; frame-ancestors 'none'",
             )
             self.end_headers()
             self.wfile.write(data)
@@ -245,6 +245,23 @@ def make_handler(state):
             if route == "/api/channels":
                 from .infrared_catalogs import channel_grid
                 return self._send(200, channel_grid())
+            if route == "/api/stack":
+                if not state.current_output:
+                    return self._send(404, {"error": "Load an analysis first."})
+                try:
+                    query = parse_qs(urlsplit(self.path).query)
+                    if set(query) - {"detector", "start", "count"}:
+                        raise ValueError("Unknown stack parameter.")
+                    detector, start, count = (int(query.get(k, [default])[0])
+                        for k, default in (("detector", "4"), ("start", "0"), ("count", "3")))
+                    output = state.current_output
+                    from .infrared_stack import render_stack
+                    with state.animation_lock:
+                        report = json.loads((output / "report.json").read_text("utf-8"))
+                        path = render_stack(report, output, detector, start, count)
+                    return self._send(200, path.read_bytes(), "image/png")
+                except (ValueError, KeyError) as exc:
+                    return self._send(400, {"error": str(exc)})
             if route == "/api/mpc":
                 from .infrared_catalogs import resolve_mpc
                 query = parse_qs(urlsplit(self.path).query).get("object", [""])[0]
@@ -296,7 +313,7 @@ def make_handler(state):
                 if name == "animation.gif":
                     output = state.current_output
                     with state.animation_lock:
-                        path = output / name
+                        path = output / "animation_gray_r.gif"
                         if not path.exists():
                             from .infrared_animation import render_animation
                             report = json.loads((output / "report.json").read_text("utf-8"))

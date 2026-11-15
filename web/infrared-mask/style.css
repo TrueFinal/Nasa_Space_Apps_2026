@@ -30,4 +30,6 @@ html,body{max-width:100%;overflow-x:clip}.layout>*{min-width:0}.card,.results{mi
 
 
 .playback-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}.playback-actions button[aria-pressed=true]{border-color:var(--cyan)}
-.intensity-legend{display:flex;align-items:center;gap:12px;max-width:360px;margin:14px auto;font-size:11px;color:var(--muted)}.inferno-bar{flex:1;height:10px;border-radius:5px;background:linear-gradient(to right,#000004,#420a68,#932667,#dd513a,#fca50a,#fcffa4)}
+.intensity-legend{display:flex;align-items:center;gap:12px;max-width:360px;margin:14px auto;font-size:11px;color:var(--muted)}.inferno-bar{flex:1;height:10px;border-radius:5px;background:linear-gradient(to right,#fff,#000)}
+
+.stack-controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}#stack-image{display:block;width:100%;height:auto;margin:16px 0}#stack-status{overflow-wrap:anywhere}

@@ -1,8 +1,7 @@
 import { cropFor, available, starsFor, segmentsFor, backgroundFor, limitsFor, stretch, viewport, imagePoint, pixelAt, spectralPoints } from './plate.mjs';
-import { inferno } from './inferno.mjs';
 const $ = id => document.getElementById(id);
 let report, allFrames = [], index = 0, mode = 'science', timer, imageView, gaiaAvailable = false;
-let joinedSamples = [], channelData = [];
+let joinedSamples = [], channelData = [], playbackWanted = false, stackURL;
 const bandColors = ['#8dc9f1', '#91dfcb', '#d6d991', '#efbb84', '#e396ad', '#b4a1e2'];
 const nominalBands = [[.75, 1.09], [1.10, 1.62], [1.63, 2.41], [2.42, 3.82], [3.83, 4.41], [4.42, 5.00]];
 const statuses = { aperture_measurement: 'Aperture measured', masked_aperture: 'Masked aperture', insufficient_background: 'Insufficient background', target_outside_image: 'Target outside image', aperture_or_background_at_edge: 'Aperture at image edge' };
@@ -27,7 +26,7 @@ function translate(text) {
 }
 function status(text, error = false) { $('status').textContent = translate(text); $('status').className = error ? 'error' : ''; }
 async function api(path, options) { const res = await fetch(path, options); const data = await res.json(); if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`); return data; }
-function stop() { clearInterval(timer); timer = undefined; $('play').textContent = '▶'; $('play').setAttribute('aria-label', 'Play exposures'); $('by-frame').setAttribute('aria-pressed', 'true'); }
+function stop() { playbackWanted = false; clearInterval(timer); timer = undefined; $('play').textContent = '▶'; $('play').setAttribute('aria-label', 'Play exposures'); $('by-frame').setAttribute('aria-pressed', 'true'); }
 async function load() {
   report = await api('/api/report'); index = 0; stop();
   const excluded = report.frames.filter(f => f.plot?.eligible === false);
@@ -84,7 +83,8 @@ async function load() {
   if (report.plotting?.preview) { $('preview').hidden = false; $('preview').href = `/${report.plotting.preview}`; }
   else $('preview').hidden = true;
   $('gif-download').hidden = false;
-  $('gif-download').href = '/files/animation.gif?' + Date.now();
+  $('gif-download').href = '/files/animation.gif?palette=gray_r&' + Date.now();
+  setupStack();
   render();
   startPlayback();
   return true;
@@ -104,12 +104,12 @@ function drawImage() {
     const nx = x + crop.x, ny = y + crop.y;
     const value = array[ny][nx], bits = f.mask[ny][nx]; let rgb;
     if (mode === 'mask') rgb = bits & 1 || bits & 2 ? [224, 74, 88] : bits & 16 ? [90, 88, 105] : bits & 4 ? [69, 45, 100] : bits & 8 ? [223, 178, 72] : bits & 32 ? [33, 137, 156] : [10, 24, 35];
-    else if (value == null || !available(f, { x: nx, y: ny }, crop)) rgb = (x + y) % 4 < 2 ? [19, 27, 37] : [29, 38, 49];
+    else if (value == null || !available(f, { x: nx, y: ny }, crop)) rgb = (x + y) % 4 < 2 ? [195, 195, 195] : [225, 225, 225];
     else {
       if (mode === 'wavelength') {
         const t = Math.max(0, Math.min(1, (value - report.config.low_um) / (report.config.high_um - report.config.low_um)));
         rgb = [60 + 170 * t, 145 - 80 * t, 225 - 160 * t];
-      } else { rgb = inferno(stretch(value - background, limits)); }
+      } else { const v = Math.round(255 * (1 - stretch(value - background, limits))); rgb = [v, v, v]; }
     }
     // FITS y=0 is the bottom row; display the sky with y increasing upwards.
     const p = ((height - 1 - y) * width + x) * 4;
@@ -158,7 +158,7 @@ function drawImage() {
   const arcsec = f.plot?.pixel_arcsec;
   $('field-label').textContent = `${crop.w} × ${crop.h} px${arcsec ? ` · ≈ ${number(crop.w * arcsec / 60, 1)}′` : ''} · ${scope === 'target' ? 'cutout at MPC/MOST prediction' : 'available FITS field'}`;
   $('plot-note').textContent = `Gaia: ${gaiaAvailable ? `${stars.length} compatible source(s) in this view` : 'unavailable; no overlay points'}. ${f.plot?.counts?.excluded_from_image ?? 0} record(s) outside coverage excluded. Hatched areas contain no accepted data.`;
-  $('stretch-note').textContent = limits ? `Inferno · logarithmic stretch · shared scale within detector D${f.detector ?? 4} · background removed for display only · ${number(limits.lo, 4)} to ${number(limits.hi, 4)} MJy/sr.` : mode === 'mask' ? 'Colors indicate exclusion reasons and review flags.' : `CWAVE band centers · ${number(report.config.low_um)}–${number(report.config.high_um)} μm.`;
+  $('stretch-note').textContent = limits ? `White → black · logarithmic stretch · shared scale within detector D${f.detector ?? 4} · background removed for display only · ${number(limits.lo, 4)} to ${number(limits.hi, 4)} MJy/sr.` : mode === 'mask' ? 'Colors indicate exclusion reasons and review flags.' : `CWAVE band centers · ${number(report.config.low_um)}–${number(report.config.high_um)} μm.`;
 }
 function plot() {
   const c = $('photometry'), ctx = c.getContext('2d'); ctx.clearRect(0, 0, c.width, c.height);
@@ -195,6 +195,9 @@ function plot() {
 }
 function render() {
   if (!report?.frames.length) return; const f = report.frames[index], m = f.measurement;
+  const single = report.frames.length < 2;
+  for (const id of ['play', 'previous-frame', 'next-frame']) $(id).disabled = single;
+  $('playback-note').textContent = single ? 'Only one exposure is available in this selection. Expand the dates or exposure limit to animate or stack multiple frames.' : report.frames.length + ' exposures available for playback.';
   $('frame-band').textContent = `D${f.detector ?? 4} · ${number(f.central_wavelength_um ?? m.lambda_um, 4)} μm`;
   $('frame-label').textContent = `${index + 1} / ${report.frames.length}`; $('time').value = index;
   $('epoch').textContent = `${f.utc} UTC · ${f.source} · native pixels / exposure WCS`;
@@ -211,8 +214,10 @@ function render() {
 }
 $('time').addEventListener('input', e => { stop(); index = +e.target.value; render(); });
 function startPlayback() {
-  if (!report || report.frames.length < 2 || document.hidden) return;
-  stop(); $('by-frame').setAttribute('aria-pressed', 'false');
+  if (!report || report.frames.length < 2) return;
+  stop(); playbackWanted = true;
+  if (document.hidden) return;
+  $('by-frame').setAttribute('aria-pressed', 'false');
   $('play').textContent = 'Ⅱ'; $('play').setAttribute('aria-label', 'Pause exposures');
   timer = setInterval(() => { index = (index + 1) % report.frames.length; render(); }, 1000);
 }
@@ -222,7 +227,10 @@ for (const [id, step] of [['previous-frame', -1], ['next-frame', 1]]) $(id).addE
   if (!report?.frames.length) return; stop();
   index = (index + step + report.frames.length) % report.frames.length; render();
 });
-document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); });
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) { clearInterval(timer); timer = undefined; }
+  else if (playbackWanted) startPlayback();
+});
 $('tabs').addEventListener('click', e => { if (!e.target.dataset.mode) return; mode = e.target.dataset.mode; for (const b of $('tabs').children) b.setAttribute('aria-pressed', String(b === e.target)); drawImage(); });
 $('overlays').addEventListener('change', drawImage);
 $('gaia-overlay').addEventListener('change', drawImage);
@@ -280,3 +288,44 @@ try {
   if (state.has_report) { if (await load()) status('Analysis loaded. Select an exposure or inspect the mask.'); }
   else status('Server ready. No analysis loaded.');
 } catch (err) { status(`Could not connect to Python processing: ${err.message}`, true); }
+
+function stackFrames() {
+  return allFrames.filter(f => f.detector === Number($('stack-detector').value));
+}
+function setupStack() {
+  $('stack-result').hidden = true;
+  $('stack-detector').replaceChildren(...[...new Set(allFrames.map(f => f.detector))].sort().map(d => {
+    const o = node('option', 'D' + d + ' · ' + allFrames.filter(f => f.detector === d).length + ' frames');
+    o.value = String(d); return o;
+  }));
+  const best = [...new Set(allFrames.map(f => f.detector))].sort((a,b) => allFrames.filter(f=>f.detector===b).length-allFrames.filter(f=>f.detector===a).length)[0];
+  $('stack-detector').value = String(best); resetStackRange();
+}
+function resetStackRange() {
+  const n = stackFrames().length;
+  $('stack-start').value = 1; $('stack-start').max = n;
+  $('stack-count').value = Math.min(5,n); $('stack-count').max = n;
+  $('stack-result').hidden = true; updateStackRange();
+}
+function updateStackRange() {
+  const frames = stackFrames(), start = Number($('stack-start').value)-1, count = Number($('stack-count').value);
+  const valid = Number.isInteger(start) && Number.isInteger(count) && start>=0 && count>=2 && start+count<=frames.length;
+  $('build-stack').disabled = !valid;
+  $('stack-range').textContent = valid ? frames[start].utc + ' → ' + frames[start+count-1].utc + ' UTC · ' + count + ' frames' : 'Select at least 2 available frames within this detector.';
+}
+$('stack-detector').addEventListener('change', resetStackRange);
+for (const id of ['stack-start','stack-count']) $(id).addEventListener('input', updateStackRange);
+$('build-stack').addEventListener('click', async () => {
+  $('build-stack').disabled = true; $('stack-status').textContent = 'Aligning sky positions and stacking…';
+  try {
+    const query = new URLSearchParams({detector:$('stack-detector').value, start:String(Number($('stack-start').value)-1), count:$('stack-count').value});
+    const res = await fetch('/api/stack?' + query);
+    if (!res.ok) { const error = await res.json(); throw new Error(error.error); }
+    const blob = await res.blob();
+    if (stackURL) URL.revokeObjectURL(stackURL);
+    stackURL = URL.createObjectURL(blob); $('stack-image').src = stackURL;
+    $('stack-download').href = stackURL; $('stack-result').hidden = false;
+    $('stack-status').textContent = 'Sky-aligned maximum brightness: stationary stars overlap; moving sources may appear at several positions. Empty areas are hatched. A continuous trail needs overlapping sky coverage.';
+  } catch (error) { $('stack-status').textContent = error.message; }
+  finally { updateStackRange(); }
+});

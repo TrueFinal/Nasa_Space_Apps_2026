@@ -1,8 +1,7 @@
-"""IRSA-inspired inferno display per exposure; never alters native photometry."""
+"""Inverted grayscale display per exposure; never alters native photometry."""
 from pathlib import Path
 
 import numpy as np
-from matplotlib import colormaps
 from PIL import Image, ImageDraw
 
 
@@ -31,15 +30,15 @@ def render_animation(report, output):
         lo, hi = np.percentile(values, [3.35, 100 - .05 * 10 ** .69]) if values.size else (0., 1.)
         limits[d] = (lo, max(hi, lo + (abs(lo) or 1) * .001))
     images = []
-    cmap = colormaps['inferno']
     for f, a in zip(frames, arrays):
         lo, hi = limits[f['detector']]
         t = np.clip((a - lo) / (hi - lo), 0, 1)
         t = np.log1p(1000 * t) / np.log1p(1000)
-        rgb = cmap(np.nan_to_num(t), bytes=True)[..., :3].copy()
+        gray = np.rint(255 * (1 - np.nan_to_num(t))).astype('uint8')
+        rgb = np.repeat(gray[..., None], 3, axis=2)
         yy, xx = np.indices(a.shape)
         rgb[~np.isfinite(a)] = np.where(((xx+yy)%4 < 2)[~np.isfinite(a), None],
-                                       [19, 27, 37], [29, 38, 49])
+                                       [195, 195, 195], [225, 225, 225])
         image = Image.fromarray(np.flipud(rgb)).resize((600, 600), Image.Resampling.NEAREST)
         canvas = Image.new('RGB', (640, 668), '#080e15')
         canvas.paste(image, (20, 48))
@@ -47,7 +46,7 @@ def render_animation(report, output):
             f"{f['utc']} UTC | D{f['detector']} | {f.get('central_wavelength_um', 0):.4f} um",
             fill='white')
         images.append(canvas)
-    path = Path(output) / 'animation.gif'
+    path = Path(output) / 'animation_gray_r.gif'
     temporary = path.with_suffix('.gif.part')
     images[0].save(temporary, format='GIF', save_all=True, append_images=images[1:],
                    duration=1000, loop=0, disposal=2)
