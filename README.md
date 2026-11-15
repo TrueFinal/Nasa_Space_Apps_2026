@@ -1,5 +1,15 @@
 # Aplicação web SPHEREx
 
+**Novo: [Zephyr IR Lab — máscara FITS de 0,75 a 5,00 µm, D1–D6](docs/infrared_mask.md)**.
+Processamento Python, posições MOST/MPC no WCS SPHEREx, máscara Gaia DR3, imagens,
+trajetórias previstas e medidas com incertezas. No Windows, use `start-infrared.ps1`
+após instalar `requirements-infrared.txt`. Home Zephyr: http://127.0.0.1:8766/.
+Laboratório: http://127.0.0.1:8766/lab. A home integra o arquivo
+`zephyr_spherex_planet_x_interactive.html`; sua identidade visual também se aplica ao laboratório.
+O processamento padrão usa 12 exposições reais, calibração por detector, gráfico por
+comprimento de onda e lacunas explícitas, sem confundir bandas distintas com variação temporal.
+
+
 Agora com catálogo completo, exposição individual e carregamento sem teto. Veja a [investigação de identificação de objetos](docs/identificacao_objetos.md).
 
 **Site público: [SPHEREx Sky Explorer](https://spherex-sky-explorer-2026.melodicember8.chatgpt.site)**

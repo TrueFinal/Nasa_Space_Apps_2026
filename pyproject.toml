@@ -13,6 +13,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+infrared = ["truststore>=0.10; sys_platform == 'win32'"]
 dev = ["pytest>=8,<10", "ruff>=0.9,<1", "nbformat>=5,<6", "nbclient>=0.10,<1", "ipykernel>=6,<8"]
 literature = [
     "find-asteroids>=0.1.3",
@@ -28,6 +29,7 @@ viz = [
 ]
 
 [project.scripts]
+zephyr-infrared = "spherex_tracking.infrared:main"
 spherex-tracking = "spherex_tracking.cli:main"
 
 [build-system]
