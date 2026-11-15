@@ -357,3 +357,20 @@ async function openSaved(id) {
 }
 $('open-saved').addEventListener('click', () => openSaved($('saved-analyses').value));
 $('open-multiframe').addEventListener('click', e => openSaved(e.currentTarget.dataset.id));
+
+$('tested-example').addEventListener('click', async () => {
+  const form = $('query').elements;
+  form.object.value = '1766'; form.start.value = '2026-07-20'; form.end.value = '2026-07-25';
+  form.low_um.value = '.75'; form.high_um.value = '5'; form.detector.value = '0';
+  form.max_exposures.value = '12'; $('channel-id').value = '0'; $('sample-select').value = '';
+  try {
+    const choices = await api('/api/analyses');
+    const example = choices.find(a => a.object === '1766' && a.frames === 12 && !a.synthetic && a.low_um === .75 && a.high_um === 5);
+    if (example) {
+      await openSaved(example.id);
+      $('example-status').textContent = 'Opened 12 real saved exposures for 1766. Dates: 20–25 July 2026.';
+    } else {
+      $('example-status').textContent = 'Example fields filled. Click Search and process to request observations.';
+    }
+  } catch (error) { $('example-status').textContent = error.message; }
+});

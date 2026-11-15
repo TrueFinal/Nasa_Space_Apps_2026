@@ -479,6 +479,17 @@ def prepare_archive(
             break
     if not selected:
         write_json(cache / "selection.json", {"rejected": rejected, "candidates": len(candidates)})
+        if not candidates:
+            raise ValueError(
+                f"MOST returned no matching SPHEREx exposures for {name} from "
+                f"{start.isoformat()} to {end.isoformat()} in the selected detectors. "
+                "Try another date interval or open the tested example."
+            )
+        if rejected and all(r["reason"] == "download_failed" for r in rejected):
+            raise ValueError(
+                f"Found {len(candidates)} candidate exposures, but the IRSA image downloads failed. "
+                "Please retry later or open a saved observation sequence."
+            )
         raise ValueError(
             "Nenhuma exposição coloca o alvo na faixa calibrada. "
             "Altere datas/alvo; não foi substituída por outra banda."
