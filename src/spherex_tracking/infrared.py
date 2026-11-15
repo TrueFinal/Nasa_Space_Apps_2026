@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import socket
 import sys
 import threading
@@ -24,7 +25,7 @@ from .infrared_bands import DETECTOR_BANDS, MAX_EXPOSURES, detectors_for
 from .infrared_display import render_comparison
 from .infrared_mask import run_manifest, write_json
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(os.environ.get("ZEPHYR_ROOT", Path(__file__).resolve().parents[2])).resolve()
 
 
 class LocalServer(ThreadingHTTPServer):
@@ -220,7 +221,7 @@ def make_handler(state):
         def log_message(self, fmt, *args):
             pass
 
-        def _send(self, code, payload, content_type="application/json; charset=utf-8", home=False):
+        def _send(self, code, payload, content_type="application/json; charset=utf-8", home=False, sky=False):
             scripts = "'self' 'unsafe-inline'" if home else "'self'"
             data = (
                 json.dumps(payload, ensure_ascii=False, allow_nan=False).encode()
@@ -234,11 +235,15 @@ def make_handler(state):
             self.send_header("X-Content-Type-Options", "nosniff")
             self.send_header(
                 "Content-Security-Policy",
-                "default-src 'self'; "
+                ("default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'wasm-unsafe-eval'; "
+                 "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; "
+                 "font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; "
+                 "connect-src 'self' data: blob: https:; "
+                 "worker-src 'self' blob:; frame-ancestors *" if sky else "default-src 'self'; "
                 "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
                 f"script-src {scripts}; "
                 "font-src 'self' data: https://fonts.gstatic.com; "
-                "img-src 'self' data: blob:; connect-src 'self'; frame-ancestors 'none'",
+                "img-src 'self' data: blob:; connect-src 'self'; frame-ancestors 'none'"),
             )
             self.end_headers()
             self.wfile.write(data)
@@ -246,15 +251,41 @@ def make_handler(state):
         def _local_request(self):
             # Local binding plus DNS-rebinding and cross-origin POST protection.
             host = self.headers.get("Host", "").split(":")[0]
-            if host not in ("127.0.0.1", "localhost"):
+            if self.server.server_address[0] in ("127.0.0.1", "localhost") and host not in ("127.0.0.1", "localhost"):
                 return False
             origin = self.headers.get("Origin")
-            return not origin or origin == f"http://{self.headers.get('Host')}"
+            if not origin:
+                return True
+            parsed = urlsplit(origin)
+            return parsed.scheme in ("http", "https") and parsed.netloc == self.headers.get("Host") and parsed.path in ("", "/")
 
         def do_GET(self):
             if not self._local_request():
                 return self._send(403, {"error": "Origem não autorizada"})
             route = unquote(urlsplit(self.path).path)
+            if route in ("/lab", "/lab/", "/sky", "/sky/") or route.startswith("/sky-assets/"):
+                base = ROOT / "web/sky-explorer/worker"
+                name = route.removeprefix("/sky-assets/") if route.startswith("/sky-assets/") else "index.html"
+                allowed = {"index.html", "app.js", "astro.js", "catalogue.js", "style.css", "config.json", "gifenc.js", "gifenc.LICENSE.txt"}
+                allowed |= {f"samples/{n}.json" for n in ("barnard", "epsilon", "wise0855", "rwaur", "rdra")}
+                if name not in allowed:
+                    return self._send(404, {"error":"Asset not found."})
+                path = base / name
+                data = path.read_bytes()
+                if name == "index.html":
+                    data = data.replace(b'href="/style.css"', b'href="/sky-assets/style.css"').replace(b'src="/app.js"', b'src="/sky-assets/app.js"')
+                kind = "text/html" if name.endswith('.html') else "text/css" if name.endswith('.css') else "application/json" if name.endswith('.json') else "text/javascript"
+                return self._send(200,data,kind+"; charset=utf-8",sky=True)
+            if route.startswith('/sky-api/'):
+                from .sky_proxy import proxy
+                try:
+                    params = {k:v[0] for k,v in parse_qs(urlsplit(self.path).query).items()}
+                    data,kind = proxy(route.removeprefix('/sky-api/'), params, ROOT/'data/sky_proxy')
+                    return self._send(200,data,kind,sky=True)
+                except (ValueError,KeyError) as exc:
+                    return self._send(400,{"error":str(exc)})
+                except OSError as exc:
+                    return self._send(502,{"error":str(exc)})
             if route == "/api/channels":
                 from .infrared_catalogs import channel_grid
                 return self._send(200, channel_grid())
@@ -371,8 +402,8 @@ def make_handler(state):
                 )
                 return self._send(200, (state.current_output / name).read_bytes(), kind)
             assets = {
-                "/lab": ("index.html", "text/html; charset=utf-8"),
-                "/lab/": ("index.html", "text/html; charset=utf-8"),
+                "/mpc": ("index.html", "text/html; charset=utf-8"),
+                "/mpc/": ("index.html", "text/html; charset=utf-8"),
                 "/app.js": ("app.js", "text/javascript; charset=utf-8"),
                 "/plate.mjs": ("plate.mjs", "text/javascript; charset=utf-8"),
                 "/inferno.mjs": ("inferno.mjs", "text/javascript; charset=utf-8"),
@@ -482,6 +513,7 @@ def main():
     serve.add_argument("--calibration", default="data/infrared/calibrations")
     serve.add_argument("--coordinates", choices=["sky", "detector"], default="sky")
     serve.add_argument("--port", type=int, default=8766)
+    serve.add_argument("--host", default="127.0.0.1", help="Use 0.0.0.0 for a public deployment behind HTTPS")
     args = parser.parse_args()
     try:
         if args.command == "colorize-cube":
@@ -506,7 +538,7 @@ def main():
             if args.calibration and not args.coordinates:
                 parser.error("--coordinates é obrigatório quando --calibration é fornecido")
             state = LabState(args.output, args.calibration, args.coordinates)
-            server = LocalServer(("127.0.0.1", args.port), make_handler(state))
+            server = LocalServer((args.host, args.port), make_handler(state))
             print(f"Zephyr: http://127.0.0.1:{server.server_port}/", flush=True)
             try:
                 server.serve_forever()

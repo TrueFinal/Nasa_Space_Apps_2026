@@ -234,7 +234,7 @@ def test_local_api_exposes_report_not_arbitrary_files(fixture, tmp_path):
             assert b"spherex-cutout.png" in page
             assert b"spherex-canvas" not in page
             assert "script-src 'self' 'unsafe-inline'" in r.headers["Content-Security-Policy"]
-        with urllib.request.urlopen(base + "/lab") as r:
+        with urllib.request.urlopen(base + "/mpc") as r:
             assert b'id="detector-view"' in r.read()
             assert "script-src 'self';" in r.headers["Content-Security-Policy"]
         for asset, kind in (

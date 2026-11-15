@@ -6,15 +6,15 @@
       "ra": 133.7951291667,
       "dec": -7.2451472222,
       "detector": 6,
-      "description": "An\u00e3 marrom fria \u2022 coordenada do desafio"
+      "description": "Cold brown dwarf \u00b7 challenge coordinates"
     },
     {
       "id": "barnard",
-      "name": "Estrela de Barnard",
+      "name": "Barnard\u2019s Star",
       "ra": 269.4462685027,
       "dec": 4.7682044788,
       "detector": 3,
-      "description": "Movimento pr\u00f3prio alto \u2022 centro aproximado em 2026"
+      "description": "High proper motion \u00b7 approximate 2026 centre"
     },
     {
       "id": "epsilon",
@@ -22,7 +22,7 @@
       "ra": 331.0966438523,
       "dec": -56.800660204,
       "detector": 6,
-      "description": "Par de an\u00e3s marrons \u2022 centro aproximado em 2026"
+      "description": "Brown dwarf pair \u00b7 approximate 2026 centre"
     },
     {
       "id": "rwaur",
@@ -30,7 +30,7 @@
       "ra": 76.9565260346,
       "dec": 30.4014381739,
       "detector": 3,
-      "description": "Estrela jovem vari\u00e1vel"
+      "description": "Young variable star"
     },
     {
       "id": "rdra",
@@ -38,7 +38,7 @@
       "ra": 248.1676108329,
       "dec": 66.7549794172,
       "detector": 3,
-      "description": "Estrela vari\u00e1vel Mira"
+      "description": "Mira variable star"
     }
   ],
   "channels": [

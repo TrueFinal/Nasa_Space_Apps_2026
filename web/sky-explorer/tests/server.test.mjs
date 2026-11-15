@@ -25,3 +25,11 @@ test('IRSA transient errors retry through the official alternate host',async()=>
   assert.equal(r.status,200);assert.deepEqual(hosts,['irsa.ipac.caltech.edu','irsaproxy1.ipac.caltech.edu']);
  }finally{globalThis.fetch=original;}
 });
+
+test('UTC date interval is forwarded to SIA as inclusive MJD time',async()=>{
+ const original=globalThis.fetch;let upstream;
+ try{globalThis.fetch=async url=>{upstream=new URL(url);return new Response('obs_id\n');};
+ const res=await worker.fetch(new Request('http://test/api/archive?ra=133.795&dec=-7.245&fov=300&collection=spherex_dr1&start=2025-05-01&end=2026-05-31'));
+ assert.equal(res.status,200);assert.match(upstream.searchParams.get('TIME'),/^60796 /);
+ }finally{globalThis.fetch=original;}
+});

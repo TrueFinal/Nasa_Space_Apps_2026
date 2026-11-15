@@ -1,3 +1,14 @@
+## Start the SPHEREx sky explorer
+
+```bash
+uv sync
+uv run python -m spherex_tracking.infrared serve
+```
+
+Open **http://127.0.0.1:8766/lab**. Search RA/Dec or use the five observed challenge
+targets. This is the main coordinate/time viewer; the advanced MPC lab is at `/mpc`.
+See [challenge requirements, validation and deployment](docs/challenge_requirements.md).
+
 # Aplicação web SPHEREx
 
 **Novo: [Zephyr IR Lab — máscara FITS de 0,75 a 5,00 µm, D1–D6](docs/infrared_mask.md)**.

@@ -15,6 +15,12 @@ export default {
         upstream.searchParams.set('COLLECTION',collection);
         upstream.searchParams.set('POS',`CIRCLE ${ra} ${dec} ${fov/7200}`);
         upstream.searchParams.set('RESPONSEFORMAT','CSV');
+        if(u.searchParams.get('start')||u.searchParams.get('end')){
+          const start=u.searchParams.get('start')||'2025-03-01',end=u.searchParams.get('end')||new Date().toISOString().slice(0,10);
+          const a=Date.parse(start+'T00:00:00Z'),b=Date.parse(end+'T00:00:00Z');
+          if(!/^\d{4}-\d{2}-\d{2}$/.test(start)||!/^\d{4}-\d{2}-\d{2}$/.test(end)||!Number.isFinite(a+b)||b<a)return json({error:'Invalid UTC date interval.'},400);
+          upstream.searchParams.set('TIME',`${a/864e5+40587} ${b/864e5+40588}`);
+        }
       } else if(u.pathname==='/api/gaia') {
         const ra=Number(u.searchParams.get('ra')),dec=Number(u.searchParams.get('dec')),fov=Number(u.searchParams.get('fov'));
         if(!u.searchParams.has('ra')||!u.searchParams.has('dec')||!Number.isFinite(ra)||!Number.isFinite(dec)||ra<0||ra>=360||Math.abs(dec)>90||!Number.isFinite(fov)||fov<30||fov>1200)return json({error:'Coordenadas Gaia inválidas.'},400);

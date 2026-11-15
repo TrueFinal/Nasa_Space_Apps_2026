@@ -19,16 +19,16 @@ export function readFits(buffer) {
       }
       header[key] = value;
     }
-    if (!ended) throw new Error('Cabeçalho FITS incompleto.');
+    if (!ended) throw new Error('Incomplete FITS header.');
     const start = offset + Math.ceil((cursor - offset) / 2880) * 2880;
     const count = header.NAXIS ? Array.from({length: header.NAXIS}, (_, i) => header[`NAXIS${i+1}`]).reduce((a,b)=>a*b,1) : 0;
     const size = count * Math.abs(header.BITPIX || 8) / 8 + (header.PCOUNT || 0);
-    if (start + size > buffer.byteLength) throw new Error('Arquivo FITS truncado.');
+    if (start + size > buffer.byteLength) throw new Error('Truncated FITS file.');
     const hdu = {header, start, size, view};
     if (header.XTENSION !== 'BINTABLE' && count) {
       const data = new Float64Array(count), step = Math.abs(header.BITPIX)/8;
       const read = {'-32':'getFloat32','-64':'getFloat64','16':'getInt16','32':'getInt32','8':'getUint8'}[header.BITPIX];
-      if (!read) throw new Error(`BITPIX ${header.BITPIX} não suportado.`);
+      if (!read) throw new Error(`BITPIX ${header.BITPIX} is not supported.`);
       for(let i=0;i<count;i++) data[i]=view[read](start+i*step,false)*(header.BSCALE??1)+(header.BZERO??0);
       hdu.data=data;
     }
@@ -42,11 +42,11 @@ export function tableColumn(hdu, name) {
   const sizes={E:4,D:8,J:4,I:2,K:8,A:1,B:1,L:1};
   for(let i=1;i<=h.TFIELDS;i++) {
     const m=String(h[`TFORM${i}`]).match(/^(\d*)([A-Z])/);
-    if(!m || !sizes[m[2]]) throw new Error('Formato FITS de tabela não suportado.');
+    if(!m || !sizes[m[2]]) throw new Error('Formato FITS de tabela is not supported.');
     const n=Number(m[1]||1), code=m[2], step=sizes[code];
     if(h[`TTYPE${i}`]===name) {
       const method={E:'getFloat32',D:'getFloat64',J:'getInt32',I:'getInt16',B:'getUint8'}[code];
-      if(!method) throw new Error('Coluna FITS não numérica.');
+      if(!method) throw new Error('Non-numeric FITS column.');
       return Array.from({length:n},(_,j)=>hdu.view[method](off+j*step,false));
     }
     off+=n*step;
@@ -109,7 +109,7 @@ export function wavelengthMap(hdus) {
 // Mirrors the instrumental bad-pixel bits used by the Python pipeline.
 export const BAD_BITS = 0xFFDFFFFF; // SOURCE (bit 21) alone is not a bad pixel
 export function projectExposure(hdus,config) {
-  const im=hdus.find(x=>x.header.EXTNAME==='IMAGE');if(!im)throw new Error('FITS sem IMAGE.');
+  const im=hdus.find(x=>x.header.EXTNAME==='IMAGE');if(!im)throw new Error('FITS has no IMAGE extension.');
   const vari=hdus.find(x=>x.header.EXTNAME==='VARIANCE'),flags=hdus.find(x=>x.header.EXTNAME==='FLAGS'),zodi=hdus.find(x=>x.header.EXTNAME==='ZODI');
   const h=im.header,w=h.NAXIS1,ht=h.NAXIS2,size=config.size;
   const wave=wavelengthMap(hdus),data=new Float64Array(im.data.length),valid=new Uint8Array(data.length);
@@ -147,11 +147,11 @@ export function groupEpochs(exposures,mode='visit') {
 }
 export function quantile(values,q) {const a=values.filter(x=>x!==null&&Number.isFinite(x)).sort((a,b)=>a-b);return a.length?a[Math.floor((a.length-1)*q)]:0;}
 export function parseCoordinate(text,isRA) {
-  const v=text.trim();if(!v)throw new Error('Informe RA e declinação.');
-  if(/^[-+]?\d+(\.\d+)?$/.test(v)){const n=Number(v);if(isRA&&(n<0||n>=360)||!isRA&&(n< -90||n>90))throw new Error('RA: 0–360 graus; declinação: −90–90 graus.');return n;}
-  const nums=v.match(/[-+]?\d+(?:\.\d+)?/g)?.map(Number);if(!nums||nums.length!==3||Math.abs(nums[1])>=60||Math.abs(nums[2])>=60)throw new Error('Use graus decimais ou hh:mm:ss / ±dd:mm:ss.');
+  const v=text.trim();if(!v)throw new Error('Enter RA and declination.');
+  if(/^[-+]?\d+(\.\d+)?$/.test(v)){const n=Number(v);if(isRA&&(n<0||n>=360)||!isRA&&(n< -90||n>90))throw new Error('RA: 0–360 degrees; declination: −90–90 degrees.');return n;}
+  const nums=v.match(/[-+]?\d+(?:\.\d+)?/g)?.map(Number);if(!nums||nums.length!==3||Math.abs(nums[1])>=60||Math.abs(nums[2])>=60)throw new Error('Use decimal degrees or hh:mm:ss / ±dd:mm:ss.');
   const sign=v.startsWith('-')?-1:1,n=sign*(Math.abs(nums[0])+Math.abs(nums[1])/60+Math.abs(nums[2])/3600)*(isRA?15:1);
-  if(isRA&&(n<0||n>=360)||!isRA&&(n< -90||n>90))throw new Error('Coordenadas fora do intervalo.');return n;
+  if(isRA&&(n<0||n>=360)||!isRA&&(n< -90||n>90))throw new Error('Coordinates out of range.');return n;
 }
 export function imageFits(data,{ra,dec,size,fov}) {
   const cards=[];
@@ -165,4 +165,15 @@ export function imageFits(data,{ra,dec,size,fov}) {
   result.set(new TextEncoder().encode(header));const view=new DataView(result.buffer);
   for(let i=0;i<data.length;i++)view.setFloat32(header.length+i*4,data[i]===null?NaN:data[i],false);
   return result;
+}
+
+// Frames already share one celestial grid; keep missing pixels absent.
+export function intervalStack(frames,size,start,count,method='max') {
+  if(!Number.isInteger(start)||!Number.isInteger(count)||start<0||count<2||start+count>frames.length)throw new Error('Choose at least two consecutive available frames.');
+  const selected=frames.slice(start,start+count);
+  if(method==='mean')return coadd(selected.map(f=>({data:f.data,variance:f.weights.map(w=>w>0?1/w:Infinity)})),size);
+  if(method!=='max')throw new Error('Unknown stack method.');
+  const data=Array(size*size).fill(null),hits=Array(size*size).fill(0);
+  for(const frame of selected)for(let i=0;i<data.length;i++){const v=frame.data[i];if(v!==null&&Number.isFinite(v)){data[i]=data[i]===null?v:Math.max(data[i],v);hits[i]++;}}
+  return {data,hits};
 }

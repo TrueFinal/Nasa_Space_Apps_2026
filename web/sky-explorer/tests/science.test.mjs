@@ -33,3 +33,11 @@ test('decimal and sexagesimal coordinates handle negative zero and invalid range
  assert.ok(Math.abs(parseCoordinate('-00:30:00',false)+.5)<1e-10);
  assert.throws(()=>parseCoordinate('360',true));assert.throws(()=>parseCoordinate('-91',false));assert.throws(()=>parseCoordinate('',true));
 });
+test('selected frame stacks preserve all moving positions and respect gaps and variance',async()=>{
+ const {intervalStack}=await import('../worker/astro.js');
+ const frames=[{data:[10,0,null,2],weights:[1,1,0,1]},{data:[0,12,null,6],weights:[1,1,0,.25]},{data:[0,0,15,9],weights:[1,1,1,1]}];
+ assert.deepEqual(intervalStack(frames,2,0,2).data,[10,12,null,6]);
+ assert.deepEqual(intervalStack(frames,2,1,2).data,[0,12,15,9]);
+ assert.equal(intervalStack(frames,2,0,2,'mean').data[3],2.8);
+ assert.throws(()=>intervalStack(frames,2,0,1));assert.throws(()=>intervalStack(frames,2,2,2));
+});
