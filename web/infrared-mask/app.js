@@ -3,12 +3,14 @@ const $ = id => document.getElementById(id);
 let report, allFrames = [], index = 0, mode = 'science', timer, imageView, gaiaAvailable = false;
 const bandColors = ['#8dc9f1', '#91dfcb', '#d6d991', '#efbb84', '#e396ad', '#b4a1e2'];
 const nominalBands = [[.75, 1.09], [1.10, 1.62], [1.63, 2.41], [2.42, 3.82], [3.83, 4.41], [4.42, 5.00]];
-const statuses = { aperture_measurement: 'Abertura medida', masked_aperture: 'Abertura mascarada', insufficient_background: 'Fundo insuficiente', target_outside_image: 'Alvo fora da imagem', aperture_or_background_at_edge: 'Abertura na borda' };
-const number = (v, digits = 2) => v == null || !Number.isFinite(v) ? '—' : v.toLocaleString('pt-BR', { maximumFractionDigits: digits, minimumFractionDigits: digits });
+const statuses = { aperture_measurement: 'Aperture measured', masked_aperture: 'Masked aperture', insufficient_background: 'Insufficient background', target_outside_image: 'Target outside image', aperture_or_background_at_edge: 'Aperture at image edge' };
+const number = (v, digits = 2) => v == null || !Number.isFinite(v) ? '—' : v.toLocaleString('en-US', { maximumFractionDigits: digits, minimumFractionDigits: digits });
 const node = (tag, text, className) => { const el = document.createElement(tag); el.textContent = text; if (className) el.className = className; return el; };
-function status(text, error = false) { $('status').textContent = text; $('status').className = error ? 'error' : ''; }
+function status(text, error = false) {
+  const messages = {'Iniciando consulta':'Starting query','Consultando posições e exposições no MOST/IRSA':'Querying positions and exposures in MOST/IRSA','Consultando Gaia DR3 para sinalizar contaminação':'Querying Gaia DR3 for nearby stellar sources','Gerando plotagem com cobertura válida':'Rendering valid image coverage','Análise concluída':'Analysis complete'};
+  text = messages[text] || text.replace('Baixando calibração oficial','Downloading official calibration').replace('Inspecionando recorte','Inspecting cutout'); $('status').textContent = text; $('status').className = error ? 'error' : ''; }
 async function api(path, options) { const res = await fetch(path, options); const data = await res.json(); if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`); return data; }
-function stop() { clearInterval(timer); timer = undefined; $('play').textContent = '▶'; $('play').setAttribute('aria-label', 'Reproduzir exposições'); }
+function stop() { clearInterval(timer); timer = undefined; $('play').textContent = '▶'; $('play').setAttribute('aria-label', 'Play exposures'); }
 async function load() {
   report = await api('/api/report'); index = 0; stop();
   const excluded = report.frames.filter(f => f.plot?.eligible === false);
@@ -16,18 +18,18 @@ async function load() {
   report.frames = allFrames;
   if (!report.frames.length) {
     $('empty').hidden = false; $('loaded').hidden = true;
-    status('Nenhuma imagem tem cobertura válida na posição MPC/MOST e faixa selecionada. Os pontos sem imagem não foram plotados.', true);
+    status('No image has valid coverage at the selected MPC/MOST position and wavelength range. Points without coverage were not plotted.', true);
     return false;
   }
   $('empty').hidden = true; $('loaded').hidden = false; $('synthetic').hidden = !report.synthetic;
-  $('dataset').textContent = report.synthetic ? 'DADOS SINTÉTICOS · VALIDAÇÃO' : 'EXPOSIÇÕES REAIS · SPHEREx / IRSA';
+  $('dataset').textContent = report.synthetic ? 'SYNTHETIC DATA · VALIDATION' : 'REAL EXPOSURES · SPHEREx / IRSA';
   $('object').textContent = report.object; $('band').textContent = `${number(report.config.low_um)}–${number(report.config.high_um)} μm`;
   for (const key of ['low_um', 'high_um', 'max_exposures', 'detector']) {
     if ($('query').elements[key]) $('query').elements[key].value = report.config[key] ?? 0;
   }
-  const options = [node('option', 'Todos os detectores observados')]; options[0].value = '0';
+  const options = [node('option', 'All observed detectors')]; options[0].value = '0';
   for (const d of [...new Set(allFrames.map(f => f.detector).filter(Boolean))].sort()) {
-    const option = node('option', `D${d} · ${allFrames.filter(f => f.detector === d).length} imagem(ns)`);
+    const option = node('option', `D${d} · ${allFrames.filter(f => f.detector === d).length} image(s)`);
     option.value = String(d); options.push(option);
   }
   $('detector-view').replaceChildren(...options); $('detector-view').value = '0';
@@ -35,7 +37,7 @@ async function load() {
     const d = i + 1, entry = report.spectral_coverage?.find(c => c.detector === d);
     const frames = allFrames.filter(f => f.detector === d), measured = frames.filter(f => f.measurement.flux_ujy != null).length;
     const card = node('div', '', 'band-tile'); card.dataset.detector = String(d);
-    const label = entry?.status === 'not_requested' ? 'Não solicitado' : !entry?.exposures && !frames.length ? 'Não observado' : `${frames.length} imagem(ns) · ${measured} medida(s)`;
+    const label = entry?.status === 'not_requested' ? 'Not requested' : !entry?.exposures && !frames.length ? 'Not observed' : `${frames.length} image(s) · ${measured} measurement(s)`;
     card.append(node('strong', `D${d}`), node('span', `${number(lo)}–${number(hi)} μm`), node('small', label));
     return card;
   }));
@@ -48,9 +50,9 @@ async function load() {
   $('gaia-overlay').checked = gaiaAvailable;
   $('gaia-notice').hidden = gaiaAvailable && gaia !== 'incomplete';
   $('gaia-notice').textContent = gaiaAvailable
-    ? 'Cobertura Gaia parcial: apenas registros disponíveis e compatíveis com a imagem são exibidos.'
-    : 'Gaia indisponível ou não fornecido: nenhuma fonte Gaia foi plotada. A imagem SPHEREx continua disponível; a máscara estelar está incompleta.';
-  $('excluded-note').textContent = excluded.length ? `${excluded.length} exposição(ões) excluída(s) da plotagem por falta de cobertura na posição MPC/MOST. Detalhes no JSON.` : '';
+    ? 'Partial Gaia coverage: only compatible records available for this image are displayed.'
+    : 'Gaia is unavailable or was not supplied: no Gaia sources were plotted. The SPHEREx image is still available; the stellar mask is incomplete.';
+  $('excluded-note').textContent = excluded.length ? `${excluded.length} exposure(s) excluded from the plot because the MPC/MOST position has no coverage. See the JSON for details.` : '';
   if (report.plotting?.preview) { $('preview').hidden = false; $('preview').href = `/${report.plotting.preview}`; }
   else $('preview').hidden = true;
   const mosaic = report.color_mosaic;
@@ -62,7 +64,7 @@ async function load() {
     $('color-download').href = `/${mosaic.preview}?v=${version}`;
     const coverage = mosaic.channels.map(c => `${c.channel}: ${number(100 * c.coverage_fraction, 1)}%`).join(' · ');
     const epochs = (mosaic.contributors || []).map(c => c.utc).sort();
-    $('color-coverage').textContent = `Cobertura por canal: ${coverage}. RGB completo: ${number(100 * mosaic.complete_rgb_fraction, 1)}%. Campo: ${mosaic.shape[1]} × ${mosaic.shape[0]} px, referência ${mosaic.reference_frame || 'cubo IRSA'}.${epochs.length ? ` Épocas UTC: ${epochs[0]} a ${epochs.at(-1)}.` : ''}`;
+    $('color-coverage').textContent = `Coverage por canal: ${coverage}. Complete RGB: ${number(100 * mosaic.complete_rgb_fraction, 1)}%. Field: ${mosaic.shape[1]} × ${mosaic.shape[0]} px, reference ${mosaic.reference_frame || 'IRSA cube'}.${epochs.length ? ` UTC epochs: ${epochs[0]} to ${epochs.at(-1)}.` : ''}`;
   }
   render();
   return true;
@@ -106,7 +108,7 @@ function drawImage() {
     ctx.fillText(String(x), px - 7, imageView.top + imageView.height + 17);
     ctx.fillText(String(y), imageView.left - 28, py + 3);
   }
-  ctx.fillText('X nativo · pixel', imageView.left + imageView.width / 2 - 40, imageView.top + imageView.height + 36);
+  ctx.fillText('Native X · pixel', imageView.left + imageView.width / 2 - 40, imageView.top + imageView.height + 36);
   ctx.fillText('Y', imageView.left - 28, imageView.top - 8);
   const bandOnly = mode === 'masked' || mode === 'wavelength';
   const stars = starsFor(f, scope, bandOnly, gaiaAvailable && $('gaia-overlay').checked);
@@ -134,16 +136,16 @@ function drawImage() {
   }
   ctx.restore();
   const arcsec = f.plot?.pixel_arcsec;
-  $('field-label').textContent = `${crop.w} × ${crop.h} px${arcsec ? ` · ≈ ${number(crop.w * arcsec / 60, 1)}′` : ''} · ${scope === 'target' ? 'recorte na previsão MPC/MOST' : 'campo FITS disponível'}`;
-  $('plot-note').textContent = `Gaia: ${gaiaAvailable ? `${stars.length} fonte(s) compatível(is) nesta vista` : 'indisponível; sem pontos sobrepostos'}. ${f.plot?.counts?.excluded_from_image ?? 0} registro(s) fora da cobertura excluído(s). Áreas hachuradas não possuem dado aceito.`;
-  $('stretch-note').textContent = limits ? `Asinh · escala comum no detector D${f.detector ?? 4} · fundo removido só no display · ${number(limits.lo, 4)} a ${number(limits.hi, 4)} MJy/sr.` : mode === 'mask' ? 'Cores representam motivos de exclusão e flags de revisão.' : `Centros de banda CWAVE · ${number(report.config.low_um)}–${number(report.config.high_um)} μm.`;
+  $('field-label').textContent = `${crop.w} × ${crop.h} px${arcsec ? ` · ≈ ${number(crop.w * arcsec / 60, 1)}′` : ''} · ${scope === 'target' ? 'cutout at MPC/MOST prediction' : 'available FITS field'}`;
+  $('plot-note').textContent = `Gaia: ${gaiaAvailable ? `${stars.length} compatible source(s) in this view` : 'unavailable; no overlay points'}. ${f.plot?.counts?.excluded_from_image ?? 0} record(s) outside coverage excluded. Hatched areas contain no accepted data.`;
+  $('stretch-note').textContent = limits ? `Asinh · shared scale within detector D${f.detector ?? 4} · background removed for display only · ${number(limits.lo, 4)} to ${number(limits.hi, 4)} MJy/sr.` : mode === 'mask' ? 'Colors indicate exclusion reasons and review flags.' : `CWAVE band centers · ${number(report.config.low_um)}–${number(report.config.high_um)} μm.`;
 }
 function plot() {
   const c = $('photometry'), ctx = c.getContext('2d'); ctx.clearRect(0, 0, c.width, c.height);
   const axis = $('plot-axis').value === 'time' ? 'time' : 'spectrum';
   const points = spectralPoints(report.frames, axis);
   ctx.font = '13px system-ui'; ctx.fillStyle = '#9baeba';
-  if (!points.length) { ctx.fillText('Sem aberturas válidas para medir o fluxo nesta seleção.', 20, 100); return; }
+  if (!points.length) { ctx.fillText('No valid apertures for flux measurement in this selection.', 20, 100); return; }
   const min = Math.min(0, ...points.map(p => p.flux_ujy - p.error_ujy));
   const max = Math.max(...points.map(p => p.flux_ujy + p.error_ujy));
   let xlo = axis === 'spectrum' ? report.config.low_um : Math.min(...points.map(p => p.x));
@@ -169,26 +171,26 @@ function plot() {
     }
     ctx.stroke(); ctx.beginPath(); ctx.arc(px, py, p.i === index ? 6 : 4, 0, 2 * Math.PI); ctx.fill();
   }
-  ctx.fillStyle = '#9baeba'; ctx.fillText(axis === 'spectrum' ? 'λ CWAVE · barras: CBAND e ±1σ' : `UTC · ${new Date(xlo).toISOString().slice(0, 10)} a ${new Date(xhi).toISOString().slice(0, 10)}`, 80, 292);
+  ctx.fillStyle = '#9baeba'; ctx.fillText(axis === 'spectrum' ? 'λ CWAVE · error bars: CBAND and ±1σ' : `UTC · ${new Date(xlo).toISOString().slice(0, 10)} to ${new Date(xhi).toISOString().slice(0, 10)}`, 80, 292);
 }
 function render() {
   if (!report?.frames.length) return; const f = report.frames[index], m = f.measurement;
   $('frame-band').textContent = `D${f.detector ?? 4} · ${number(f.central_wavelength_um ?? m.lambda_um, 4)} μm`;
   $('frame-label').textContent = `${index + 1} / ${report.frames.length}`; $('time').value = index;
-  $('epoch').textContent = `${f.utc} UTC · ${f.source} · pixels nativos / WCS próprio`;
+  $('epoch').textContent = `${f.utc} UTC · ${f.source} · native pixels / exposure WCS`;
   $('fits').href = `/${f.fits}`;
-  $('metrics').replaceChildren(...[[`${number(f.accepted_fraction * 100, 1)}%`, 'pixels aceitos no recorte'], [`${number(m.coverage * 100, 1)}%`, 'cobertura da abertura'], [number(m.flux_ujy, 1), 'μJy na abertura prevista']].map(([value, label]) => { const card = node('div', '', 'metric'); card.append(node('strong', value), node('span', label)); return card; }));
+  $('metrics').replaceChildren(...[[`${number(f.accepted_fraction * 100, 1)}%`, 'accepted pixels in cutout'], [`${number(m.coverage * 100, 1)}%`, 'aperture coverage'], [number(m.flux_ujy, 1), 'μJy in predicted aperture']].map(([value, label]) => { const card = node('div', '', 'metric'); card.append(node('strong', value), node('span', label)); return card; }));
   $('measurements').replaceChildren(...report.frames.map((frame, i) => {
     const a = frame.measurement, tr = node('tr', '', i === index ? 'selected' : ''); tr.tabIndex = 0;
     [`D${frame.detector ?? 4}`, frame.utc, number(a.lambda_um, 4), number(a.bandwidth_um, 4), a.flux_ujy == null ? '—' : `${number(a.flux_ujy)} ± ${number(a.error_ujy)}`, number(a.snr), `${number(100 * a.coverage, 1)}%`, statuses[a.status] || a.status].forEach(s => tr.append(node('td', s)));
     const select = () => { stop(); index = i; render(); }; tr.addEventListener('click', select); tr.addEventListener('keydown', e => { if (e.key === 'Enter') select(); }); return tr;
   }));
-  const entries = { 'Alvo RA / Dec': `${number(f.target.ra, 7)}° / ${number(f.target.dec, 7)}°`, 'Origem da posição': f.target.provider || 'Manifesto fornecido', 'Astrometria': f.target.position_status || 'Não verificada', 'Máscara': statuses[m.status] || m.status, 'ZODI subtraído': f.zodi_subtracted ? 'Sim; modelo do FITS' : 'Não', 'Flags de revisão': `${number(100 * f.advisory_fraction, 2)}% dos pixels; preservadas`, 'Calibração': f.calibration.source, 'SHA-256 original': f.input_sha256, 'SHA-256 saída': f.output_sha256 };
+  const entries = { 'Target RA / Dec': `${number(f.target.ra, 7)}° / ${number(f.target.dec, 7)}°`, 'Position source': f.target.provider || 'Provided manifest', 'Astrometry': f.target.position_status || 'Unverified', 'Mask': statuses[m.status] || m.status, 'ZODI subtracted': f.zodi_subtracted ? 'Yes; FITS model' : 'No', 'Review flags': `${number(100 * f.advisory_fraction, 2)}% of pixels; retained`, 'Calibration': f.calibration.source, 'SHA-256 original': f.input_sha256, 'Output SHA-256': f.output_sha256 };
   $('metadata').replaceChildren(...Object.entries(entries).flatMap(([k, v]) => [node('dt', k), node('dd', v)]));
   drawImage(); plot();
 }
 $('time').addEventListener('input', e => { stop(); index = +e.target.value; render(); });
-$('play').addEventListener('click', () => { if (timer) return stop(); if (!report || report.frames.length < 2) return; $('play').textContent = 'Ⅱ'; $('play').setAttribute('aria-label', 'Pausar exposições'); timer = setInterval(() => { index = (index + 1) % report.frames.length; render(); }, 1000); });
+$('play').addEventListener('click', () => { if (timer) return stop(); if (!report || report.frames.length < 2) return; $('play').textContent = 'Ⅱ'; $('play').setAttribute('aria-label', 'Pause exposures'); timer = setInterval(() => { index = (index + 1) % report.frames.length; render(); }, 1000); });
 document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); });
 $('tabs').addEventListener('click', e => { if (!e.target.dataset.mode) return; mode = e.target.dataset.mode; for (const b of $('tabs').children) b.setAttribute('aria-pressed', String(b === e.target)); drawImage(); });
 $('overlays').addEventListener('change', drawImage);
@@ -209,10 +211,10 @@ $('full-spectrum').addEventListener('click', () => {
 $('image').addEventListener('mousemove', e => {
   if (!report || !imageView) return; const f = report.frames[index], r = e.currentTarget.getBoundingClientRect();
   const p = pixelAt((e.clientX - r.left) / r.width * e.currentTarget.width, (e.clientY - r.top) / r.height * e.currentTarget.height, imageView);
-  if (!p) { $('pixel').textContent = 'Fora da área da imagem · nenhuma medida neste ponto.'; return; }
+  if (!p) { $('pixel').textContent = 'Outside the image area · no measurement here.'; return; }
   const { x, y } = p;
   const bits = f.mask[y][x], reasons = Object.entries(report.mask_bits).filter(([, bit]) => bits & bit).map(([name]) => name);
-  $('pixel').textContent = `x ${x} · y ${y} · λ ${number(f.wavelength[y][x], 5)} μm · ${number(f.science[y][x], 4)} MJy/sr · ${reasons.join(', ') || 'aceito'}`;
+  $('pixel').textContent = `x ${x} · y ${y} · λ ${number(f.wavelength[y][x], 5)} μm · ${number(f.science[y][x], 4)} MJy/sr · ${reasons.join(', ') || 'accepted'}`;
 });
 $('query').addEventListener('submit', async e => {
   e.preventDefault(); stop(); $('run').disabled = true;
@@ -221,12 +223,12 @@ $('query').addEventListener('submit', async e => {
     for (const k of ['low_um', 'high_um', 'max_exposures', 'detector']) params[k] = Number(params[k]);
     const { job } = await api('/api/run', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(params) });
     for (;;) { const state = await api(`/api/jobs/${job}`); status(state.message, state.status === 'error'); if (state.status === 'error') throw new Error(state.message); if (state.status === 'complete') break; await new Promise(resolve => setTimeout(resolve, 1500)); }
-    if (await load()) status('Análise concluída. Confira cobertura, flags e astrometria antes de interpretar as medidas.');
+    if (await load()) status('Analysis complete. Check coverage, flags and astrometry before interpreting measurements.');
   } catch (err) { status(err.message, true); } finally { $('run').disabled = false; }
 });
 try {
   const state = await api('/api/state');
-  $('server-note').textContent = state.archive_ready ? `Consulta real habilitada. Calibrações: ${(state.available_detectors || [4]).map(d => `D${d}`).join(', ')}.` : 'Consulta real requer calibrações CWAVE/CBAND locais. Resultados já processados continuam disponíveis.';
-  if (state.has_report) { if (await load()) status('Análise carregada. Selecione uma exposição ou inspecione a máscara.'); }
-  else status('Servidor pronto. Nenhuma análise carregada.');
-} catch (err) { status(`Falha ao acessar o processamento Python: ${err.message}`, true); }
+  $('server-note').textContent = state.archive_ready ? `Live archive queries enabled. Calibrations: ${(state.available_detectors || [4]).map(d => `D${d}`).join(', ')}.` : 'Live queries require local CWAVE/CBAND calibrations. Existing processed results remain available.';
+  if (state.has_report) { if (await load()) status('Analysis loaded. Select an exposure or inspect the mask.'); }
+  else status('Server ready. No analysis loaded.');
+} catch (err) { status(`Could not connect to Python processing: ${err.message}`, true); }
