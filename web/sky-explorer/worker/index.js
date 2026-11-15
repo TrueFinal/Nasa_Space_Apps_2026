@@ -40,12 +40,16 @@ export default {
       let cache=null;
       try{cache=globalThis.caches?.default;}catch{}
       if(!u.searchParams.has('refresh')&&cache){try{const hit=await cache.match(key);if(hit)return hit;}catch{cache=null;}}
-      let response;
+      let response,lastError;
       for(let attempt=0;attempt<2;attempt++) {
-        response=await fetch(upstream,{signal:AbortSignal.timeout(45000),redirect:'follow'});
-        if(response.ok)break;
-        if(response.status<500)break;
+        const endpoint=new URL(upstream);
+        if(attempt===1&&endpoint.hostname==='irsa.ipac.caltech.edu')endpoint.hostname='irsaproxy1.ipac.caltech.edu';
+        try{
+          response=await fetch(endpoint,{signal:AbortSignal.timeout(attempt?25000:20000),redirect:'follow'});
+          if(response.ok||response.status<500)break;
+        }catch(error){lastError=error;}
       }
+      if(!response)throw lastError||new Error('Serviço indisponível');
       if(!response.ok)return json({error:`IRSA respondeu HTTP ${response.status}. Tente novamente ou abra um exemplo salvo.`},502);
       const result=new Response(response.body,{headers:{'content-type':u.pathname==='/api/archive'?'text/csv;charset=utf-8':u.pathname==='/api/gaia'?'application/json':'application/fits','cache-control':`public,max-age=${ttl}`,'x-data-source':u.pathname==='/api/gaia'?'ESA Gaia DR3':'NASA/IPAC IRSA'}});
       if(cache&&ctx?.waitUntil)ctx.waitUntil(cache.put(key,result.clone()).catch(()=>{}));

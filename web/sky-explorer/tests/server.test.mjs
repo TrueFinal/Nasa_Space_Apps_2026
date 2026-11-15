@@ -17,3 +17,11 @@ test('live archive still works when hosting denies the default Cache API',async(
   assert.equal(r.status,200);assert.match(await r.text(),/s_ra,s_dec/);
  }finally{globalThis.fetch=original;if(descriptor)Object.defineProperty(globalThis,'caches',descriptor);else delete globalThis.caches;}
 });
+test('IRSA transient errors retry through the official alternate host',async()=>{
+ const original=globalThis.fetch;const hosts=[];
+ try{
+  globalThis.fetch=async(url)=>{hosts.push(new URL(url).hostname);return hosts.length===1?new Response('temporary outage',{status:502}):new Response('s_ra,s_dec\n1,2\n');};
+  const r=await worker.fetch(new Request('http://test/api/archive?ra=1&dec=2&fov=300'));
+  assert.equal(r.status,200);assert.deepEqual(hosts,['irsa.ipac.caltech.edu','irsaproxy1.ipac.caltech.edu']);
+ }finally{globalThis.fetch=original;}
+});
