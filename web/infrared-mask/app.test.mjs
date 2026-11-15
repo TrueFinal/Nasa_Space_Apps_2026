@@ -35,6 +35,10 @@ test('report renders all image modes, frame navigation, missing measurements and
   get('tabs').children = ['science', 'masked', 'mask', 'wavelength', 'image'].map(mode => ({ ...element('button'), dataset: { mode } }));
   const report = { synthetic: false, object: '1766', config: { low_um: 3.3, high_um: 3.5, max_exposures: 4, aperture_px: 2 },
     contrast: [0, 2], frames: [frame(0), frame(1)], gaia_status: { status: 'loaded' },
+    created_utc: '2026-11-15T12:00:00',
+    color_mosaic: { preview: 'files/color_mosaic.png', shape: [8, 8], reference_frame: 'exposure_00',
+      complete_rgb_fraction: 0, channels: [{ channel: 'G', coverage_fraction: .5 }],
+      contributors: [{ utc: '2026-07-20T12:00:00' }, { utc: '2026-07-25T12:00:00' }] },
     mask_bits: { invalid: 1, outside_band: 4, advisory: 32, target: 64 }, limitations: ['Conditional errors'], provenance: {} };
   const document = { getElementById: get, createElement: element, addEventListener() {} };
   const fetch = async path => ({ ok: true, json: async () => path === '/api/state' ? { has_report: true, archive_ready: true } : report });
@@ -44,6 +48,10 @@ test('report renders all image modes, frame navigation, missing measurements and
   assert.equal(get('measurements').children.length, 2);
   assert.equal(get('fits').href, '/files/exposure_00.fits');
   assert.equal(get('query').elements.low_um.value, 3.3);
+  assert.equal(get('color-mosaic').hidden, false);
+  assert.equal(get('color-preview').src, '/files/color_mosaic.png?v=2026-11-15T12%3A00%3A00');
+  assert.match(get('color-coverage').textContent, /RGB completo: 0,0%/);
+  assert.match(get('color-coverage').textContent, /2026-07-20T12:00:00 a 2026-07-25T12:00:00/);
   for (const button of get('tabs').children) get('tabs').events.click({ target: button });
   get('time').events.input({ target: { value: '1' } });
   assert.equal(get('fits').href, '/files/exposure_01.fits');
@@ -80,6 +88,7 @@ test('unavailable Gaia suppresses stale catalogue overlays and shows the reason'
   const document = { getElementById: get, createElement: element, addEventListener() {} };
   await run(document, async path => ({ ok: true, json: async () => path === '/api/state' ? { has_report: true } : report }));
   assert.equal(get('gaia-overlay').disabled, true);
+  assert.equal(get('color-mosaic').hidden, true); // Older reports remain usable.
   assert.equal(get('gaia-notice').hidden, false);
   assert.match(get('plot-note').textContent, /sem pontos/);
 });

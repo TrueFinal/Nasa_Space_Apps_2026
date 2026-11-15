@@ -245,7 +245,8 @@ def make_handler(state):
                 return self._send(200, (state.current_output / "report.json").read_bytes())
             if route.startswith("/files/") and state.current_output:
                 name = route.removeprefix("/files/")
-                allowed = {"report.json", "measurements.csv", "manifest.json", "comparison.png"} | {
+                allowed = {"report.json", "measurements.csv", "manifest.json", "comparison.png",
+                           "color_mosaic.png", "color_mosaic_rgba.png", "color_mosaic.json"} | {
                     f"exposure_{i:02d}.fits" for i in range(MAX_EXPOSURES)
                 }
                 if name not in allowed or not (state.current_output / name).is_file():
@@ -324,6 +325,9 @@ def main():
     run.add_argument("--output", default="outputs/infrared")
     demo = sub.add_parser("demo", help="Gerar e processar dados explicitamente sintéticos")
     demo.add_argument("--output", default="outputs/infrared_demo")
+    color = sub.add_parser("colorize-cube", help="Colorir cubo FITS IRSA; somente display IR")
+    color.add_argument("cube", help="FITS com IMAGE, WCS-WAVE, NHITS e FLAGS")
+    color.add_argument("--output", default="outputs/infrared_color")
     cal = sub.add_parser("calibration", help="Baixar CWAVE/CBAND oficial (33 MB por detector)")
     cal.add_argument("--release", choices=["dr1", "qr3"], default="qr3")
     cal.add_argument("--detector", choices=["all", "1", "2", "3", "4", "5", "6"], default="all")
@@ -354,7 +358,13 @@ def main():
     serve.add_argument("--port", type=int, default=8766)
     args = parser.parse_args()
     try:
-        if args.command == "calibration":
+        if args.command == "colorize-cube":
+            from .infrared_color import colorize_irsa_cube
+
+            result = colorize_irsa_cube(args.cube, args.output)
+            print(json.dumps({"output": str(Path(args.output).resolve()),
+                              "channels": result["channels"]}, ensure_ascii=False))
+        elif args.command == "calibration":
             if args.detector == "all":
                 print(fetch_calibrations(args.output, args.release, print))
             else:

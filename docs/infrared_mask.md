@@ -1,5 +1,8 @@
 # Zephyr · máscara infravermelha SPHEREx / MPC
 
+O laboratório também oferece [mosaico IR em falsas cores](infrared_color.md),
+exclusivamente para estética, com cobertura por canal e exportação PNG.
+
 Este laboratório seleciona pixels em toda a cobertura nominal SPHEREx, **0,75–5,00 µm, detectores D1–D6**. O padrão usa 12 exposições; o limite configurável é 72, com até 144 candidatos inspecionados. A seleção distribui oportunidades entre detectores e épocas, em vez de preencher o limite com uma única banda. O processamento é local, em Python/Astropy; Zephyr exibe os resultados, sem recalcular fotometria no navegador.
 
 | Detector | Intervalo nominal (µm) |

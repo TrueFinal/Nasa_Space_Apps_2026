@@ -9,6 +9,11 @@ Laboratório: http://127.0.0.1:8766/lab. A home integra o arquivo
 O processamento padrão usa 12 exposições reais, calibração por detector, gráfico por
 comprimento de onda e lacunas explícitas, sem confundir bandas distintas com variação temporal.
 
+**Mosaico IR em falsas cores:** o laboratório também gera uma composição RGB estética,
+com alinhamento WCS e cobertura por canal. FITS e fotometria permanecem nos pixels nativos,
+seguindo o fluxo SkyShift. Também aceita cubos FITS IRSA pelo comando `colorize-cube`.
+Veja [método, execução e limites](docs/infrared_color.md).
+
 
 Agora com catálogo completo, exposição individual e carregamento sem teto. Veja a [investigação de identificação de objetos](docs/identificacao_objetos.md).
 

@@ -214,7 +214,10 @@ def test_no_output_overwrites_original(fixture):
 
 def test_local_api_exposes_report_not_arbitrary_files(fixture, tmp_path):
     output = tmp_path / "out"
-    run_manifest(fixture, output)
+    report = run_manifest(fixture, output)
+    from spherex_tracking.infrared_color import render_color_mosaic
+
+    render_color_mosaic(report, output)
     state = LabState(output)
     server = LocalServer(("127.0.0.1", 0), make_handler(state))
     thread = threading.Thread(target=server.serve_forever, daemon=True)
@@ -241,6 +244,12 @@ def test_local_api_exposes_report_not_arbitrary_files(fixture, tmp_path):
                 assert r.headers["Content-Type"].startswith(kind)
         with urllib.request.urlopen(base + "/files/exposure_00.fits") as r:
             assert r.headers["Content-Type"] == "application/fits"
+        for name in ("color_mosaic.png", "color_mosaic_rgba.png"):
+            with urllib.request.urlopen(base + "/files/" + name + "?v=new-analysis") as r:
+                assert r.headers["Content-Type"] == "image/png"
+                assert r.read().startswith(b"\x89PNG")
+        with urllib.request.urlopen(base + "/files/color_mosaic.json") as r:
+            assert json.load(r)["display_only"]
         for path in (
             "/files/../manifest.json",
             "/files/%2e%2e/secrets",

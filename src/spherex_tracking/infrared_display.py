@@ -173,6 +173,10 @@ def render_comparison(report, output):
     import matplotlib.pyplot as plt
     from matplotlib.patches import Circle
 
+    from .infrared_color import render_color_mosaic
+
+    render_color_mosaic(report, output)
+
     all_frames = [f for f in report["frames"] if f["plot"]["eligible"]]
     if not all_frames:
         return

@@ -53,6 +53,17 @@ async function load() {
   $('excluded-note').textContent = excluded.length ? `${excluded.length} exposição(ões) excluída(s) da plotagem por falta de cobertura na posição MPC/MOST. Detalhes no JSON.` : '';
   if (report.plotting?.preview) { $('preview').hidden = false; $('preview').href = `/${report.plotting.preview}`; }
   else $('preview').hidden = true;
+  const mosaic = report.color_mosaic;
+  $('color-mosaic').hidden = !mosaic?.preview;
+  if (mosaic?.preview) {
+    // Version the URL because each new analysis reuses the output filenames.
+    const version = encodeURIComponent(report.created_utc || '');
+    $('color-preview').src = `/${mosaic.preview}?v=${version}`;
+    $('color-download').href = `/${mosaic.preview}?v=${version}`;
+    const coverage = mosaic.channels.map(c => `${c.channel}: ${number(100 * c.coverage_fraction, 1)}%`).join(' · ');
+    const epochs = (mosaic.contributors || []).map(c => c.utc).sort();
+    $('color-coverage').textContent = `Cobertura por canal: ${coverage}. RGB completo: ${number(100 * mosaic.complete_rgb_fraction, 1)}%. Campo: ${mosaic.shape[1]} × ${mosaic.shape[0]} px, referência ${mosaic.reference_frame || 'cubo IRSA'}.${epochs.length ? ` Épocas UTC: ${epochs[0]} a ${epochs.at(-1)}.` : ''}`;
+  }
   render();
   return true;
 }
