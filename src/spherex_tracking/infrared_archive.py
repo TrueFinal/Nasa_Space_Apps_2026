@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 import ssl
 import sys
 import time
@@ -86,7 +87,7 @@ def download(url, path, max_bytes=64 * 1024 * 1024):
 
 
 def validate_request(params):
-    allowed = {"object", "start", "end", "low_um", "high_um", "max_exposures", "detector"}
+    allowed = {"object", "start", "end", "low_um", "high_um", "max_exposures", "detector", "channel_id", "sample_id", "include_context"}
     if set(params) - allowed:
         raise ValueError("Parâmetro de consulta desconhecido.")
     name = str(params.get("object", "1766")).strip()
@@ -102,13 +103,49 @@ def validate_request(params):
     detector = float(params.get("detector", 0))
     if not detector.is_integer():
         raise ValueError("Detector deve ser inteiro.")
+    channel_id = float(params.get("channel_id", 0))
+    if not channel_id.is_integer() or not 0 <= channel_id <= 102:
+        raise ValueError("Select a SPHEREx channel from 1 to 102, or all (0).")
+    if not isinstance(params.get("include_context", True), bool):
+        raise ValueError("include_context must be boolean.")
+    sample_id = params.get("sample_id", "")
+    if not isinstance(sample_id, str) or len(sample_id) > 160:
+        raise ValueError("Invalid sample selection.")
+    low, high = float(params.get("low_um", 0.75)), float(params.get("high_um", 5))
+    if channel_id:
+        from .infrared_catalogs import channel_grid
+        channel = channel_grid()["channels"][int(channel_id) - 1]
+        low, high, detector = max(0.75, channel["low_um"]), min(5.0, channel["high_um"]), channel["detector"]
     cfg = MaskConfig(
-        low_um=float(params.get("low_um", 0.75)),
-        high_um=float(params.get("high_um", 5.0)),
+        low_um=low,
+        high_um=high,
         max_exposures=int(count),
         detector=int(detector),
     )
     return name, start, end, cfg
+
+
+def coordinate_candidates(sample, start, end, cfg, cache):
+    """Find real image footprints at a selected fixed ICRS sample position."""
+    from astropy.time import Time
+    rows, queries = [], []
+    for collection in ("spherex_dr1", "spherex_qr3"):
+        url = IRSA + "SIA?" + urllib.parse.urlencode({
+            "POS": f"CIRCLE {sample['ra']:.8f} {sample['dec']:.8f} 0.001",
+            "COLLECTION": collection,
+            "TIME": f"{Time(start.isoformat()).mjd} {Time(end.isoformat()).mjd}",
+            "BAND": f"{cfg.low_um * 1e-6} {cfg.high_um * 1e-6}", "MAXREC": "145"})
+        path = download(url, cache / f"{collection}.xml", 8 * 1024 * 1024)
+        table = Table.read(path, format="votable", use_names_over_ids=True)
+        queries.append({"url": url, "sha256": sha256(path), "possibly_truncated": len(table) >= 145})
+        for row in table:
+            match = re.fullmatch(r"SPHEREx-D([1-6])", str(row["energy_bandpassname"]))
+            if not match: continue
+            mid = (float(row["t_min"]) + float(row["t_max"])) / 2
+            rows.append({"observationid": str(row["obs_id"]), "productid": "D" + match[1],
+                         "ra_obj": sample["ra"], "dec_obj": sample["dec"], "uri": str(row["access_url"]),
+                         "mjd_start": mid, "mjd_end": mid, "geo_dist": None, "match": 1})
+    return rows, queries
 
 
 def _preview_at_target(path, ra, dec):
@@ -297,12 +334,19 @@ def prepare_archive(
     calibration_coordinates,
     progress=lambda s: None,
     mpc_orbit_line=None,
+    coordinate_sample=None,
 ):
     name, start, end, cfg = validate_request(params)
     requested_detectors = detectors_for(cfg.low_um, cfg.high_um, cfg.detector)
     calibrations = {d: resolve_calibration(calibration, d) for d in requested_detectors}
     cache = Path(cache_dir).resolve()
     cache.mkdir(parents=True, exist_ok=True)
+    from .infrared_catalogs import fetch_wise_context, resolve_mpc
+    progress("Validating object with the Minor Planet Center")
+    identity = resolve_mpc(name, cache.parent / "mpc")
+    if identity["status"] != "resolved":
+        raise ValueError("MPC object not found or ambiguous; search and select an official result.")
+    name = identity["items"][0]["identifier"]
     query = {
         "catalog": "spherex",
         "input_type": "name_input",
@@ -317,19 +361,22 @@ def prepare_archive(
         query.update(input_type="mpc_input", obj_type="Asteroid", mpc_data=mpc_orbit_line)
     url = MOST + "?" + urllib.parse.urlencode(query)
     progress("Consultando posições e exposições no MOST/IRSA")
-    table_path = download(url, cache / "most.tbl", 10 * 1024 * 1024)
-    try:
-        table = Table.read(table_path, format="ascii.ipac")
-    except Exception as exc:
-        raise ValueError(
-            "MOST não retornou tabela de exposições. Verifique objeto e datas."
-        ) from exc
+    if coordinate_sample:
+        table, image_queries = coordinate_candidates(coordinate_sample, start, end, cfg, cache)
+        table_path = None
+    else:
+        table_path = download(url, cache / "most.tbl", 10 * 1024 * 1024)
+        image_queries = []
+        try: table = Table.read(table_path, format="ascii.ipac")
+        except Exception as exc: raise ValueError("MOST returned no exposure table. Check object and dates.") from exc
     candidates = balanced_candidates(
         [r for r in table if int(r["match"]) == 1], requested_detectors
     )
     selected, rejected, seen = [], [], set()
     for row in candidates[:144]:
         obs = str(row["observationid"])
+        if not re.fullmatch(r"[A-Za-z0-9_.-]+", obs):
+            raise ValueError("Invalid archive observation identifier.")
         detector = int(str(row["productid"])[1:])
         key = (obs, detector)
         if key in seen:
@@ -401,6 +448,12 @@ def prepare_archive(
                 }
             )
             continue
+        if params.get("channel_id"):
+            from .infrared_catalogs import channel_for
+            matched = channel_for(actual, detector)
+            if not matched or matched["id"] != int(params["channel_id"]):
+                rejected.append({"observation": obs, "detector": detector, "reason": "calibrated_target_outside_selected_channel"})
+                continue
         selected.append(
             {
                 "fits": image_path.name,
@@ -410,13 +463,13 @@ def prepare_archive(
                 "target": {
                     "ra": ra,
                     "dec": dec,
-                    "mjd": (float(row["mjd_start"]) + float(row["mjd_end"])) / 2,
-                    "provider": "IRSA MOST / MPC orbit input"
+                    "mjd": mid if coordinate_sample else (float(row["mjd_start"]) + float(row["mjd_end"])) / 2,
+                    "provider": "Selected sample / fixed ICRS coordinate" if coordinate_sample else "IRSA MOST / MPC orbit input"
                     if mpc_orbit_line
                     else "IRSA MOST / name resolver",
                     "frame": "ICRS",
-                    "position_status": "observer_not_verified",
-                    "geo_dist_au": float(row["geo_dist"]),
+                    "position_status": "fixed_sky_not_moving_ephemeris" if coordinate_sample else "observer_not_verified",
+                    "geo_dist_au": None if coordinate_sample else float(row["geo_dist"]),
                     "time_offset_s": 86400
                     * ((float(row["mjd_start"]) + float(row["mjd_end"])) / 2 - mid),
                 },
@@ -453,6 +506,22 @@ def prepare_archive(
         "count": len(gaia),
         "cones": cone_status,
     }
+    context = {}
+    if params.get("include_context", True):
+        progress("Joining AllWISE / NEOWISE context at SPHEREx positions")
+        from concurrent.futures import ThreadPoolExecutor
+        def fetch_context(item):
+            i, center = item
+            return fetch_wise_context(center.ra.deg, center.dec.deg, cache / f"wise_{i}")
+        with ThreadPoolExecutor(max_workers=3) as pool:
+            for fetched in pool.map(fetch_context, enumerate(cones)):
+                for key, value in fetched.items():
+                    group = context.setdefault(key, {"status": "loaded", "rows": [], "queries": []})
+                    group["queries"].append({k:v for k,v in value.items() if k != "rows"})
+                    if value["status"] != "loaded": group["status"] = "incomplete"
+                    group["rows"].extend(value["rows"])
+        for group in context.values():
+            group["rows"] = list({r.get("source_id") or r.get("designation") or r.get("base_url") or json.dumps(r, sort_keys=True): r for r in group["rows"]}.values())
     manifest = {
         "object": name,
         "synthetic": False,
@@ -464,11 +533,15 @@ def prepare_archive(
         },
         "gaia": gaia,
         "gaia_status": gaia_status,
+        "context_catalogues": context,
+        "request_selection": {"channel_id": int(params.get("channel_id", 0)), "sample": coordinate_sample},
         "exposures": selected,
         "provenance": {
             "images": "SPHEREx IRSA",
-            "most_url": url,
-            "most_sha256": sha256(table_path),
+            "mpc_identity": identity,
+            "most_url": url if table_path else None,
+            "most_sha256": sha256(table_path) if table_path else None,
+            "image_queries": image_queries,
             "calibrations": {
                 str(d): {"path": str(p), "sha256": sha256(p)} for d, p in calibrations.items()
             },

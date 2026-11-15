@@ -11,7 +11,7 @@ import uuid
 from concurrent.futures import ThreadPoolExecutor
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import unquote, urlsplit
+from urllib.parse import parse_qs, unquote, urlsplit
 
 from .infrared_archive import (
     available_calibrations,
@@ -136,6 +136,16 @@ class LabState:
 
     def submit(self, params):
         _, _, _, cfg = validate_request(params)
+        sample = None
+        if params.get("sample_id"):
+            if not self.current_output:
+                raise ValueError("Load an analysis before selecting a joined sample.")
+            from .infrared_catalogs import build_join
+            report = json.loads((self.current_output / "report.json").read_text("utf-8"))
+            joined = report.get("dataset_join") or build_join(report)
+            sample = next((s for s in joined["samples"] if s["id"] == params["sample_id"]), None)
+            if sample is None:
+                raise ValueError("Sample does not belong to the current analysis; refresh selection.")
         missing = set(detectors_for(cfg.low_um, cfg.high_um, cfg.detector)) - set(
             available_calibrations(self.calibration)
         )
@@ -150,10 +160,10 @@ class LabState:
             self.running = True
             key = uuid.uuid4().hex
             self.jobs[key] = {"status": "running", "message": "Iniciando consulta"}
-        self.executor.submit(self._run, key, params)
+        self.executor.submit(self._run, key, params, sample)
         return key
 
-    def _run(self, key, params):
+    def _run(self, key, params, sample=None):
         def progress(message):
             with self.lock:
                 self.jobs[key]["message"] = message
@@ -161,7 +171,7 @@ class LabState:
         try:
             cache = ROOT / "data" / "infrared" / key
             output = self.output / "runs" / key
-            manifest = prepare_archive(params, cache, self.calibration, self.coordinates, progress)
+            manifest = prepare_archive(params, cache, self.calibration, self.coordinates, progress, coordinate_sample=sample)
             report = run_manifest(manifest, output, progress=progress)
             progress("Gerando plotagem com cobertura válida")
             render_comparison(report, output)
@@ -219,6 +229,14 @@ def make_handler(state):
             if not self._local_request():
                 return self._send(403, {"error": "Origem não autorizada"})
             route = unquote(urlsplit(self.path).path)
+            if route == "/api/channels":
+                from .infrared_catalogs import channel_grid
+                return self._send(200, channel_grid())
+            if route == "/api/mpc":
+                from .infrared_catalogs import resolve_mpc
+                query = parse_qs(urlsplit(self.path).query).get("object", [""])[0]
+                try: return self._send(200, resolve_mpc(query, ROOT / "data/infrared/mpc"))
+                except (OSError, ValueError, KeyError) as exc: return self._send(502, {"error": f"MPC lookup unavailable: {exc}"})
             if route == "/api/state":
                 return self._send(
                     200,
@@ -242,7 +260,11 @@ def make_handler(state):
             if route == "/api/report":
                 if not state.current_output:
                     return self._send(404, {"error": "Nenhuma análise carregada"})
-                return self._send(200, (state.current_output / "report.json").read_bytes())
+                report = json.loads((state.current_output / "report.json").read_text("utf-8"))
+                if "dataset_join" not in report:
+                    from .infrared_catalogs import build_join
+                    report["dataset_join"] = build_join(report)
+                return self._send(200, report)
             if route == "/api/cycles":
                 path = ROOT / "outputs" / "complete_cycles" / "report.json"
                 if not path.is_file():
@@ -258,8 +280,12 @@ def make_handler(state):
                 return self._send(200, path.read_bytes(), kind)
             if route.startswith("/files/") and state.current_output:
                 name = route.removeprefix("/files/")
+                if name == "joined_samples.json" and not (state.current_output / name).exists():
+                    from .infrared_catalogs import build_join
+                    report = json.loads((state.current_output / "report.json").read_text("utf-8"))
+                    return self._send(200, report.get("dataset_join") or build_join(report))
                 allowed = {"report.json", "measurements.csv", "manifest.json", "comparison.png",
-                           "color_mosaic.png", "color_mosaic_rgba.png", "color_mosaic.json"} | {
+                           "color_mosaic.png", "color_mosaic_rgba.png", "color_mosaic.json", "joined_samples.json"} | {
                     f"exposure_{i:02d}.fits" for i in range(MAX_EXPOSURES)
                 }
                 if name not in allowed or not (state.current_output / name).is_file():
@@ -360,6 +386,7 @@ def main():
     archive.add_argument("--high-um", type=float, default=5.0)
     archive.add_argument("--max-exposures", type=int, default=12)
     archive.add_argument("--detector", type=int, default=0)
+    archive.add_argument("--channel-id", type=int, default=0, help="SPHEREx channel 1–102; 0 selects a free wavelength range")
     archive.add_argument("--calibration", default="data/infrared/calibrations")
     archive.add_argument("--coordinates", choices=["sky", "detector"], default="sky")
     archive.add_argument(
@@ -417,6 +444,7 @@ def main():
                         "high_um",
                         "max_exposures",
                         "detector",
+                        "channel_id",
                     )
                 }
                 orbit = (

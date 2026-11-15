@@ -1,6 +1,7 @@
 import { cropFor, available, starsFor, segmentsFor, backgroundFor, limitsFor, stretch, viewport, imagePoint, pixelAt, spectralPoints } from './plate.mjs';
 const $ = id => document.getElementById(id);
 let report, allFrames = [], index = 0, mode = 'science', timer, imageView, gaiaAvailable = false;
+let joinedSamples = [], channelData = [];
 const bandColors = ['#8dc9f1', '#91dfcb', '#d6d991', '#efbb84', '#e396ad', '#b4a1e2'];
 const nominalBands = [[.75, 1.09], [1.10, 1.62], [1.63, 2.41], [2.42, 3.82], [3.83, 4.41], [4.42, 5.00]];
 const statuses = { aperture_measurement: 'Aperture measured', masked_aperture: 'Masked aperture', insufficient_background: 'Insufficient background', target_outside_image: 'Target outside image', aperture_or_background_at_edge: 'Aperture at image edge' };
@@ -59,6 +60,21 @@ async function load() {
   $('time').max = report.frames.length - 1; $('time').value = 0;
   $('limitations').replaceChildren(...report.limitations.map(s => node('li', translate(s))));
   $('provenance').textContent = JSON.stringify(report.provenance, null, 2);
+  joinedSamples = report.dataset_join?.samples || [];
+  const sampleSelect = $('sample-select');
+  if (sampleSelect) {
+    const first = node('option', 'Moving object position · MOST'); first.value = '';
+    sampleSelect.replaceChildren(first, ...joinedSamples.map(s => {
+      const option = node('option', `${s.kind === 'target' ? 'Target' : 'Gaia'} · C${s.channel_id ?? '?'} · ${number(s.ra, 5)}, ${number(s.dec, 5)} · ${s.utc}`);
+      option.value = s.id; return option;
+    }));
+  }
+  $('joined-panel').hidden = !report.dataset_join;
+  if (report.dataset_join) $('joined-summary').textContent = `${joinedSamples.length} candidate positions across ${report.dataset_join.channels.filter(c => c.samples > 0).length}/102 SPHEREx channels. Positional matches are candidates, not confirmed identities.`;
+  $('query-visuals').hidden = false;
+  $('comparison-image').src = `/files/comparison.png?${Date.now()}`;
+  $('mosaic-figure').hidden = !report.color_mosaic?.preview;
+  if (report.color_mosaic?.preview) $('color-preview').src = `/${report.color_mosaic.preview}?${Date.now()}`;
   const gaia = typeof report.gaia_status === 'object' ? report.gaia_status.status : report.gaia_status;
   gaiaAvailable = ['loaded', 'provided', 'synthetic', 'incomplete'].includes(gaia);
   $('gaia-overlay').disabled = !gaiaAvailable;
@@ -224,18 +240,29 @@ $('query').addEventListener('submit', async e => {
   e.preventDefault(); stop(); $('run').disabled = true;
   try {
     const params = Object.fromEntries(new FormData(e.currentTarget));
-    for (const k of ['low_um', 'high_um', 'max_exposures', 'detector']) params[k] = Number(params[k]);
+    for (const k of ['low_um', 'high_um', 'max_exposures', 'detector', 'channel_id']) params[k] = Number(params[k] || 0);
+    params.include_context = $('include-context').checked;
     const { job } = await api('/api/run', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(params) });
     for (;;) { const state = await api(`/api/jobs/${job}`); status(state.message, state.status === 'error'); if (state.status === 'error') throw new Error(state.message); if (state.status === 'complete') break; await new Promise(resolve => setTimeout(resolve, 1500)); }
     if (await load()) status('Analysis complete. Check coverage, flags and astrometry before interpreting measurements.');
   } catch (err) { status(err.message, true); } finally { $('run').disabled = false; }
 });
 try {
-  const cycles = await api('/api/cycles');
-  $('cycle-metadata').textContent = cycles.cycles.map(c =>
-    `Cycle ${c.cycle}: ${c.start.slice(0, 10)}–${c.end.slice(0, 10)} · ${c.n_exposures} exposures across ${c.n_visits} visit mosaics`
-  ).join('  |  ');
-} catch (err) { $('cycle-metadata').textContent = `Cycle animation unavailable: ${err.message}`; }
+  const grid = await api('/api/channels'); channelData = grid.channels || [];
+  const all = node('option', 'All 102 channels · custom wavelength range'); all.value = '0';
+  $('channel-id').replaceChildren(all, ...channelData.map(c => { const o = node('option', `${c.id} · D${c.detector}/${c.subchannel} · ${number(c.center_um, 4)} μm`); o.value = String(c.id); return o; }));
+} catch (err) { $('mpc-status').textContent = `Channel list unavailable: ${err.message}`; }
+$('mpc-search').addEventListener('click', async () => {
+  $('mpc-search').disabled = true; $('mpc-status').textContent = 'Searching the official MPC service…';
+  try {
+    const result = await api(`/api/mpc?object=${encodeURIComponent($('query').elements.object.value.trim())}`);
+    const items = result.items || [];
+    $('mpc-results').replaceChildren(...items.map(item => { const o = node('option', `${item.identifier} · ${item.name || item.type || 'MPC object'}`); o.value = item.identifier; return o; }));
+    $('mpc-status').textContent = result.status === 'resolved' ? 'MPC identity resolved. Images will be requested from SPHEREx/IRSA.' : result.status === 'ambiguous' ? 'Several matches found. Select the correct object.' : 'No MPC match found.';
+    if (result.status === 'resolved' && items[0]) $('query').elements.object.value = items[0].identifier;
+  } catch (err) { $('mpc-status').textContent = err.message; } finally { $('mpc-search').disabled = false; }
+});
+$('mpc-results').addEventListener('change', e => { if (e.target.value) $('query').elements.object.value = e.target.value; });
 try {
   const state = await api('/api/state');
   $('server-note').textContent = state.archive_ready ? `Live archive queries enabled. Calibrations: ${(state.available_detectors || [4]).map(d => `D${d}`).join(', ')}.` : 'Live queries require local CWAVE/CBAND calibrations. Existing processed results remain available.';
