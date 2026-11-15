@@ -5,7 +5,7 @@ description = "Coleta rastreável dos dados do MVP Earth Detectives"
 requires-python = ">=3.11"
 
 [tool.pytest.ini_options]
-pythonpath = ["."]
+pythonpath = [".", "src"]
 testpaths = ["tests"]
 
 [tool.ruff]

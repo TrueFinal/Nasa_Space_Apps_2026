@@ -1,5 +1,12 @@
 # Earth Detectives — The ENSO Case
 
+Também inclui o **[Laboratório SPHEREx / MPC / Gaia DR3 / WISE](docs/laboratorio_catalogos.md)**.
+Em “Preparar observações”, busque a identificação na API MPC, escolha um dos 102 canais
+SPHEREx e solicite imagens na trajetória MOST ou nas coordenadas de uma amostra cruzada.
+O laboratório oferece FITS SPHEREx, recortes AllWISE W1/W2 e acesso ao contexto WISEView,
+com épocas, lacunas e limites de catálogo explícitos. Execute `start-infrared.ps1`
+após instalar `requirements-infrared.txt`; acesse `http://127.0.0.1:8766/lab`.
+
 Ingestão de dados científicos do MVP NASA Space Apps 2026. Esta entrega cobre
 coleta, proveniência e auditoria técnica. O documento de referência está em
 [`docs/earth_detectives_enso.pdf`](docs/earth_detectives_enso.pdf).

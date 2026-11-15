@@ -1,0 +1,2 @@
+# Compiled assets have SHA-256 provenance; preserve their exact bytes on Windows.
+web/site/assets/* -text
