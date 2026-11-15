@@ -10,7 +10,7 @@ function download(blob,name){const a=document.createElement('a');a.href=URL.crea
 function bandOptions(){const old=$('band').value,det=Number($('detector').value);$('band').replaceChildren(new Option('Combinar o detector inteiro','detector'));cfg.channels.forEach((c,i)=>{if(c.DETECTOR===det)$('band').add(new Option(`Canal ${i+1} · ${c.WAVELENGTH.toFixed(3)} µm`,String(i+1)));});if([...$('band').options].some(o=>o.value===old))$('band').value=old;}
 function configuration(){return {ra:parseCoordinate($('ra').value,true),dec:parseCoordinate($('dec').value,false),fov:Number($('fov').value),detector:Number($('detector').value),size:Math.max(8,Math.round(Number($('fov').value)/6.2))};}
 function coordinateURL(){const c=configuration(),u=new URL(location.href);for(const k of ['ra','dec','fov','detector'])u.searchParams.set(k,c[k]);u.searchParams.set('band',$('band').value);u.searchParams.set('collection',$('collection').value);return u;}
-function provenance(){return {app:'SPHEREx Sky Explorer',exported_at:new Date().toISOString(),dataset,mode,reference:Number($('reference').value),frames:frames.map(f=>({date:iso(f.mjd),n_images:f.exposures.length,obs_ids:f.exposures.map(e=>e.obs_id),coverage:f.data.filter(Number.isFinite).length/f.data.length})),exposures:raw.map(({data,variance,...r})=>r),display:'Shared 1–99.5% limits, optional asinh stretch. Browser TAN-SIP + bilinear resampling; not exact area-overlap.'};}
+function provenance(){return {app:'SPHEREx Sky Explorer',exported_at:new Date().toISOString(),dataset,mode,reference:Number($('reference').value),frames:frames.map(f=>({date:iso(f.mjd),n_images:f.exposures.length,obs_ids:f.exposures.map(e=>e.obs_id),coverage:f.data.filter(Number.isFinite).length/f.data.length})),exposures:raw.map(({data,variance,...r})=>r),palette:$('palette').value,display:'Shared 1–99.5% limits, optional asinh stretch. Browser TAN-SIP + bilinear resampling; not exact area-overlap.'};}
 function dataForFrame(i){
   if(!frames.length)return [];
   if(mode==='mean')return coadd(frames.map(f=>({data:f.data,variance:f.weights.map(w=>w>0?1/w:Infinity)})),dataset.size).data;
@@ -33,7 +33,7 @@ function draw(){
     if(v!==null&&Number.isFinite(v)){
       count++;
       if(mode==='difference'){const t=Math.max(-1,Math.min(1,v/hi));rgb=t>0?[30+225*t,35+120*t,42+25*t]:[30+30*-t,35+140*-t,42+213*-t];}
-      else{let t=Math.max(0,Math.min(1,(v-lo)/(hi-lo)));if($('stretch').value==='asinh')t=Math.asinh(8*t)/Math.asinh(8);if($('invert').checked)t=1-t;rgb=[t*255,t*255,t*255];}
+      else{let t=Math.max(0,Math.min(1,(v-lo)/(hi-lo)));if($('stretch').value==='asinh')t=Math.asinh(8*t)/Math.asinh(8);if($('invert').checked)t=1-t;rgb=$('palette').value==='inferno'?cfg.inferno[Math.round(t*255)]:[t*255,t*255,t*255];}
     }
     for(let c=0;c<3;c++)pixels.data[j+c]=rgb[c];pixels.data[j+3]=255;
   }
@@ -139,7 +139,7 @@ $('search').onsubmit=query;$('cancel').onclick=()=>controller?.abort();$('fov').
 $('band').onchange=()=>{$('band-help').textContent=$('band').value==='detector'?'Faixa ampla: cobertura espectral variável. Clique em explorar para aplicar.':'Canal fixo: pixels fora da faixa são mascarados em todas as épocas. Clique em explorar para aplicar.';};
 $('group').onchange=rebuild;$('frame').oninput=()=>{stop();current=Number($('frame').value);draw();if(mode==='map')openMap();};
 $('play').onclick=()=>{if(timer){stop();return;}if(frames.length<2)return;$('play').textContent='Ⅱ';$('play').setAttribute('aria-label','Pausar');timer=setInterval(()=>{current=(current+1)%frames.length;draw();},Number($('speed').value));};
-$('speed').onchange=()=>{if(timer){stop();$('play').click();}};for(const id of ['stretch','invert','reference'])$(id).onchange=draw;
+$('speed').onchange=()=>{if(timer){stop();$('play').click();}};for(const id of ['stretch','invert','reference','palette'])$(id).onchange=draw;
 document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{mode=b.dataset.mode;document.querySelectorAll('[data-mode]').forEach(e=>e.classList.toggle('active',e===b));$('play').disabled=mode==='map';$('aladin').hidden=mode!=='map';$('sky').hidden=mode==='map';$('empty').hidden=true;if(mode==='map'){stop();openMap();}else draw();});
 $('gaia').onchange=()=>{if(mode!=='map')document.querySelector('[data-mode="map"]').click();else openMap();};$('survey').onchange=()=>{if(mode==='map')openMap();};
 canvas.onclick=e=>{if(!dataset)return;const r=canvas.getBoundingClientRect();point={x:Math.max(0,Math.min(dataset.size-1,Math.floor((e.clientX-r.left)/r.width*dataset.size))),y:Math.max(0,Math.min(dataset.size-1,dataset.size-1-Math.floor((e.clientY-r.top)/r.height*dataset.size)))};draw();drawSpectrum();};

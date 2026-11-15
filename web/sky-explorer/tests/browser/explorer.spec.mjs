@@ -5,6 +5,7 @@ test('all five observed targets load, animate, subtract, measure and export',asy
  for(const [id,name] of [['barnard','Estrela de Barnard'],['epsilon','Epsilon Indi B'],['rwaur','RW Aurigae'],['rdra','R Draconis'],['wise0855','WISE 0855']]){
   await page.locator(`[data-id="${id}"]`).click();await expect(page.locator('#target-title')).toHaveText(name);await expect(page.locator('#frame-label')).not.toHaveText('1 / 1');
  }
+ await expect(page.locator('#palette')).toHaveValue('inferno');await page.locator('#palette').selectOption('gray');await page.locator('#palette').selectOption('inferno');
  await page.locator('#play').click();await expect(page.locator('#frame-label')).not.toHaveText('1 / 5');await page.locator('#play').click();
  await page.locator('[data-mode="difference"]').click();await page.locator('#sky').click();await expect(page.locator('#spectrum-note')).toContainText('medidas');
  const gif=page.waitForEvent('download');await page.locator('#gif').click();expect((await gif).suggestedFilename()).toBe('spherex-temporal.gif');
