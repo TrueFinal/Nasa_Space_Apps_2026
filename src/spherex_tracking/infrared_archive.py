@@ -486,6 +486,7 @@ def prepare_archive(
     progress("Consultando Gaia DR3 para sinalizar contaminação")
     import astropy.units as u
     from astropy.coordinates import SkyCoord
+    from concurrent.futures import ThreadPoolExecutor
 
     gaia_by_id, cones, cone_status = {}, [], []
     for i, entry in enumerate(selected):
@@ -494,10 +495,14 @@ def prepare_archive(
         if any(coord.separation(center).deg < 0.005 for center in cones):
             continue
         cones.append(coord)
-        stars, status = fetch_gaia(target["ra"], target["dec"], cache / f"gaia_{i}")
-        cone_status.append(status)
-        for star in stars:
-            gaia_by_id[star["source_id"]] = star
+    def fetch_stars(item):
+        i, center = item
+        return fetch_gaia(center.ra.deg, center.dec.deg, cache / f"gaia_{i}")
+    with ThreadPoolExecutor(max_workers=3) as pool:
+        for stars, status in pool.map(fetch_stars, enumerate(cones)):
+            cone_status.append(status)
+            for star in stars:
+                gaia_by_id[star["source_id"]] = star
     gaia = list(gaia_by_id.values())
     gaia_status = {
         "status": "loaded"

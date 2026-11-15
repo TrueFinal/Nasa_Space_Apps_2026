@@ -1,4 +1,5 @@
 import { cropFor, available, starsFor, segmentsFor, backgroundFor, limitsFor, stretch, viewport, imagePoint, pixelAt, spectralPoints } from './plate.mjs';
+import { inferno } from './inferno.mjs';
 const $ = id => document.getElementById(id);
 let report, allFrames = [], index = 0, mode = 'science', timer, imageView, gaiaAvailable = false;
 let joinedSamples = [], channelData = [];
@@ -26,11 +27,11 @@ function translate(text) {
 }
 function status(text, error = false) { $('status').textContent = translate(text); $('status').className = error ? 'error' : ''; }
 async function api(path, options) { const res = await fetch(path, options); const data = await res.json(); if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`); return data; }
-function stop() { clearInterval(timer); timer = undefined; $('play').textContent = '▶'; $('play').setAttribute('aria-label', 'Play exposures'); }
+function stop() { clearInterval(timer); timer = undefined; $('play').textContent = '▶'; $('play').setAttribute('aria-label', 'Play exposures'); $('by-frame').setAttribute('aria-pressed', 'true'); }
 async function load() {
   report = await api('/api/report'); index = 0; stop();
   const excluded = report.frames.filter(f => f.plot?.eligible === false);
-  allFrames = report.frames.filter(f => f.plot?.eligible !== false);
+  allFrames = report.frames.filter(f => f.plot?.eligible !== false).sort((a, b) => a.mjd_utc - b.mjd_utc);
   report.frames = allFrames;
   if (!report.frames.length) {
     $('empty').hidden = false; $('loaded').hidden = true;
@@ -71,10 +72,6 @@ async function load() {
   }
   $('joined-panel').hidden = !report.dataset_join;
   if (report.dataset_join) $('joined-summary').textContent = `${joinedSamples.length} candidate positions across ${report.dataset_join.channels.filter(c => c.samples > 0).length}/102 SPHEREx channels. Positional matches are candidates, not confirmed identities.`;
-  $('query-visuals').hidden = false;
-  $('comparison-image').src = `/files/comparison.png?${Date.now()}`;
-  $('mosaic-figure').hidden = !report.color_mosaic?.preview;
-  if (report.color_mosaic?.preview) $('color-preview').src = `/${report.color_mosaic.preview}?${Date.now()}`;
   const gaia = typeof report.gaia_status === 'object' ? report.gaia_status.status : report.gaia_status;
   gaiaAvailable = ['loaded', 'provided', 'synthetic', 'incomplete'].includes(gaia);
   $('gaia-overlay').disabled = !gaiaAvailable;
@@ -86,7 +83,10 @@ async function load() {
   $('excluded-note').textContent = excluded.length ? `${excluded.length} exposure(s) excluded from the plot because the MPC/MOST position has no coverage. See the JSON for details.` : '';
   if (report.plotting?.preview) { $('preview').hidden = false; $('preview').href = `/${report.plotting.preview}`; }
   else $('preview').hidden = true;
+  $('gif-download').hidden = false;
+  $('gif-download').href = '/files/animation.gif?' + Date.now();
   render();
+  startPlayback();
   return true;
 }
 function drawImage() {
@@ -109,7 +109,7 @@ function drawImage() {
       if (mode === 'wavelength') {
         const t = Math.max(0, Math.min(1, (value - report.config.low_um) / (report.config.high_um - report.config.low_um)));
         rgb = [60 + 170 * t, 145 - 80 * t, 225 - 160 * t];
-      } else { const v = Math.round(255 * stretch(value - background, limits)); rgb = [v, v, v]; }
+      } else { rgb = inferno(stretch(value - background, limits)); }
     }
     // FITS y=0 is the bottom row; display the sky with y increasing upwards.
     const p = ((height - 1 - y) * width + x) * 4;
@@ -158,7 +158,7 @@ function drawImage() {
   const arcsec = f.plot?.pixel_arcsec;
   $('field-label').textContent = `${crop.w} × ${crop.h} px${arcsec ? ` · ≈ ${number(crop.w * arcsec / 60, 1)}′` : ''} · ${scope === 'target' ? 'cutout at MPC/MOST prediction' : 'available FITS field'}`;
   $('plot-note').textContent = `Gaia: ${gaiaAvailable ? `${stars.length} compatible source(s) in this view` : 'unavailable; no overlay points'}. ${f.plot?.counts?.excluded_from_image ?? 0} record(s) outside coverage excluded. Hatched areas contain no accepted data.`;
-  $('stretch-note').textContent = limits ? `Asinh · shared scale within detector D${f.detector ?? 4} · background removed for display only · ${number(limits.lo, 4)} to ${number(limits.hi, 4)} MJy/sr.` : mode === 'mask' ? 'Colors indicate exclusion reasons and review flags.' : `CWAVE band centers · ${number(report.config.low_um)}–${number(report.config.high_um)} μm.`;
+  $('stretch-note').textContent = limits ? `Inferno · logarithmic stretch · shared scale within detector D${f.detector ?? 4} · background removed for display only · ${number(limits.lo, 4)} to ${number(limits.hi, 4)} MJy/sr.` : mode === 'mask' ? 'Colors indicate exclusion reasons and review flags.' : `CWAVE band centers · ${number(report.config.low_um)}–${number(report.config.high_um)} μm.`;
 }
 function plot() {
   const c = $('photometry'), ctx = c.getContext('2d'); ctx.clearRect(0, 0, c.width, c.height);
@@ -210,7 +210,18 @@ function render() {
   drawImage(); plot();
 }
 $('time').addEventListener('input', e => { stop(); index = +e.target.value; render(); });
-$('play').addEventListener('click', () => { if (timer) return stop(); if (!report || report.frames.length < 2) return; $('play').textContent = 'Ⅱ'; $('play').setAttribute('aria-label', 'Pause exposures'); timer = setInterval(() => { index = (index + 1) % report.frames.length; render(); }, 1000); });
+function startPlayback() {
+  if (!report || report.frames.length < 2 || document.hidden) return;
+  stop(); $('by-frame').setAttribute('aria-pressed', 'false');
+  $('play').textContent = 'Ⅱ'; $('play').setAttribute('aria-label', 'Pause exposures');
+  timer = setInterval(() => { index = (index + 1) % report.frames.length; render(); }, 1000);
+}
+$('play').addEventListener('click', () => timer ? stop() : startPlayback());
+$('by-frame').addEventListener('click', () => { stop(); $('time').focus(); });
+for (const [id, step] of [['previous-frame', -1], ['next-frame', 1]]) $(id).addEventListener('click', () => {
+  if (!report?.frames.length) return; stop();
+  index = (index + step + report.frames.length) % report.frames.length; render();
+});
 document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); });
 $('tabs').addEventListener('click', e => { if (!e.target.dataset.mode) return; mode = e.target.dataset.mode; for (const b of $('tabs').children) b.setAttribute('aria-pressed', String(b === e.target)); drawImage(); });
 $('overlays').addEventListener('change', drawImage);

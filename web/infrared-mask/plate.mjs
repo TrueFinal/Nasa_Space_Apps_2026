@@ -61,9 +61,14 @@ export function backgroundFor(frame, mode, scope) {
   }
   return percentile(vals.sort((a, b) => a - b), 50);
 }
+const limitsCache = new WeakMap();
 export function limitsFor(frames, mode, scope, contrast = .3, detector) {
   // Applying a mask must not change the brightness scale of the surviving pixels.
   const sourceMode = mode === 'masked' ? 'science' : mode;
+  const key = JSON.stringify([sourceMode, scope, contrast, detector]);
+  let cache = limitsCache.get(frames);
+  if (!cache) { cache = new Map(); limitsCache.set(frames, cache); }
+  if (cache.has(key)) return cache.get(key);
   const c = Math.max(0, Math.min(1, contrast));
   const pLo = .5 + 9.5 * c, pHi = 100 - .05 * 10 ** (2.3 * c), values = [];
   for (const frame of frames) {
@@ -76,7 +81,9 @@ export function limitsFor(frames, mode, scope, contrast = .3, detector) {
   }
   values.sort((a, b) => a - b);
   const lo = percentile(values, pLo), hi = percentile(values, pHi);
-  return { lo, hi: hi > lo ? hi : lo + (Math.abs(lo) || 1) * .001, pLo, pHi };
+  const result = { lo, hi: hi > lo ? hi : lo + (Math.abs(lo) || 1) * .001, pLo, pHi };
+  cache.set(key, result);
+  return result;
 }
 export function spectralPoints(frames, axis = 'spectrum') {
   return frames.map((frame, i) => ({ ...frame.measurement, i, detector: frame.detector,
@@ -85,7 +92,7 @@ export function spectralPoints(frames, axis = 'spectrum') {
 }
 export function stretch(value, limits) {
   const t = Math.max(0, Math.min(1, (value - limits.lo) / (limits.hi - limits.lo)));
-  return Math.asinh(10 * t) / Math.asinh(10);
+  return Math.log1p(1000 * t) / Math.log1p(1000);
 }
 export function viewport(crop, width, height) {
   const scale = Math.min((width - 80) / crop.w, (height - 90) / crop.h);

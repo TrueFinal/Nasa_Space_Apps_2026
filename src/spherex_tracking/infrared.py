@@ -3,11 +3,11 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import socket
 import sys
 import threading
-import uuid
 from concurrent.futures import ThreadPoolExecutor
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -130,7 +130,12 @@ class LabState:
         self.coordinates = coordinates
         self.jobs = {}
         self.current_output = self.output if (self.output / "report.json").exists() else None
+        if self.current_output is None:
+            saved = list((self.output / "runs").glob("*/report.json"))
+            if saved:
+                self.current_output = max(saved, key=lambda p: p.stat().st_mtime).parent
         self.lock = threading.Lock()
+        self.animation_lock = threading.Lock()
         self.executor = ThreadPoolExecutor(max_workers=1)
         self.running = False
 
@@ -158,7 +163,15 @@ class LabState:
             if self.running:
                 raise ValueError("Já existe uma consulta em processamento.")
             self.running = True
-            key = uuid.uuid4().hex
+            key = hashlib.sha256(json.dumps({"params": params, "sample": sample,
+                "calibration": str(self.calibration), "coordinates": self.coordinates,
+                "display_version": 2}, sort_keys=True).encode()).hexdigest()[:32]
+            cached = self.output / "runs" / key
+            if (cached / "report.json").is_file():
+                self.current_output = cached
+                self.running = False
+                self.jobs[key] = {"status": "complete", "message": "Loaded cached analysis"}
+                return key
             self.jobs[key] = {"status": "running", "message": "Iniciando consulta"}
         self.executor.submit(self._run, key, params, sample)
         return key
@@ -173,8 +186,8 @@ class LabState:
             output = self.output / "runs" / key
             manifest = prepare_archive(params, cache, self.calibration, self.coordinates, progress, coordinate_sample=sample)
             report = run_manifest(manifest, output, progress=progress)
-            progress("Gerando plotagem com cobertura válida")
-            render_comparison(report, output)
+            # The interactive player uses native arrays directly. Large comparison
+            # plates and RGB mosaics need not block an image search.
             write_json(output / "report.json", report)
             with self.lock:
                 self.current_output = output
@@ -280,6 +293,18 @@ def make_handler(state):
                 return self._send(200, path.read_bytes(), kind)
             if route.startswith("/files/") and state.current_output:
                 name = route.removeprefix("/files/")
+                if name == "animation.gif":
+                    output = state.current_output
+                    with state.animation_lock:
+                        path = output / name
+                        if not path.exists():
+                            from .infrared_animation import render_animation
+                            report = json.loads((output / "report.json").read_text("utf-8"))
+                            try:
+                                render_animation(report, output)
+                            except ValueError as exc:
+                                return self._send(404, {"error": str(exc)})
+                    return self._send(200, path.read_bytes(), "image/gif")
                 if name == "joined_samples.json" and not (state.current_output / name).exists():
                     from .infrared_catalogs import build_join
                     report = json.loads((state.current_output / "report.json").read_text("utf-8"))
@@ -305,6 +330,7 @@ def make_handler(state):
                 "/lab/": ("index.html", "text/html; charset=utf-8"),
                 "/app.js": ("app.js", "text/javascript; charset=utf-8"),
                 "/plate.mjs": ("plate.mjs", "text/javascript; charset=utf-8"),
+                "/inferno.mjs": ("inferno.mjs", "text/javascript; charset=utf-8"),
                 "/style.css": ("style.css", "text/css; charset=utf-8"),
             }
             if route in assets:

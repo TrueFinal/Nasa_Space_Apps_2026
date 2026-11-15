@@ -78,9 +78,9 @@ def test_channel_grid_selection_uses_official_edges_and_preserves_102_slots():
     assert cfg.detector == 6
     assert cfg.low_um == pytest.approx(grid["channels"][-1]["low_um"])
     for bad in (-1, 103, 1.5):
-        with pytest.raises(ValueError, match="canal"):
+        with pytest.raises(ValueError, match="channel"):
             archive.validate_request({"channel_id": bad})
-    with pytest.raises(ValueError, match="booleano"):
+    with pytest.raises(ValueError, match="boolean"):
         archive.validate_request({"include_context": "true"})
 
 
@@ -209,7 +209,7 @@ def test_sample_requests_use_only_trusted_report_coordinates(tmp_path, monkeypat
     monkeypatch.setattr(state.executor, "submit", lambda *args: calls.append(args))
     sample = report["dataset_join"]["samples"][0]
     try:
-        with pytest.raises(ValueError, match="amostra"):
+        with pytest.raises(ValueError, match="Sample"):
             state.submit({"sample_id": "forged", "detector": 4, "low_um": 3.3, "high_um": 3.5})
         state.submit({"sample_id": sample["id"], "detector": 4, "low_um": 3.3, "high_um": 3.5})
         assert calls[0][3]["ra"] == sample["ra"]
