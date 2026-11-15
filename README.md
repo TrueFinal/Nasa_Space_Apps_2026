@@ -1,5 +1,7 @@
 # Aplicação web SPHEREx
 
+**Site público: [SPHEREx Sky Explorer](https://spherex-sky-explorer-2026.melodicember8.chatgpt.site)**
+
 A aplicação está em **[web/sky-explorer](web/sky-explorer)**. Ela oferece busca por coordenadas,
 animação temporal com banda fixa, seis detectores/102 canais, campo ajustável, média/diferença,
 GIF, espectro em abertura e sobreposições Aladin/Gaia/WISE. Há cinco exemplos reais prontos: 
