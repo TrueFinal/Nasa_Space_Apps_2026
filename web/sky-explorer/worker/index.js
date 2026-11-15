@@ -1,6 +1,6 @@
 // Assets are embedded by scripts/build.mjs; science runs locally in the browser.
 const ASSETS = {}; // BUILD_ASSETS
-const ALLOWED = new Set(['spherex_dr1','spherex_qr3','spherex_dr1_cube']);
+const ALLOWED = new Set(['spherex_dr1','spherex_qr3','spherex_dr1_deep','spherex_qr3_deep','spherex_dr1_cube']);
 const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:{'content-type':'application/json;charset=utf-8'}});
 export default {
   async fetch(request,env,ctx) {

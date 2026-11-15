@@ -1,7 +1,10 @@
+import {ArchiveBrowser} from './catalogue.js';
 import {readFits,projectExposure,coadd,groupEpochs,quantile,parseCoordinate,imageFits} from './astro.js';
 import {GIFEncoder,quantize,applyPalette} from './gifenc.js';
 const $=id=>document.getElementById(id), cfg=await fetch('/config.json').then(r=>r.json());
 let raw=[],groups=[],frames=[],dataset=null,current=0,mode='image',timer=null,controller=null,job=0,aladin=null,spectrumRows=[],point=null,gaiaCatalog=null,gaiaKey='',mapBlob=null;
+let catalogueContext=null,displayLimits=new Map();
+const archive=new ArchiveBrowser($('catalogue'),openArchiveImage);
 const canvas=$('sky'),ctx=canvas.getContext('2d'),mini=document.createElement('canvas'),mc=mini.getContext('2d');
 const status=(s,error=false)=>{$('status').textContent=s;$('status').classList.toggle('error',error);};
 const iso=mjd=>new Date((mjd-40587)*864e5).toISOString().slice(0,10);
@@ -22,10 +25,15 @@ function draw(){
   const f=frames[current],data=dataForFrame(current),size=dataset.size;
   mini.width=mini.height=size;
   const pixels=mc.createImageData(size,size);
-  const all=mode==='difference'?frames.flatMap((_,i)=>dataForFrame(i)):frames.flatMap(f=>f.data);
-  let lo=quantile(all,.01),hi=quantile(all,.995);
-  if(mode==='difference'){hi=Math.max(Math.abs(quantile(all,.01)),Math.abs(quantile(all,.99)),1e-8);lo=-hi;}
-  if(hi<=lo)hi=lo+1;
+  const cacheKey=mode+':'+$('reference').value;
+  if(!displayLimits.has(cacheKey)){
+    const sample=[],step=Math.max(1,Math.ceil(frames.length*size*size/100000));
+    for(let fi=0;fi<frames.length;fi++){const values=mode==='difference'?dataForFrame(fi):frames[fi].data;for(let j=0;j<values.length;j+=step)sample.push(values[j]);}
+    let lo=quantile(sample,.01),hi=quantile(sample,.995);
+    if(mode==='difference'){hi=Math.max(Math.abs(quantile(sample,.01)),Math.abs(quantile(sample,.99)),1e-8);lo=-hi;}
+    if(hi<=lo)hi=lo+1;displayLimits.set(cacheKey,[lo,hi]);
+  }
+  const [lo,hi]=displayLimits.get(cacheKey);
   let count=0;
   for(let y=0;y<size;y++)for(let x=0;x<size;x++) {
     const v=data[y*size+x],j=((size-1-y)*size+x)*4;
@@ -49,10 +57,10 @@ function draw(){
   $('exposure-links').replaceChildren();for(const e of f.exposures){if(!e.url)continue;const a=document.createElement('a');a.href=e.url;a.textContent=`${e.obs_id} ↗`;a.target='_blank';a.rel='noopener';$('exposure-links').append(a);}
 }
 function rebuild(){
-  stop();if(!dataset)return;
+  stop();displayLimits.clear();if(!dataset)return;
   groups=groupEpochs(raw,$('group').value);frames=groups.map(exposures=>({...coadd(exposures,dataset.size),exposures,mjd:exposures.reduce((s,e)=>s+e.mjd,0)/exposures.length}));
   current=0;$('frame').max=Math.max(0,frames.length-1);$('reference').replaceChildren();$('epochs').replaceChildren();
-  frames.forEach((f,i)=>{const date=iso(f.mjd);$('reference').add(new Option(date,i));const b=document.createElement('button');b.className='epoch';b.textContent=date;const small=document.createElement('small');small.textContent=`${f.exposures.length} exposições`;b.append(small);b.onclick=()=>{stop();current=i;draw();if(mode==='map')openMap();};$('epochs').append(b);});
+  frames.forEach((f,i)=>{const date=$('group').value==='individual'?new Date((f.mjd-40587)*864e5).toISOString().slice(0,19):iso(f.mjd);$('reference').add(new Option(date,i));const b=document.createElement('button');b.className='epoch';b.textContent=date;const small=document.createElement('small');small.textContent=`${f.exposures.length} exposições`;b.append(small);b.onclick=()=>{stop();current=i;draw();if(mode==='map')openMap();};$('epochs').append(b);});
   $('source-badge').textContent=dataset.isExample?'EXEMPLO OBSERVADO':'CONSULTA AO ARQUIVO';
   $('target-title').textContent=dataset.title||`${dataset.ra.toFixed(5)}°, ${dataset.dec.toFixed(5)}°`;
   $('irsa').href=`https://irsa.ipac.caltech.edu/applications/spherex/?UserTargetWorldPt=${dataset.ra}%20${dataset.dec}%20eq%20j2000`;
@@ -80,6 +88,8 @@ async function loadExample(t){
   controller?.abort();const id=++job;stop();$('cancel').hidden=true;$('search-button').disabled=false;$('progress').hidden=true;status(`Abrindo observações reais de ${t.name}…`);
   try{const d=await (await get(`/samples/${t.id}.json`)).json();if(id!==job)return;if(!d.exposures?.length)throw new Error('Exemplo indisponível; use a consulta ao arquivo.');
     $('ra').value=t.ra;$('dec').value=t.dec;$('detector').value=t.detector;$('fov').value=d.fov;$('fov-label').value=`${d.fov}″`;$('band').value='detector';bandOptions();
+    catalogueContext={ra:d.ra,dec:d.dec,fov:d.fov,size:d.size,detector:t.detector};
+    archive.setRows(d.exposures.map(e=>({obs_id:e.obs_id,date:e.date,t_min:e.mjd,energy_bandpassname:`SPHEREx-D${t.detector}`,collection:d.collection,access_url:e.url})),`Exemplo salvo: somente ${d.exposures.length} arquivos da amostra. Use “Buscar todas as imagens” para consultar a lista atual completa.`);
     raw=d.exposures;dataset={...d,isExample:true,detector:t.detector,title:t.name,bandLabel:`D${t.detector}`,exposures:undefined};point=null;rebuild();
     status(`Exemplo real: ${raw.length} de ${d.archive_count} exposições D${t.detector} do DR1, em ${frames.length} épocas. Seleção salva; consulte os dados atuais para ampliar.${d.errors?.length?` ${d.errors.length} downloads indisponíveis na preparação.`:''}`);
     [...$('targets').children].forEach(b=>b.classList.toggle('active',b.dataset.id===t.id));history.replaceState({},'',coordinateURL());
@@ -91,14 +101,17 @@ async function query(event){
   const failures=[];
   try{
     status('Consultando exposições na IRSA…');
-    const collection=$('collection').value,collections=collection==='both'?['spherex_dr1','spherex_qr3']:[collection];let rows=[];
+    const collection=$('collection').value,collections=collection==='all'?['spherex_dr1','spherex_qr3','spherex_dr1_deep','spherex_qr3_deep']:collection==='both'?['spherex_dr1','spherex_qr3']:[collection];let rows=[];
     for(const col of collections){try{const r=await get(`/api/archive?ra=${c.ra}&dec=${c.dec}&fov=${c.fov}&collection=${col}&refresh=1`,signal);rows.push(...parseCSV(await r.text()).map(r=>({...r,collection:col})));}catch(e){if(signal.aborted)throw e;failures.push(`${col}: ${e.message}`);}}
     if(!rows.length)throw new Error(failures.join(' · ')||'Nenhuma exposição disponível nesta região.');
+    catalogueContext={...c};
+    archive.setRows(rows,`Consulta ${collections.join(' + ')}: todos os arquivos retornados, dos seis detectores. Nenhum corte por data. ${failures.length?'Atenção: uma coleção falhou; a lista pode estar incompleta.':''}`);
+    if($('limit').value==='catalogue'){status(`${archive.rows.length} arquivos listados. Use “Ver” para abrir qualquer imagem. A visualização anterior permanece até você abrir outra imagem.`);return;}
     // DR1 takes precedence where the same exposure/detector is present in QR3.
     const unique=new Map();for(const row of rows)if(row.energy_bandpassname===`SPHEREx-D${c.detector}`&&!unique.has(row.obs_id))unique.set(row.obs_id,row);
     rows=[...unique.values()].sort((a,b)=>Number(a.t_min)-Number(b.t_min));
     const total=rows.length;if(!total)throw new Error('Sem imagens para o detector selecionado nesta região.');
-    const max=Number($('limit').value);if(rows.length>max){const indices=Array.from({length:max},(_,i)=>Math.round(i*(rows.length-1)/(max-1)));rows=indices.map(i=>rows[i]);}
+    const max=Number($('limit').value);if($('limit').value!=='all'&&rows.length>max){const indices=Array.from({length:max},(_,i)=>Math.round(i*(rows.length-1)/(max-1)));rows=indices.map(i=>rows[i]);}
     const plane=$('band').value==='detector'?null:cfg.channels[Number($('band').value)-1];const band=plane?{min:plane.WL_MIN,max:plane.WL_MAX}:null;
     const exposures=[];let done=0,next=0;
     async function consume(){while(next<rows.length){const row=rows[next++];if(signal.aborted)throw new DOMException('Cancelado','AbortError');try{
@@ -110,8 +123,24 @@ async function query(event){
     await Promise.all(Array.from({length:3},consume));if(id!==job)return;
     if(!exposures.length)throw new Error('Não foi possível baixar imagens. '+failures.slice(0,2).join(' · '));
     raw=exposures;dataset={...c,title:`${c.ra.toFixed(5)}°, ${c.dec.toFixed(5)}°`,bandLabel:plane?`${plane.WAVELENGTH.toFixed(3)} µm · canal ${$('band').value}`:`D${c.detector}`,band,collection,archive_count:total,sampled:rows.length<total,failures};point=null;
-    rebuild();history.replaceState({},'',coordinateURL());status(`${raw.length}/${total} exposições disponíveis carregadas · ${frames.length} épocas.${rows.length<total?' Limite aplicado; aumente para incluir mais imagens.':''}${failures.length?` ${failures.length} consultas/downloads falharam; veja o relatório.`:''}`);
+    rebuild();history.replaceState({},'',coordinateURL());status(`${raw.length}/${total} exposições disponíveis carregadas · ${frames.length} frames · catálogo com ${archive.rows.length} arquivos dos seis detectores.${rows.length<total?' Limite aplicado; aumente para incluir mais imagens.':''}${failures.length?` ${failures.length} consultas/downloads falharam; veja o relatório.`:''}`);
   }catch(e){if(id===job)status(signal.aborted?'Carregamento cancelado. A visualização anterior foi mantida.':e.message,true);}
+  finally{if(id===job){$('cancel').hidden=true;$('search-button').disabled=false;$('progress').hidden=true;}}
+}
+async function openArchiveImage(row){
+  if(!catalogueContext)return;
+  controller?.abort();controller=new AbortController();const signal=controller.signal,id=++job;stop();
+  $('cancel').hidden=false;$('search-button').disabled=true;
+  const detector=Number(row.energy_bandpassname.split('D').at(-1)),c={...catalogueContext,detector};
+  try{
+    status(`Abrindo ${row.obs_id} · D${detector}…`);
+    const url=`/api/cutout?url=${encodeURIComponent(row.access_url)}&center=${c.ra},${c.dec}&size=${c.fov/3600}`;
+    const response=await get(url,signal),e=projectExposure(readFits(await response.arrayBuffer()),{...c,badMask:cfg.badMask,band:null});
+    if(id!==job)return;
+    e.obs_id=row.obs_id;e.url=row.access_url;e.collection=row.collection;raw=[e];
+    dataset={...c,collection:row.collection,title:row.obs_id,bandLabel:`D${detector}`,archive_count:archive.rows.length};point=null;
+    rebuild();status(`Imagem individual ${row.obs_id} · ${row.collection}. Todos os outros arquivos continuam na lista.`);
+  }catch(e){if(id===job)status(signal.aborted?'Abertura cancelada.':e.message,true);}
   finally{if(id===job){$('cancel').hidden=true;$('search-button').disabled=false;$('progress').hidden=true;}}
 }
 async function openMap(){
@@ -135,7 +164,7 @@ async function openMap(){
   }catch(e){status(e.message,true);}
 }
 for(const t of cfg.targets){const b=document.createElement('button');b.type='button';b.className='target';b.dataset.id=t.id;b.textContent=t.name;const s=document.createElement('span');s.textContent=t.description;b.append(s);b.onclick=()=>loadExample(t);$('targets').append(b);}
-$('search').onsubmit=query;$('cancel').onclick=()=>controller?.abort();$('fov').oninput=()=>{$('fov-label').value=`${$('fov').value}″`;};$('detector').onchange=bandOptions;
+$('search').onsubmit=query;$('load-all').onclick=()=>{$('limit').value='all';$('collection').value='all';query();};$('cancel').onclick=()=>controller?.abort();$('fov').oninput=()=>{$('fov-label').value=`${$('fov').value}″`;};$('detector').onchange=bandOptions;
 $('band').onchange=()=>{$('band-help').textContent=$('band').value==='detector'?'Faixa ampla: cobertura espectral variável. Clique em explorar para aplicar.':'Canal fixo: pixels fora da faixa são mascarados em todas as épocas. Clique em explorar para aplicar.';};
 $('group').onchange=rebuild;$('frame').oninput=()=>{stop();current=Number($('frame').value);draw();if(mode==='map')openMap();};
 $('play').onclick=()=>{if(timer){stop();return;}if(frames.length<2)return;$('play').textContent='Ⅱ';$('play').setAttribute('aria-label','Pausar');timer=setInterval(()=>{current=(current+1)%frames.length;draw();},Number($('speed').value));};

@@ -137,6 +137,7 @@ export function coadd(exposures,size) {
 }
 export function groupEpochs(exposures,mode='visit') {
   const sorted=[...exposures].sort((a,b)=>a.mjd-b.mjd),groups=[];
+  if(mode==='individual')return sorted.map(e=>[e]);
   for(const e of sorted) {
     const key=mode==='semester'?`${new Date((e.mjd-40587)*864e5).getUTCFullYear()}-${new Date((e.mjd-40587)*864e5).getUTCMonth()<6?'H1':'H2'}`:null;
     const last=groups.at(-1);

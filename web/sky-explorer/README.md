@@ -53,3 +53,9 @@ Consultas ao arquivo podem ter dados parciais ou limites: ambos são informados.
 - [SIMBAD: coordenadas e movimentos próprios](https://simbad.cds.unistra.fr/simbad/)
 
 O pacote gifenc 1.0.3 é distribuído com sua licença em `worker/gifenc.LICENSE.txt`. Aladin Lite 3.9.2-beta é carregado do pacote oficial via jsDelivr.
+
+## Lista completa e exposições individuais
+
+O carregamento padrão agora é **Todas as exposições**, sem o teto de 240. O catálogo consulta DR1/QR3 e campos profundos e lista todos os resultados dos seis detectores em páginas de 50 linhas. Use os filtros, abra qualquer arquivo com **Ver** ou baixe a lista inteira como CSV. Para economizar transferência, escolha **Só listar; abrir uma por vez**. Em **Épocas**, escolha **Cada exposição individual** para animar os originais separadamente.
+
+As versões das coleções permanecem na tabela; o mosaico evita contar duas vezes a mesma exposição. Erros de uma coleção deixam a busca explicitamente parcial. A classificação física ainda não está implementada; a investigação e as fontes estão em [docs/identificacao_objetos.md](../../docs/identificacao_objetos.md) no repositório principal.

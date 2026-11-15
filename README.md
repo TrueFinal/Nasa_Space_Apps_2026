@@ -1,5 +1,7 @@
 # Aplicação web SPHEREx
 
+Agora com catálogo completo, exposição individual e carregamento sem teto. Veja a [investigação de identificação de objetos](docs/identificacao_objetos.md).
+
 **Site público: [SPHEREx Sky Explorer](https://spherex-sky-explorer-2026.melodicember8.chatgpt.site)**
 
 A aplicação está em **[web/sky-explorer](web/sky-explorer)**. Ela oferece busca por coordenadas,

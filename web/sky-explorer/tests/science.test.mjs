@@ -26,6 +26,7 @@ test('time grouping keeps later partial surveys and never uses wavelengths as ep
  const rows=[{mjd:60800,wave:4.8},{mjd:60801,wave:4.9},{mjd:61000,wave:4.8},{mjd:61160,wave:4.8}];
  assert.deepEqual(groupEpochs(rows).map(g=>g.length),[2,1,1]);
  assert.equal(groupEpochs(rows,'semester').flat().length,4);
+ assert.deepEqual(groupEpochs(rows,'individual').map(g=>g.length),[1,1,1,1]);
 });
 test('decimal and sexagesimal coordinates handle negative zero and invalid ranges',()=>{
  assert.ok(Math.abs(parseCoordinate('08h55m10.831s',true)-133.7951291667)<1e-8);
