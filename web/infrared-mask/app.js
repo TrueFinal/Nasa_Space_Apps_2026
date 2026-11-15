@@ -6,9 +6,24 @@ const nominalBands = [[.75, 1.09], [1.10, 1.62], [1.63, 2.41], [2.42, 3.82], [3.
 const statuses = { aperture_measurement: 'Aperture measured', masked_aperture: 'Masked aperture', insufficient_background: 'Insufficient background', target_outside_image: 'Target outside image', aperture_or_background_at_edge: 'Aperture at image edge' };
 const number = (v, digits = 2) => v == null || !Number.isFinite(v) ? '—' : v.toLocaleString('en-US', { maximumFractionDigits: digits, minimumFractionDigits: digits });
 const node = (tag, text, className) => { const el = document.createElement(tag); el.textContent = text; if (className) el.className = className; return el; };
-function status(text, error = false) {
-  const messages = {'Iniciando consulta':'Starting query','Consultando posições e exposições no MOST/IRSA':'Querying positions and exposures in MOST/IRSA','Consultando Gaia DR3 para sinalizar contaminação':'Querying Gaia DR3 for nearby stellar sources','Gerando plotagem com cobertura válida':'Rendering valid image coverage','Análise concluída':'Analysis complete'};
-  text = messages[text] || text.replace('Baixando calibração oficial','Downloading official calibration').replace('Inspecionando recorte','Inspecting cutout'); $('status').textContent = text; $('status').className = error ? 'error' : ''; }
+function translate(text) {
+  const phrases = {
+    'Iniciando consulta':'Starting query', 'Consultando posições e exposições no MOST/IRSA':'Querying positions and exposures in MOST/IRSA', 'Consultando Gaia DR3 para sinalizar contaminação':'Querying Gaia DR3 for nearby stellar sources', 'Gerando plotagem com cobertura válida':'Rendering valid image coverage', 'Análise concluída':'Analysis complete', 'Baixando calibração oficial':'Downloading official calibration', 'Inspecionando recorte':'Inspecting cutout', 'Processando exposição':'Processing exposure',
+    'Parâmetro de consulta desconhecido.':'Unknown query parameter.', 'Identificação MPC inválida.':'Invalid MPC designation.', 'O piloto aceita intervalos maiores que zero e de até sete dias.':'Choose an interval longer than zero and no longer than seven days.', 'Número de exposições deve ser inteiro.':'Exposure count must be an integer.', 'Detector deve ser inteiro.':'Detector must be an integer.', 'Já existe uma consulta em processamento.':'A query is already running.', 'Calibrações ausentes:':'Missing calibrations:', 'Execute calibration --detector all e reinicie com a pasta de calibrações.':'Run calibration --detector all and restart with the calibration directory.', 'MOST não retornou tabela de exposições. Verifique objeto e datas.':'MOST returned no exposure table. Check the object and dates.', 'Nenhuma exposição coloca o alvo na faixa calibrada. Altere datas/alvo; não foi substituída por outra banda.':'No exposure places the target within the calibrated band. Change the dates or target; no alternative band was substituted.', 'Nenhuma análise carregada':'No analysis loaded', 'Origem não autorizada':'Unauthorized origin', 'Arquivo não encontrado':'File not found', 'Rota não encontrada':'Route not found',
+    'MPC fornece órbitas/identificações; as imagens são do arquivo SPHEREx/IRSA.':'MPC supplies orbits and identifiers; images come from the SPHEREx/IRSA archive.',
+    'Janela seleciona o centro CWAVE do pixel; CBAND é a largura efetiva do instrumento.':'The range selects pixel CWAVE centers; CBAND is the effective instrument bandwidth.',
+    'Fluxo de abertura sem correção de PSF; erros condicionais a pixels independentes, sem erro sistemático de calibração/ZODI/astrometria.':'Aperture flux without PSF correction; errors assume independent pixels and exclude calibration, ZODI and astrometric systematics.',
+    'Posições MOST exigem validação do observador; medidas na posição prevista não confirmam uma detecção.':'MOST positions require observer validation; measurements at predicted positions do not confirm detections.',
+    'Gaia não é um catálogo infravermelho completo; ausência de associação não prova ausência de contaminação.':'Gaia is not a complete infrared catalog; no association does not prove the absence of contamination.',
+    'As imagens no painel usam pixels nativos; cada exposição tem seu próprio WCS, sem reamostragem para fotometria.':'Images use native pixels and each exposure has its own WCS; photometry does not use resampled pixels.',
+    'WISE W1 é uma banda larga e não equivale a esta janela SPHEREx; não há subtração WISE/SPHEREx.':'WISE W1 is a broad band and is not equivalent to this SPHEREx range; WISE is not subtracted from SPHEREx.',
+    'Detectores e centros de banda diferentes não constituem uma curva de luz em banda fixa. O espectro é amostrado em épocas distintas, sem interpolação em lacunas.':'Different detectors and band centers do not form a fixed-band light curve. The spectrum samples different epochs without interpolation across gaps.'
+  };
+  let result=String(text);
+  for(const [original,english] of Object.entries(phrases)) result=result.replaceAll(original,english);
+  return result;
+}
+function status(text, error = false) { $('status').textContent = translate(text); $('status').className = error ? 'error' : ''; }
 async function api(path, options) { const res = await fetch(path, options); const data = await res.json(); if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`); return data; }
 function stop() { clearInterval(timer); timer = undefined; $('play').textContent = '▶'; $('play').setAttribute('aria-label', 'Play exposures'); }
 async function load() {
@@ -23,7 +38,7 @@ async function load() {
   }
   $('empty').hidden = true; $('loaded').hidden = false; $('synthetic').hidden = !report.synthetic;
   $('dataset').textContent = report.synthetic ? 'SYNTHETIC DATA · VALIDATION' : 'REAL EXPOSURES · SPHEREx / IRSA';
-  $('object').textContent = report.object; $('band').textContent = `${number(report.config.low_um)}–${number(report.config.high_um)} μm`;
+  $('object').textContent = report.synthetic ? 'Synthetic demonstration — not NASA observations' : report.object; $('band').textContent = `${number(report.config.low_um)}–${number(report.config.high_um)} μm`;
   for (const key of ['low_um', 'high_um', 'max_exposures', 'detector']) {
     if ($('query').elements[key]) $('query').elements[key].value = report.config[key] ?? 0;
   }
@@ -42,7 +57,7 @@ async function load() {
     return card;
   }));
   $('time').max = report.frames.length - 1; $('time').value = 0;
-  $('limitations').replaceChildren(...report.limitations.map(s => node('li', s)));
+  $('limitations').replaceChildren(...report.limitations.map(s => node('li', translate(s))));
   $('provenance').textContent = JSON.stringify(report.provenance, null, 2);
   const gaia = typeof report.gaia_status === 'object' ? report.gaia_status.status : report.gaia_status;
   gaiaAvailable = ['loaded', 'provided', 'synthetic', 'incomplete'].includes(gaia);
@@ -64,7 +79,7 @@ async function load() {
     $('color-download').href = `/${mosaic.preview}?v=${version}`;
     const coverage = mosaic.channels.map(c => `${c.channel}: ${number(100 * c.coverage_fraction, 1)}%`).join(' · ');
     const epochs = (mosaic.contributors || []).map(c => c.utc).sort();
-    $('color-coverage').textContent = `Coverage por canal: ${coverage}. Complete RGB: ${number(100 * mosaic.complete_rgb_fraction, 1)}%. Field: ${mosaic.shape[1]} × ${mosaic.shape[0]} px, reference ${mosaic.reference_frame || 'IRSA cube'}.${epochs.length ? ` UTC epochs: ${epochs[0]} to ${epochs.at(-1)}.` : ''}`;
+    $('color-coverage').textContent = `Channel coverage: ${coverage}. Complete RGB: ${number(100 * mosaic.complete_rgb_fraction, 1)}%. Field: ${mosaic.shape[1]} × ${mosaic.shape[0]} px, reference ${mosaic.reference_frame || 'IRSA cube'}.${epochs.length ? ` UTC epochs: ${epochs[0]} to ${epochs.at(-1)}.` : ''}`;
   }
   render();
   return true;
