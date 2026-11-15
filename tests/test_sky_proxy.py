@@ -52,7 +52,7 @@ def test_primary_lab_serves_coordinates_and_all_five_observed_targets(tmp_path):
                 d=json.load(res)
             assert len(d['exposures'])==count
             assert len({e['mjd'] for e in d['exposures']})>1
-        with urllib.request.urlopen(base+'/mpc') as res: assert b'id="detector-view"' in res.read()
+        with urllib.request.urlopen(base+'/mpc') as res: assert b'id="ra"' in res.read()
         with pytest.raises(urllib.error.HTTPError) as error:
             urllib.request.urlopen(base+'/sky-assets/%2e%2e/infrared.py')
         assert error.value.code==404

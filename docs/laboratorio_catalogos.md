@@ -1,3 +1,5 @@
+> Legacy UI references below describe the earlier prototype. The only current frontend is `web/sky-explorer`, served at `/` and `/lab`.
+
 # Preparar observações: MPC e amostras cruzadas
 
 O laboratório foi incorporado à branch `dessinha` preservando o coletor, notebooks,
@@ -109,8 +111,8 @@ catálogos já adquiridos, enquanto sua ausência produz associações externas 
 ```powershell
 .venv\Scripts\python.exe -m pip install -r requirements-dev.txt -r requirements-infrared.txt
 .venv\Scripts\python.exe -m pytest -q
-node --test web/infrared-mask/app.test.mjs web/infrared-mask/plate.test.mjs
-npm.cmd run check --prefix web/site
+npm --prefix web/sky-explorer test
+npm --prefix web/sky-explorer run build
 ```
 
 Em 15/11/2026, MPC resolveu 1766 como Slipher. Uma consulta espacial de teste retornou

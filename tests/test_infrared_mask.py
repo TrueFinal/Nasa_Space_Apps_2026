@@ -226,24 +226,17 @@ def test_local_api_exposes_report_not_arbitrary_files(fixture, tmp_path):
     try:
         with urllib.request.urlopen(base + "/api/report") as r:
             assert json.load(r)["synthetic"]
-        with urllib.request.urlopen(base + "/plate.mjs") as r:
-            assert r.headers["Content-Type"] == "text/javascript; charset=utf-8"
-            assert b"export function cropFor" in r.read()
-        with urllib.request.urlopen(base + "/") as r:
-            page = r.read()
-            assert b"spherex-cutout.png" in page
-            assert b"spherex-canvas" not in page
-            assert "script-src 'self' 'unsafe-inline'" in r.headers["Content-Security-Policy"]
-        with urllib.request.urlopen(base + "/mpc") as r:
-            assert b'id="detector-view"' in r.read()
-            assert "script-src 'self';" in r.headers["Content-Security-Policy"]
-        for asset, kind in (
-            ("theme.css", "text/css"),
-            ("zephyr-logo.svg", "image/svg+xml"),
-            ("spherex-cutout.png", "image/png"),
-        ):
-            with urllib.request.urlopen(base + "/site-assets/" + asset) as r:
-                assert r.headers["Content-Type"].startswith(kind)
+        for route in ('/', '/lab', '/mpc'):
+            with urllib.request.urlopen(base + route) as r:
+                page = r.read()
+                assert b'id="ra"' in page and b'/sky-assets/app.js' in page
+                assert "script-src 'self' https://cdn.jsdelivr.net" in r.headers["Content-Security-Policy"]
+        with urllib.request.urlopen(base + '/sky-assets/help.js') as r:
+            assert b'export function installHelp' in r.read()
+        for route in ('/plate.mjs', '/inferno.mjs', '/site-assets/home.css'):
+            with pytest.raises(urllib.error.HTTPError) as error:
+                urllib.request.urlopen(base + route)
+            assert error.value.code == 404
         with urllib.request.urlopen(base + "/files/exposure_00.fits") as r:
             assert r.headers["Content-Type"] == "application/fits"
         for name in ("color_mosaic.png", "color_mosaic_rgba.png"):

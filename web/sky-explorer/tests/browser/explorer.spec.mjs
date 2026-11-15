@@ -50,3 +50,26 @@ test('invalid coordinate links show an actionable message without crashing',asyn
  await page.goto('/?ra=999&dec=0');await expect(page.locator('#status')).toContainText('0–360');
  expect(errors).toEqual([]);
 });
+
+test('contextual glossary works with hover, keyboard and touch without changing the view',async({page,browser})=>{
+ await page.goto('/');await expect(page.locator('#source-badge')).toHaveText('SAVED REAL OBSERVATIONS');
+ expect(await page.locator('.term-help').count()).toBeGreaterThan(25);
+ const help=page.getByRole('button',{name:'Explain Right Ascension (RA)',exact:true});
+ const tip=page.locator('#glossary-ra');
+ await help.hover();await expect(tip).toBeVisible();await expect(tip).toContainText('east–west coordinate');
+ await page.keyboard.press('Escape');await expect(tip).toBeHidden();
+ await help.focus();await expect(tip).toBeVisible();
+ await page.keyboard.press('Escape');await expect(tip).toBeHidden();
+ await expect(page.locator('#source-badge')).toHaveText('SAVED REAL OBSERVATIONS');
+ const context=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
+ const phone=await context.newPage();await phone.goto('/');
+ const button=phone.getByRole('button',{name:'Explain Motion trail',exact:true});
+ await button.tap();const popup=phone.locator('#glossary-datamodetrail');await expect(popup).toBeVisible();
+ await expect(popup).toContainText('does not draw or confirm a path');
+ const box=await popup.boundingBox();expect(box.x).toBeGreaterThanOrEqual(0);expect(box.x+box.width).toBeLessThanOrEqual(390);
+ await button.tap();await expect(popup).toBeHidden();
+ await button.tap();await expect(popup).toBeVisible();
+ await phone.locator('#target-title').tap();await expect(popup).toBeHidden();
+ expect(await phone.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+ await context.close();
+});

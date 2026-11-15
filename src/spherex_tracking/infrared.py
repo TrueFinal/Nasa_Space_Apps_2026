@@ -215,7 +215,6 @@ class LabState:
 
 
 def make_handler(state):
-    static = ROOT / "web" / "infrared-mask"
 
     class Handler(BaseHTTPRequestHandler):
         def log_message(self, fmt, *args):
@@ -263,10 +262,10 @@ def make_handler(state):
             if not self._local_request():
                 return self._send(403, {"error": "Origem não autorizada"})
             route = unquote(urlsplit(self.path).path)
-            if route in ("/lab", "/lab/", "/sky", "/sky/") or route.startswith("/sky-assets/"):
+            if route in ("/", "/index.html", "/lab", "/lab/", "/sky", "/sky/", "/mpc", "/mpc/") or route.startswith("/sky-assets/"):
                 base = ROOT / "web/sky-explorer/worker"
                 name = route.removeprefix("/sky-assets/") if route.startswith("/sky-assets/") else "index.html"
-                allowed = {"index.html", "app.js", "astro.js", "catalogue.js", "style.css", "config.json", "gifenc.js", "gifenc.LICENSE.txt"}
+                allowed = {"index.html", "app.js", "astro.js", "catalogue.js", "style.css", "config.json", "gifenc.js", "gifenc.LICENSE.txt", "help.js"}
                 allowed |= {f"samples/{n}.json" for n in ("barnard", "epsilon", "wise0855", "rwaur", "rdra")}
                 if name not in allowed:
                     return self._send(404, {"error":"Asset not found."})
@@ -401,41 +400,6 @@ def make_handler(state):
                     else "application/json; charset=utf-8"
                 )
                 return self._send(200, (state.current_output / name).read_bytes(), kind)
-            assets = {
-                "/mpc": ("index.html", "text/html; charset=utf-8"),
-                "/mpc/": ("index.html", "text/html; charset=utf-8"),
-                "/app.js": ("app.js", "text/javascript; charset=utf-8"),
-                "/plate.mjs": ("plate.mjs", "text/javascript; charset=utf-8"),
-                "/inferno.mjs": ("inferno.mjs", "text/javascript; charset=utf-8"),
-                "/style.css": ("style.css", "text/css; charset=utf-8"),
-            }
-            if route in assets:
-                name, kind = assets[route]
-                return self._send(200, (static / name).read_bytes(), kind)
-            if route in ("/", "/index.html", "/zephyr_spherex_planet_x_interactive.html"):
-                return self._send(
-                    200,
-                    (ROOT / "web/site/index.html").read_bytes(),
-                    "text/html; charset=utf-8",
-                    home=True,
-                )
-            site_assets = {
-                "home.css": "text/css",
-                "theme.css": "text/css",
-                "spherex-cutout.png": "image/png",
-                "navigation.css": "text/css",
-                "navigation.js": "text/javascript",
-                "zephyr-logo.svg": "image/svg+xml",
-                "manifest.json": "application/json",
-            }
-            if route.startswith("/site-assets/"):
-                name = route.removeprefix("/site-assets/")
-                if name in site_assets:
-                    return self._send(
-                        200,
-                        (ROOT / "web/site/assets" / name).read_bytes(),
-                        site_assets[name] + "; charset=utf-8",
-                    )
             return self._send(404, {"error": "Rota não encontrada"})
 
         def do_POST(self):

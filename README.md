@@ -6,25 +6,14 @@ uv run python -m spherex_tracking.infrared serve
 ```
 
 Open **http://127.0.0.1:8766/lab**. Search RA/Dec or use the five observed challenge
-targets. This is the main coordinate/time viewer; the advanced MPC lab is at `/mpc`.
+targets. This is the only web frontend; `/` and `/lab` open the same coordinate/time viewer. Hover, focus or tap the small “?” buttons for plain-language help.
 See [challenge requirements, validation and deployment](docs/challenge_requirements.md).
 
 # Aplicação web SPHEREx
 
-**Novo: [Zephyr IR Lab — máscara FITS de 0,75 a 5,00 µm, D1–D6](docs/infrared_mask.md)**.
-Processamento Python, posições MOST/MPC no WCS SPHEREx, máscara Gaia DR3, imagens,
-trajetórias previstas e medidas com incertezas. No Windows, use `start-infrared.ps1`
-após instalar `requirements-infrared.txt`. Home Zephyr: http://127.0.0.1:8766/.
-Laboratório: http://127.0.0.1:8766/lab. A home integra o arquivo
-`zephyr_spherex_planet_x_interactive.html`; sua identidade visual também se aplica ao laboratório.
-O processamento padrão usa 12 exposições reais, calibração por detector, gráfico por
-comprimento de onda e lacunas explícitas, sem confundir bandas distintas com variação temporal.
+O frontend atual está somente em `web/sky-explorer`. As versões antigas da home e do laboratório foram removidas. Os botões “?” junto aos controles explicam os termos técnicos sem sair da tela.
 
-**Mosaico IR em falsas cores:** o laboratório também gera uma composição RGB estética,
-com alinhamento WCS e cobertura por canal. FITS e fotometria permanecem nos pixels nativos,
-seguindo o fluxo SkyShift. Também aceita cubos FITS IRSA pelo comando `colorize-cube`.
-Veja [método, execução e limites](docs/infrared_color.md).
-
+As rotinas científicas de análise por pixels nativos continuam disponíveis pela linha de comando Python: [máscaras e calibração](docs/infrared_mask.md) e [visualização de cubos FITS](docs/infrared_color.md).
 
 Agora com catálogo completo, exposição individual e carregamento sem teto. Veja a [investigação de identificação de objetos](docs/identificacao_objetos.md).
 

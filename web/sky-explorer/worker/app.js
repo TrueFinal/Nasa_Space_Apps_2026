@@ -1,18 +1,20 @@
+import { installHelp } from './help.js';
 import {ArchiveBrowser} from './catalogue.js';
 import {readFits,projectExposure,coadd,groupEpochs,quantile,parseCoordinate,imageFits,intervalStack} from './astro.js';
 import {GIFEncoder,quantize,applyPalette} from './gifenc.js';
 const $=id=>document.getElementById(id), cfg=await fetch(new URL('./config.json',import.meta.url)).then(r=>r.json());
-const integrated = location.pathname.startsWith('/lab') || location.pathname.startsWith('/sky');
+const integrated = new URL(import.meta.url).pathname.startsWith('/sky-assets/');
 let raw=[],groups=[],frames=[],dataset=null,current=0,mode='image',timer=null,controller=null,job=0,aladin=null,spectrumRows=[],point=null,gaiaCatalog=null,gaiaKey='',mapBlob=null;
 let catalogueContext=null,displayLimits=new Map(),playbackWanted=false,stackCache=null,exportingGif=false;
 const archive=new ArchiveBrowser($('catalogue'),openArchiveImage);
+installHelp();
 const canvas=$('sky'),ctx=canvas.getContext('2d'),mini=document.createElement('canvas'),mc=mini.getContext('2d');
 const status=(s,error=false)=>{$('status').textContent=s;$('status').classList.toggle('error',error);};
 const utc=mjd=>new Date((mjd-40587)*864e5).toISOString().slice(0,19)+' UTC';
 const iso=mjd=>new Date((mjd-40587)*864e5).toISOString().slice(0,10);
 function stop(){playbackWanted=false;if(timer)clearInterval(timer);timer=null;$('play').textContent='▶';$('play').setAttribute('aria-label','Play animation');}
 function download(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
-function bandOptions(){const old=$('band').value,det=Number($('detector').value);$('band').replaceChildren(new Option('Combine the detector range','detector'));cfg.channels.forEach((c,i)=>{if(c.DETECTOR===det)$('band').add(new Option(`Canal ${i+1} · ${c.WAVELENGTH.toFixed(3)} µm`,String(i+1)));});if([...$('band').options].some(o=>o.value===old))$('band').value=old;}
+function bandOptions(){const old=$('band').value,det=Number($('detector').value);$('band').replaceChildren(new Option('Combine the detector range','detector'));cfg.channels.forEach((c,i)=>{if(c.DETECTOR===det)$('band').add(new Option(`Channel ${i+1} · ${c.WAVELENGTH.toFixed(3)} µm`,String(i+1)));});if([...$('band').options].some(o=>o.value===old))$('band').value=old;}
 function configuration(){return {ra:parseCoordinate($('ra').value,true),dec:parseCoordinate($('dec').value,false),fov:Number($('fov').value),detector:Number($('detector').value),size:Math.max(8,Math.round(Number($('fov').value)/6.2))};}
 function coordinateURL(){const c=configuration(),u=new URL(location.href);for(const k of ['ra','dec','fov','detector'])u.searchParams.set(k,c[k]);u.searchParams.set('band',$('band').value);u.searchParams.set('collection',$('collection').value);if(dataset?.isExample)u.searchParams.set('example',dataset.target.id);else u.searchParams.delete('example');for(const k of ['start','end'])if($(k).value)u.searchParams.set(k,$(k).value);else u.searchParams.delete(k);return u;}
 function provenance(){return {app:'SPHEREx Sky Explorer',exported_at:new Date().toISOString(),dataset,mode,reference:Number($('reference').value),frames:frames.map(f=>({date:iso(f.mjd),n_images:f.exposures.length,obs_ids:f.exposures.map(e=>e.obs_id),coverage:f.data.filter(Number.isFinite).length/f.data.length})),exposures:raw.map(({data,variance,...r})=>r),palette:$('palette').value,display:'Shared 1–99.5% limits, optional asinh stretch. Browser TAN-SIP + bilinear resampling; not exact area-overlap.'};}
@@ -211,10 +213,6 @@ for(const id of ['stack-first','stack-count'])$(id).oninput=()=>{updateStackRang
 $('apply-stack').onclick=()=>{if(validStack())document.querySelector('[data-mode="trail"]').click();};
 $('nav-toggle').onclick=()=>{const open=$('nav-toggle').getAttribute('aria-expanded')!=='true';$('nav-toggle').setAttribute('aria-expanded',String(open));$('navigation').classList.toggle('open',open);};
 
-if(!integrated){
-  document.querySelectorAll('a[href="/mpc"]').forEach(a=>a.hidden=true);
-  document.querySelectorAll('a[href="/lab"]').forEach(a=>a.href='/');
-}
 window.addEventListener('unhandledrejection',event=>{
   if(mode==='map'&&String(event.reason).includes('fetch')){
     event.preventDefault();

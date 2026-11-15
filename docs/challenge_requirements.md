@@ -1,7 +1,6 @@
 # SPHEREx challenge: implemented and verified
 
-The main application is **`/lab`**, a coordinate-based sky explorer. The existing
-native-pixel MPC laboratory is available at `/mpc`. Both run from the same server.
+The main application is **`/lab`**, a coordinate-based sky explorer. It is the only web frontend: `/` and `/lab` open the same explorer. The older landing page and MPC web interface have been removed; native-pixel analysis remains available through the Python CLI.
 
 ```bash
 uv sync
@@ -89,7 +88,7 @@ Serve `/lab` behind an HTTPS reverse proxy on a Python/container host. The
 repository includes code and configuration; pushing it does not publish a
 hosted service. The coordinate viewer requires no archive credentials or model
 training. The saved examples are included in the image; large FITS and calibration
-caches are excluded. The advanced MPC lab needs its existing calibration setup.
+caches are excluded. Native-pixel MPC CLI analysis needs its existing calibration setup.
 
 The independent Cloudflare-compatible Worker source in `web/sky-explorer` uses
 the same frontend and can also be built with `npm run build`. Neither deployment
@@ -107,3 +106,7 @@ animation or a trail is a candidate for inspection, not a confirmed discovery.
 Primary references: [IRSA data access](https://irsa.ipac.caltech.edu/spherex-archive-documentation/spherex-data-access/),
 [IRSA mosaic tutorial](https://caltech-ipac.github.io/irsa-tutorials/spherex-mosaic/),
 [IRSA cutouts](https://irsa.ipac.caltech.edu/ibe/cutouts.html).
+
+## Contextual glossary
+
+Small question-mark buttons beside the controls explain coordinates, units, detectors, channels, frames, stacks, differences, spectra and data quality. Hover or keyboard focus opens a brief explanation; tap works on mobile. Escape, a second tap or clicking outside closes it.
