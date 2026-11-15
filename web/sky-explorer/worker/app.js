@@ -53,7 +53,7 @@ function rebuild(){
   groups=groupEpochs(raw,$('group').value);frames=groups.map(exposures=>({...coadd(exposures,dataset.size),exposures,mjd:exposures.reduce((s,e)=>s+e.mjd,0)/exposures.length}));
   current=0;$('frame').max=Math.max(0,frames.length-1);$('reference').replaceChildren();$('epochs').replaceChildren();
   frames.forEach((f,i)=>{const date=iso(f.mjd);$('reference').add(new Option(date,i));const b=document.createElement('button');b.className='epoch';b.textContent=date;const small=document.createElement('small');small.textContent=`${f.exposures.length} exposições`;b.append(small);b.onclick=()=>{stop();current=i;draw();if(mode==='map')openMap();};$('epochs').append(b);});
-  $('source-badge').textContent=dataset.sampled?'EXEMPLO OBSERVADO':'CONSULTA AO ARQUIVO';
+  $('source-badge').textContent=dataset.isExample?'EXEMPLO OBSERVADO':'CONSULTA AO ARQUIVO';
   $('target-title').textContent=dataset.title||`${dataset.ra.toFixed(5)}°, ${dataset.dec.toFixed(5)}°`;
   $('irsa').href=`https://irsa.ipac.caltech.edu/applications/spherex/?UserTargetWorldPt=${dataset.ra}%20${dataset.dec}%20eq%20j2000`;
   draw();drawSpectrum();if(mode==='map')openMap();
@@ -80,7 +80,7 @@ async function loadExample(t){
   controller?.abort();const id=++job;stop();$('cancel').hidden=true;$('search-button').disabled=false;$('progress').hidden=true;status(`Abrindo observações reais de ${t.name}…`);
   try{const d=await (await get(`/samples/${t.id}.json`)).json();if(id!==job)return;if(!d.exposures?.length)throw new Error('Exemplo indisponível; use a consulta ao arquivo.');
     $('ra').value=t.ra;$('dec').value=t.dec;$('detector').value=t.detector;$('fov').value=d.fov;$('fov-label').value=`${d.fov}″`;$('band').value='detector';bandOptions();
-    raw=d.exposures;dataset={...d,detector:t.detector,title:t.name,bandLabel:`D${t.detector}`,exposures:undefined};point=null;rebuild();
+    raw=d.exposures;dataset={...d,isExample:true,detector:t.detector,title:t.name,bandLabel:`D${t.detector}`,exposures:undefined};point=null;rebuild();
     status(`Exemplo real: ${raw.length} de ${d.archive_count} exposições D${t.detector} do DR1, em ${frames.length} épocas. Seleção salva; consulte os dados atuais para ampliar.${d.errors?.length?` ${d.errors.length} downloads indisponíveis na preparação.`:''}`);
     [...$('targets').children].forEach(b=>b.classList.toggle('active',b.dataset.id===t.id));history.replaceState({},'',coordinateURL());
   }catch(e){status(e.message,true);}
