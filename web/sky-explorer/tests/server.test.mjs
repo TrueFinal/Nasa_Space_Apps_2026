@@ -33,3 +33,13 @@ test('UTC date interval is forwarded to SIA as inclusive MJD time',async()=>{
  assert.equal(res.status,200);assert.match(upstream.searchParams.get('TIME'),/^60796 /);
  }finally{globalThis.fetch=original;}
 });
+
+test('home and laboratory remain distinct and home assets are bundled',async()=>{
+ const home=await worker.fetch(new Request('http://test/'));
+ assert.match(await home.text(),/id="hero"/);
+ const lab=await worker.fetch(new Request('http://test/lab'));
+ assert.match(await lab.text(),/id="ra"/);
+ const image=await worker.fetch(new Request('http://test/site-assets/spherex-cutout.png'));
+ assert.equal(image.headers.get('content-type'),'image/png');
+ assert.deepEqual([...new Uint8Array(await image.arrayBuffer()).slice(0,4)],[137,80,78,71]);
+});

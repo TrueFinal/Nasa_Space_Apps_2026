@@ -1,3 +1,5 @@
+> The legacy web interface has been removed. The home is at `/`; use the current sky explorer at `/lab`; native-pixel Python analysis commands remain available.
+
 # SPHEREx time player
 
 The laboratory renders one observed exposure at a time in chronological order.

@@ -76,8 +76,8 @@ def test_gif_route_and_cached_query_do_not_run_archive_again(tmp_path, monkeypat
         with pytest.raises(HTTPError) as error:
             urllib.request.urlopen(request)
         assert error.value.code == 400
-        with urllib.request.urlopen(f'http://127.0.0.1:{server.server_port}/inferno.mjs') as res:
-            assert b'export function inferno' in res.read()
+        with urllib.request.urlopen(f'http://127.0.0.1:{server.server_port}/sky-assets/help.js') as res:
+            assert b'export function installHelp' in res.read()
     finally:
         server.shutdown()
         server.server_close()
