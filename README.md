@@ -1,26 +1,32 @@
-# Protótipo SPHEREx: imagens no tempo com banda fixa
+# SPHEREx: três mosaicos processados e um GIF
 
-O resultado principal é o GIF temporal **[banda 99, imagens por data](outputs/temporal_band/spherex_fixed_band_observations.gif)**.
-O comprimento de onda permanece na faixa 4,851–4,893 µm. Cada frame é outra
-exposição real do mesmo campo (RA 133,786245°, Dec −7,244372°), não outra banda.
-São três imagens: 05/05/2025, 14/11/2025 e 26/04/2026. A cobertura parcial é
-mostrada em cada frame; a última cobre cerca de 10% do campo nessa banda.
+O resultado principal é o **[GIF das três visitas processadas](outputs/three_visits/spherex_three_visits.gif)**.
+O programa processa os três mosaicos originais de maio/2025, novembro/2025 e
+abril/2026 (respectivamente 3, 7 e 5 exposições combinadas) e depois monta um GIF
+com esses três resultados, em ordem de data.
 
 ```bash
 uv sync --extra viz --extra dev --extra ml
-uv run --extra viz spherex-tracking temporal-band --plane 99
+uv run --extra viz spherex-tracking three-visits
 ```
 
-Abra `notebooks/12_cubo_102_bandas.ipynb` para ver o GIF e escolher a época no
-Aladin; o notebook 11 também inclui esse seletor temporal. Os pixels de cada
-exposição são selecionados pelo `WCS-WAVE` dentro dos mesmos limites de banda,
-mascarados pelos flags e reprojetados na mesma grade celeste. O relatório registra
-as imagens usadas, as excluídas e a cobertura de cada frame. O cubo M101 fornece
-apenas a tabela padrão dos 102 canais; a região e as imagens temporais são as do
-campo WiseView original. Um único cubo espectral não contém observações por época.
+Abra `notebooks/11_visualizacao_ipyaladin.ipynb` ou `notebooks/12_cubo_102_bandas.ipynb`.
+Ambos mostram o GIF, as três imagens lado a lado, a fotometria e o seletor de
+visita no Aladin. O pipeline aplica WCS celeste, reprojeção, conversão de MJy/sr
+para mJy/pixel e fotometria/subtração de fundo em anel, seguindo essas etapas do
+[tutorial IRSA](https://caltech-ipac.github.io/irsa-tutorials/spherex-mosaic/).
+A escala visual é fixa para todas as imagens. Os três FITS processados e o
+relatório estão em `outputs/three_visits/`.
 
-Esta branch inclui os dados FITS, catálogos, modelos, relatórios e GIFs locais para
-reprodução. Abaixo está o histórico dos demais experimentos do protótipo.
+Os mosaicos de entrada são imagens 2D da mesma seleção espectral ampla D6
+(4,885 ± 0,120 µm). Eles não contêm os planos espectrais necessários para a
+subtração de contínuo PAH de 3,3 µm do exemplo M101. O código não transforma
+um único cubo espectral em três épocas. Os produtos anteriores em
+`outputs/temporal_band/` e `outputs/spectral_cube/` são experimentos auxiliares;
+o GIF principal agora usa as três visitas completas.
+
+A branch também inclui os dados FITS, catálogos, modelos e demais resultados
+locais. Abaixo está o histórico dos outros experimentos.
 
 # Objetos móveis fracos: Shift-and-Stack
 

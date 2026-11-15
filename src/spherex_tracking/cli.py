@@ -68,9 +68,16 @@ def main():
     temporal.add_argument("--inventory", default="outputs/timelapse/observations.csv")
     temporal.add_argument("--channel-cube", default="data/spectral_cube/M101_irsa.fits")
     temporal.add_argument("--output", default="outputs/temporal_band")
+    three = sub.add_parser("three-visits", help="Processar os três mosaicos e montar GIF temporal")
+    three.add_argument("--manifest", default="outputs/timelapse/timelapse_report.json")
+    three.add_argument("--output", default="outputs/three_visits")
     args = parser.parse_args()
     if args.command == "inspect":
         print(json.dumps(inventory_path(args.path), indent=2, ensure_ascii=False))
+    elif args.command == "three-visits":
+        from .three_visits import build_three_visits
+
+        build_three_visits(args.manifest, args.output)
     elif args.command == "temporal-band":
         from .temporal_band import build_temporal_band
 
