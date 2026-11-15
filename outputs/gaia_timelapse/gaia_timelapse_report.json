@@ -1,0 +1,35 @@
+{
+  "source": "Gaia DR3 gaiadr3.gaia_source via Astroquery Gaia TAP",
+  "target": {
+    "ra_deg": 133.786245,
+    "dec_deg": -7.244372
+  },
+  "field_of_view_arcsec": 176.0,
+  "gaia_dr3_observation_span": {
+    "start": "2014-07-25",
+    "end": "2017-05-28",
+    "months": 34
+  },
+  "n_sources": 10,
+  "source_ids": [
+    5756955888473585792,
+    5756955781099740544,
+    5756956605732310656,
+    5756955785394371328,
+    5756955849818062592,
+    5756955952897282176,
+    5756956605732312832,
+    5756956674451791104,
+    5756956708811536128,
+    5756956605732311808
+  ],
+  "fastest_source_id": 5756955785394371328,
+  "fastest_pm_mas_per_year": 17.55727362602443,
+  "fastest_displacement_arcsec_over_span": 0.049895824842747336,
+  "visualization": "Catalogue positions propagated from Gaia DR3 proper motions; not epoch images",
+  "files": {
+    "gif": "outputs/gaia_timelapse/gaia_dr3_motion.gif",
+    "catalog": "data/gaia_timelapse/gaia_dr3_sources.ecsv",
+    "query": "data/gaia_timelapse/gaia_query.adql"
+  }
+}

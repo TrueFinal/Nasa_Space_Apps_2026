@@ -1,0 +1,204 @@
+{
+  "animation_axis": "observation_time",
+  "plane": 99,
+  "wavelength_um": 4.873000144958496,
+  "wavelength_range_um": [
+    4.85099983215332,
+    4.89300012588501
+  ],
+  "target": {
+    "ra": 133.786245,
+    "dec": -7.244372
+  },
+  "channel_table_source": "data/spectral_cube/M101_irsa.fits",
+  "n_input": 40,
+  "n_frames": 3,
+  "frames": [
+    {
+      "obs_id": "2025W19_1B_0138_1",
+      "date": "2025-05-05T20:02:32.989",
+      "image": "outputs/temporal_band/images/2025W19_1B_0138_1.fits",
+      "coverage_fraction": 0.9158163265306123,
+      "input_wavelength_range_um": [
+        4.8559390501442525,
+        4.865200046574506
+      ]
+    },
+    {
+      "obs_id": "2025W46_2A_0226_2",
+      "date": "2025-11-14T13:50:01.679",
+      "image": "outputs/temporal_band/images/2025W46_2A_0226_2.fits",
+      "coverage_fraction": 0.8813775510204082,
+      "input_wavelength_range_um": [
+        4.868671375474119,
+        4.8776954482583434
+      ]
+    },
+    {
+      "obs_id": "2026W17_2A_0692_1",
+      "date": "2026-04-26T11:51:08.369",
+      "image": "outputs/temporal_band/images/2026W17_2A_0692_1.fits",
+      "coverage_fraction": 0.10204081632653061,
+      "input_wavelength_range_um": [
+        4.89167750863468,
+        4.892993323624203
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "obs_id": "2025W19_1B_0116_1",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2025W19_1B_0116_2",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2025W46_1A_0075_4",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2025W46_1A_0076_1",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2025W46_1A_0076_2",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2025W46_1A_0076_3",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2025W46_1A_0090_1",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2025W46_1A_0090_2",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2025W46_1A_0090_3",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2025W46_1A_0238_1",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2025W46_1A_0238_2",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2025W46_2A_0214_1",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2025W46_2A_0214_2",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2025W46_2A_0214_3",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2025W46_2A_0214_4",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2025W46_2A_0226_1",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2025W46_2A_0226_3",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2025W46_2A_0226_4",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2025W46_2A_0289_1",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2025W50_2A_0232_1",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2025W50_2A_0254_1",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2025W50_2A_0428_1",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2026W17_1B_0227_2",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2026W17_1B_0227_3",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2026W17_1B_0227_4",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2026W17_1B_0507_1",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2026W17_1B_0507_2",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2026W17_1B_0507_3",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2026W17_1B_0634_1",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2026W17_1B_0634_2",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2026W17_1B_0634_3",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2026W17_1B_0634_4",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2026W17_2A_0591_1",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2026W17_2A_0609_1",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2026W17_2A_0609_2",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2026W17_2A_0692_2",
+      "reason": "no valid pixels in band"
+    },
+    {
+      "obs_id": "2026W18_2A_0065_1",
+      "reason": "no valid pixels in band"
+    }
+  ],
+  "display_limits_mjy_sr": [
+    -0.07637096591278575,
+    0.42593747820477923
+  ],
+  "gif": "outputs/temporal_band/spherex_fixed_band_observations.gif",
+  "note": "M101 cube supplies channel definitions only; pixels are from the WiseView target."
+}

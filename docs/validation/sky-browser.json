@@ -1,0 +1,57 @@
+{
+  "checked_at": "2026-11-15T17:55:17.675644+00:00",
+  "targets": [
+    {
+      "target": "barnard",
+      "frames": 10,
+      "animation": true,
+      "difference": true,
+      "stack": true,
+      "spectrum": true,
+      "gif": true
+    },
+    {
+      "target": "epsilon",
+      "frames": 15,
+      "animation": true,
+      "difference": true,
+      "stack": true,
+      "spectrum": true,
+      "gif": true
+    },
+    {
+      "target": "wise0855",
+      "frames": 12,
+      "animation": true,
+      "difference": true,
+      "stack": true,
+      "spectrum": true,
+      "gif": true
+    },
+    {
+      "target": "rwaur",
+      "frames": 6,
+      "animation": true,
+      "difference": true,
+      "stack": true,
+      "spectrum": true,
+      "gif": true
+    },
+    {
+      "target": "rdra",
+      "frames": 9,
+      "animation": true,
+      "difference": true,
+      "stack": true,
+      "spectrum": true,
+      "gif": true
+    }
+  ],
+  "mobile_layout": true,
+  "mobile_navigation": true,
+  "date_filter_forwarding": true,
+  "invalid_coordinate_links": true,
+  "browser_tests_passed": 6,
+  "javascript_tests_passed": 11,
+  "python_tests_passed": 54
+}

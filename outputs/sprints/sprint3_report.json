@@ -1,0 +1,120 @@
+{
+  "cadence": {
+    "eligible": true,
+    "n_epochs": 8,
+    "span_hours": 1.7101238880422898,
+    "median_interval_seconds": 128.93100455403328,
+    "largest_gap_minutes": 89.7143659251742,
+    "temporal_groups": [
+      [
+        0,
+        1,
+        2,
+        3
+      ],
+      [
+        4,
+        5,
+        6,
+        7
+      ]
+    ],
+    "assumption": "Linear trajectories in pixels; spectral/PSF changes remain"
+  },
+  "n_positional_matches": 76,
+  "crossmatch_catalog": "SEP sources in first calibrated exposure; no external identity claim",
+  "n_candidates": 206,
+  "n_unique_epoch_events": 194,
+  "n_tracklets_per_group": [
+    0,
+    6
+  ],
+  "n_velocity_matched_tracks": 0,
+  "n_combined_tracks": 13,
+  "n_real_track_stacks": 5,
+  "stack_evaluations": [
+    {
+      "track_id": 1,
+      "drift_pixels": 17.55322512296099,
+      "static_scene_projected_model_score": {
+        "score": 20.36805951357873,
+        "flux": 0.5956597910150981,
+        "information": 1169.237514265009,
+        "retained_information_fraction": 0.7977723525254131
+      },
+      "label": "Hypothesis evaluation, not confirmation"
+    },
+    {
+      "track_id": 2,
+      "drift_pixels": 20.163581509680345,
+      "static_scene_projected_model_score": {
+        "score": 17.008244843537675,
+        "flux": 0.5044078413134662,
+        "information": 1136.9865825599752,
+        "retained_information_fraction": 0.7490627703246711
+      },
+      "label": "Hypothesis evaluation, not confirmation"
+    },
+    {
+      "track_id": 3,
+      "drift_pixels": 7.363606389277044,
+      "static_scene_projected_model_score": {
+        "score": -4.55275522149978,
+        "flux": -0.1323172411133985,
+        "information": 1183.9019290671881,
+        "retained_information_fraction": 0.618256359210174
+      },
+      "label": "Hypothesis evaluation, not confirmation"
+    },
+    {
+      "track_id": 4,
+      "drift_pixels": 10.513651327185809,
+      "static_scene_projected_model_score": {
+        "score": 18.488460070954662,
+        "flux": 0.45820883533797296,
+        "information": 1628.0755756666517,
+        "retained_information_fraction": 0.5148170847690284
+      },
+      "label": "Hypothesis evaluation, not confirmation"
+    },
+    {
+      "track_id": 5,
+      "drift_pixels": 17.750748664380325,
+      "static_scene_projected_model_score": {
+        "score": 15.076789152391939,
+        "flux": 0.3744946409339348,
+        "information": 1620.7891026941363,
+        "retained_information_fraction": 0.7351374600099744
+      },
+      "label": "Hypothesis evaluation, not confirmation"
+    }
+  ],
+  "linking_control": {
+    "recovered": true,
+    "n_control_tracks": 1,
+    "label": "Known synthetic positions with distractors, not real detections"
+  },
+  "stack_control": {
+    "label": "Artificial moving source on registered real backgrounds",
+    "model_score_before": {
+      "score": 0.027578649773460074,
+      "flux": 0.0005267756369834386,
+      "information": 2740.9091299803226,
+      "retained_information_fraction": 0.6942775318865348
+    },
+    "model_score_after": {
+      "score": 17.530298542503616,
+      "flux": 0.33484359303637523,
+      "information": 2740.9091299803226,
+      "retained_information_fraction": 0.6942775318865348
+    }
+  },
+  "ranking_formula": "100*(0.7*source_like_score + 0.2*min(track_epochs/4,1) + 0.1*SNR/(SNR+5))",
+  "limitations": [
+    "ML score learned from artificial labels; actual events remain unconfirmed.",
+    "Short-track velocity tolerance is a resolution heuristic, not a confidence interval.",
+    "Linear tracks; parallax and LVF flux changes remain approximate.",
+    "Reference/source overlap is positional only; it does not prove object identity."
+  ],
+  "confirmed_asteroids": 0
+}

@@ -1,0 +1,40 @@
+{
+  "status": "complete",
+  "fit_seconds": 0.018345021999266464,
+  "n_train": 570,
+  "n_validation": 160,
+  "n_test": 170,
+  "roc_auc": 0.6168451801363194,
+  "average_precision": 0.5774766544417578,
+  "precision": 0.5421686746987951,
+  "recall": 0.569620253164557,
+  "f1": 0.5555555555555556,
+  "confusion_matrix": [
+    [
+      53,
+      38
+    ],
+    [
+      34,
+      45
+    ]
+  ],
+  "boosting_rounds": 13,
+  "feature_importance": {
+    "abs_scorr": 12.96731948852539,
+    "d_peak": 6.6809234619140625,
+    "d_min": 6.939173221588135,
+    "local_rms": 4.447870254516602,
+    "positive_fraction": 4.806018352508545,
+    "negative_positive_ratio": 8.4216947555542,
+    "psf_correlation": 8.303092956542969,
+    "psf_residual": 6.8578948974609375,
+    "width": 6.718348503112793,
+    "ellipticity": 5.548380374908447,
+    "asymmetry": 8.524520874023438,
+    "concentration": 5.472278594970703,
+    "mask_fraction": 7.0917816162109375,
+    "mask_distance": 2.225156784057617
+  },
+  "evaluation_domain": "Known artificial sources/artifacts on held-out sky regions, not confirmed real objects"
+}

@@ -1,0 +1,257 @@
+{
+  "training": {
+    "status": "complete",
+    "fit_seconds": 0.02895486500347033,
+    "n_train": 444,
+    "n_validation": 148,
+    "n_test": 128,
+    "roc_auc": 0.9959935897435898,
+    "average_precision": 0.9792612839781453,
+    "precision": 0.8275862068965517,
+    "recall": 1.0,
+    "f1": 0.9056603773584906,
+    "confusion_matrix": [
+      [
+        99,
+        5
+      ],
+      [
+        0,
+        24
+      ]
+    ],
+    "boosting_rounds": 52,
+    "feature_importance": {
+      "abs_scorr": 27.109107971191406,
+      "d_peak": 2.4791641235351562,
+      "d_min": 2.2493793964385986,
+      "local_rms": 2.355931043624878,
+      "positive_fraction": 1.3393676280975342,
+      "negative_positive_ratio": 5.564652442932129,
+      "psf_correlation": 1.7179360389709473,
+      "psf_residual": 1.8274158239364624,
+      "width": 4.747480869293213,
+      "ellipticity": 1.1002922058105469,
+      "asymmetry": 0.8865201473236084,
+      "concentration": 26.508453369140625
+    },
+    "evaluation_domain": "Observed SPHEREx/Gaia sources versus flagged instrumental contamination",
+    "model_path": "outputs/observed/fit_f04278aebd/model.ubj",
+    "wall_seconds": 1.7148392219969537,
+    "budget_seconds": 120.0,
+    "model_used": true,
+    "split": {
+      "train_groups": [
+        11,
+        12,
+        6,
+        1,
+        2,
+        0,
+        9,
+        14,
+        8,
+        13
+      ],
+      "validation_groups": [
+        3,
+        5,
+        15
+      ],
+      "test_groups": [
+        7,
+        4,
+        10
+      ],
+      "strategy": "Disjoint Gaia IDs and detector coordinates; flags and IDs excluded from features"
+    }
+  },
+  "n_gaia_catalog_sources": 451,
+  "n_spherex_archive_rows": 237,
+  "n_observed_samples": 720,
+  "n_positive_samples": 215,
+  "n_flagged_contamination_samples": 505,
+  "artificial_samples": 0,
+  "unique_gaia_source_ids": 46,
+  "input_files": [
+    {
+      "path": "data/spherex/2025W44_2B_0200_1D1.fits",
+      "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W44_2B/l2b-v27-2026-246/1/level2_2025W44_2B_0200_1D1_spx_l2b-v27-2026-246.fits?center=134.6917%2C16.0303&size=0.25",
+      "obs_id": "2025W44_2B_0200_1",
+      "sha256": "f3ca232fb73d26c81e9117e88650831dfe771b77c889a0b79f722e43416a0f91"
+    },
+    {
+      "path": "data/spherex/2025W44_2B_0200_2D1.fits",
+      "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W44_2B/l2b-v27-2026-246/1/level2_2025W44_2B_0200_2D1_spx_l2b-v27-2026-246.fits?center=134.6917%2C16.0303&size=0.25",
+      "obs_id": "2025W44_2B_0200_2",
+      "sha256": "d148dc28920ba7914eef288c7b4829caf741d113eff16156bd94f20f0b71c55c"
+    },
+    {
+      "path": "data/spherex/2025W44_2B_0200_3D1.fits",
+      "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W44_2B/l2b_retry-v27-2026-246/1/level2_2025W44_2B_0200_3D1_spx_l2b_retry-v27-2026-246.fits?center=134.6917%2C16.0303&size=0.25",
+      "obs_id": "2025W44_2B_0200_3",
+      "sha256": "104944d546dbe81d67c42aa7ecc37a9ec3ae8b9323dfcb9c0d2d888cfad9c655"
+    },
+    {
+      "path": "data/spherex/2025W44_2B_0200_4D1.fits",
+      "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W44_2B/l2b-v27-2026-246/1/level2_2025W44_2B_0200_4D1_spx_l2b-v27-2026-246.fits?center=134.6917%2C16.0303&size=0.25",
+      "obs_id": "2025W44_2B_0200_4",
+      "sha256": "f859bc17cbe84b43397405f3d9126d758a06fd04feb781d72b580d5d99ec19bd"
+    },
+    {
+      "path": "data/spherex/2025W44_2B_0218_1D1.fits",
+      "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W44_2B/l2b-v27-2026-246/1/level2_2025W44_2B_0218_1D1_spx_l2b-v27-2026-246.fits?center=134.6917%2C16.0303&size=0.25",
+      "obs_id": "2025W44_2B_0218_1",
+      "sha256": "dd4fde8e557390e5e0ad764e43e0cd3ecddec20b64314bbc933d9051a138b9a4"
+    },
+    {
+      "path": "data/spherex/2025W44_2B_0218_2D1.fits",
+      "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W44_2B/l2b-v27-2026-246/1/level2_2025W44_2B_0218_2D1_spx_l2b-v27-2026-246.fits?center=134.6917%2C16.0303&size=0.25",
+      "obs_id": "2025W44_2B_0218_2",
+      "sha256": "1f646bd33e3bf438c1a794cfab8ac46802f7f9cc62c80ea3660633d2f648f543"
+    },
+    {
+      "path": "data/spherex/2025W44_2B_0218_3D1.fits",
+      "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W44_2B/l2b-v27-2026-246/1/level2_2025W44_2B_0218_3D1_spx_l2b-v27-2026-246.fits?center=134.6917%2C16.0303&size=0.25",
+      "obs_id": "2025W44_2B_0218_3",
+      "sha256": "d4d79e5e8d782bc435f6ecdccfcf1c41d4ea7972a081a3d09feea57a90274ea7"
+    },
+    {
+      "path": "data/spherex/2025W44_2B_0218_4D1.fits",
+      "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W44_2B/l2b-v27-2026-246/1/level2_2025W44_2B_0218_4D1_spx_l2b-v27-2026-246.fits?center=134.6917%2C16.0303&size=0.25",
+      "obs_id": "2025W44_2B_0218_4",
+      "sha256": "7350c18bbda52a25a6d4bdb2eb0cdb6e915cef5e49e06e9547441eb1a7616d3a"
+    }
+  ],
+  "gaia_match_radius_arcsec": 2.0,
+  "gaia_exclusion_radius_for_artifacts_arcsec": 6.15,
+  "negative_label_bits": [
+    0,
+    1,
+    2,
+    6,
+    10,
+    11,
+    19,
+    20,
+    22,
+    25,
+    27
+  ],
+  "n_ranked_candidates": 206,
+  "motion": {
+    "cadence": {
+      "eligible": true,
+      "n_epochs": 8,
+      "span_hours": 1.7101238880422898,
+      "median_interval_seconds": 128.93100455403328,
+      "largest_gap_minutes": 89.7143659251742,
+      "temporal_groups": [
+        [
+          0,
+          1,
+          2,
+          3
+        ],
+        [
+          4,
+          5,
+          6,
+          7
+        ]
+      ],
+      "assumption": "Linear trajectories in pixels; spectral/PSF changes remain"
+    },
+    "n_positional_matches": 76,
+    "crossmatch_catalog": "SEP sources in first calibrated exposure; no external identity claim",
+    "n_candidates": 206,
+    "n_unique_epoch_events": 194,
+    "n_tracklets_per_group": [
+      0,
+      6
+    ],
+    "n_velocity_matched_tracks": 0,
+    "n_combined_tracks": 13,
+    "n_real_track_stacks": 5,
+    "stack_evaluations": [
+      {
+        "track_id": 1,
+        "drift_pixels": 17.55322512296099,
+        "static_scene_projected_model_score": {
+          "score": 20.36805951357873,
+          "flux": 0.5956597910150981,
+          "information": 1169.237514265009,
+          "retained_information_fraction": 0.7977723525254131
+        },
+        "label": "Hypothesis evaluation, not confirmation"
+      },
+      {
+        "track_id": 2,
+        "drift_pixels": 20.163581509680345,
+        "static_scene_projected_model_score": {
+          "score": 17.008244843537675,
+          "flux": 0.5044078413134662,
+          "information": 1136.9865825599752,
+          "retained_information_fraction": 0.7490627703246711
+        },
+        "label": "Hypothesis evaluation, not confirmation"
+      },
+      {
+        "track_id": 3,
+        "drift_pixels": 7.363606389277044,
+        "static_scene_projected_model_score": {
+          "score": -4.55275522149978,
+          "flux": -0.1323172411133985,
+          "information": 1183.9019290671881,
+          "retained_information_fraction": 0.618256359210174
+        },
+        "label": "Hypothesis evaluation, not confirmation"
+      },
+      {
+        "track_id": 4,
+        "drift_pixels": 10.513651327185809,
+        "static_scene_projected_model_score": {
+          "score": 18.488460070954662,
+          "flux": 0.45820883533797296,
+          "information": 1628.0755756666517,
+          "retained_information_fraction": 0.5148170847690284
+        },
+        "label": "Hypothesis evaluation, not confirmation"
+      },
+      {
+        "track_id": 5,
+        "drift_pixels": 17.750748664380325,
+        "static_scene_projected_model_score": {
+          "score": 15.076789152391939,
+          "flux": 0.3744946409339348,
+          "information": 1620.7891026941363,
+          "retained_information_fraction": 0.7351374600099744
+        },
+        "label": "Hypothesis evaluation, not confirmation"
+      }
+    ],
+    "linking_control": {
+      "executed": false
+    },
+    "stack_control": {
+      "executed": false
+    },
+    "ranking_formula": "100*(0.7*source_like_score + 0.2*min(track_epochs/4,1) + 0.1*SNR/(SNR+5))",
+    "limitations": [
+      "ML uses observed native sources/flags, not confirmed asteroid labels.",
+      "Short-track velocity tolerance is a resolution heuristic, not a confidence interval.",
+      "Linear tracks; parallax and LVF flux changes remain approximate.",
+      "Reference/source overlap is positional only; it does not prove object identity."
+    ],
+    "confirmed_asteroids": 0
+  },
+  "positive_definition": "Observed SPHEREx source, isolated Gaia counterpart, clean core",
+  "negative_definition": "Observed instrumental peak; no Gaia counterpart within 6.15 arcsec",
+  "unknown_definition": "Not matching Gaia alone never creates a negative label",
+  "feature_domain": "Native flux and PSF score, not DIA-residual morphology",
+  "label_caveat": "Catalog/flag supervised labels; not manually confirmed asteroid events",
+  "apis": {
+    "spherex": "astroquery.ipac.irsa.Irsa.query_sia",
+    "gaia": "astroquery.gaia.Gaia.launch_job"
+  }
+}

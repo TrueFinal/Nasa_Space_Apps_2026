@@ -1,0 +1,56 @@
+{
+  "animation_axis": "complete_six_month_cycle_time",
+  "n_frames": 2,
+  "gif": "outputs/complete_cycles/spherex_complete_cycles.gif",
+  "target": {
+    "ra_deg": 133.786245,
+    "dec_deg": -7.244372
+  },
+  "wavelength_filter": {
+    "center_um": 4.8847646170353345,
+    "tolerance_um": 0.12,
+    "selection": "Most balanced coverage across all full six-month periods; 4.6 \u00b5m preferred on ties"
+  },
+  "detector": "D6",
+  "display": "shared inferno intensity stretch for one fixed D6 channel",
+  "display_limits_mjy_per_pixel": [
+    -0.07812085134176147,
+    0.3385648276627226
+  ],
+  "coadd": "celestial WCS exact reprojection, NHITS-weighted mean, median background subtraction, shared grid",
+  "cycles": [
+    {
+      "cycle": 1,
+      "start": "2025-05-05T16:48:02.419",
+      "end": "2025-11-04T07:42:38.419",
+      "n_visits": 1,
+      "n_exposures": 3,
+      "dates": [
+        "2025-05-05T16:49:00.018"
+      ],
+      "image": "outputs/complete_cycles/cycle_01.fits",
+      "input_mosaics": [
+        "outputs/timelapse/mosaics/visit_01.fits"
+      ],
+      "coverage_fraction": 0.9362244897959183
+    },
+    {
+      "cycle": 2,
+      "start": "2025-11-04T07:42:38.419",
+      "end": "2026-05-05T22:37:14.419",
+      "n_visits": 2,
+      "n_exposures": 12,
+      "dates": [
+        "2025-11-14T12:12:36.814",
+        "2026-04-26T02:04:05.705"
+      ],
+      "image": "outputs/complete_cycles/cycle_02.fits",
+      "input_mosaics": [
+        "outputs/timelapse/mosaics/visit_02.fits",
+        "outputs/timelapse/mosaics/visit_03.fits"
+      ],
+      "coverage_fraction": 0.9540816326530612
+    }
+  ],
+  "limitations": "Inputs are the existing 2D D6 time-series mosaics, not 102-plane spectral cubes. This GIF follows the tutorial's single-plane display steps; it does not reconstruct the full IRSA Mosaic cube."
+}

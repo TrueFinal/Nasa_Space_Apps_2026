@@ -1,0 +1,347 @@
+{
+  "experiment": "REAL SPHEREx DR1 exposures, no injected moving source",
+  "documentation": "https://irsa.ipac.caltech.edu/spherex-archive-documentation/spherex-data-access/",
+  "center_ra_deg": 134.6917,
+  "center_dec_deg": 16.0303,
+  "n_exposures": 8,
+  "start_utc": "2025-10-31T07:37:29.170",
+  "end_utc": "2025-10-31T09:20:05.616",
+  "time_span_hours": 1.7101238880422898,
+  "intervals_seconds": [
+    128.93195506185293,
+    128.93005467485636,
+    128.93100455403328,
+    5382.861955510452,
+    128.93005404621363,
+    128.93100518267602,
+    128.92996792215854
+  ],
+  "reference_mjd": 60979.3533263165,
+  "wavelength_range_um_preview": [
+    0.7576945015683434,
+    1.1015059439141872
+  ],
+  "velocity_grid_pixels_per_hour": [
+    -8,
+    8,
+    1
+  ],
+  "candidates": [
+    {
+      "x": 51.0,
+      "y": 89.0,
+      "vx": 8.0,
+      "vy": -5.0,
+      "n_frames": 8,
+      "snr_model_uncalibrated": 9.782504034989016,
+      "zero_motion_snr_at_same_position": -1.821835329178926,
+      "group_snrs_model_uncalibrated": [
+        0.5617011428968192,
+        11.790410302662206
+      ],
+      "ra_deg": 134.73694745513765,
+      "dec_deg": 16.045667584122164
+    },
+    {
+      "x": 53.0,
+      "y": 80.0,
+      "vx": 8.0,
+      "vy": 8.0,
+      "n_frames": 8,
+      "snr_model_uncalibrated": 9.65759436582555,
+      "zero_motion_snr_at_same_position": -0.6064224743491,
+      "group_snrs_model_uncalibrated": [
+        1.2996499308874097,
+        9.618567950749291
+      ],
+      "ra_deg": 134.72869293198445,
+      "dec_deg": 16.03188534311524
+    },
+    {
+      "x": 85.0,
+      "y": 25.0,
+      "vx": 4.0,
+      "vy": 1.0,
+      "n_frames": 8,
+      "snr_model_uncalibrated": 9.510909178920977,
+      "zero_motion_snr_at_same_position": -3.8163515382560806,
+      "group_snrs_model_uncalibrated": [
+        0.5740360053082516,
+        9.57555240879356
+      ],
+      "ra_deg": 134.6444086273794,
+      "dec_deg": 15.956955792097805
+    },
+    {
+      "x": 99.0,
+      "y": 83.0,
+      "vx": -8.0,
+      "vy": 5.0,
+      "n_frames": 8,
+      "snr_model_uncalibrated": 9.330470697872528,
+      "zero_motion_snr_at_same_position": 0.5665249894847267,
+      "group_snrs_model_uncalibrated": [
+        -0.2272082624332185,
+        9.765629043010334
+      ],
+      "ra_deg": 134.65144361133022,
+      "dec_deg": 16.05841119692075
+    },
+    {
+      "x": 89.0,
+      "y": 83.0,
+      "vx": 5.0,
+      "vy": 5.0,
+      "n_frames": 8,
+      "snr_model_uncalibrated": 9.322130862576225,
+      "zero_motion_snr_at_same_position": 1.853449690083832,
+      "group_snrs_model_uncalibrated": [
+        1.7184437907769583,
+        9.163733117946345
+      ],
+      "ra_deg": 134.66858599959951,
+      "dec_deg": 16.053709907578238
+    },
+    {
+      "x": 58.0,
+      "y": 87.0,
+      "vx": 1.0,
+      "vy": -2.0,
+      "n_frames": 8,
+      "snr_model_uncalibrated": 9.30655961739298,
+      "zero_motion_snr_at_same_position": 2.964574679443641,
+      "group_snrs_model_uncalibrated": [
+        -1.2062088463652119,
+        9.407579679414608
+      ],
+      "ra_deg": 134.7238737755083,
+      "dec_deg": 16.045684664159523
+    },
+    {
+      "x": 56.0,
+      "y": 91.0,
+      "vx": 4.0,
+      "vy": -7.0,
+      "n_frames": 8,
+      "snr_model_uncalibrated": 8.99485602611045,
+      "zero_motion_snr_at_same_position": -3.1587305399711587,
+      "group_snrs_model_uncalibrated": [
+        -0.7331304352522632,
+        9.526491848196576
+      ],
+      "ra_deg": 134.7294473497705,
+      "dec_deg": 16.051288214555857
+    },
+    {
+      "x": 92.0,
+      "y": 85.0,
+      "vx": 0.0,
+      "vy": 3.0,
+      "n_frames": 8,
+      "snr_model_uncalibrated": 8.98224469023822,
+      "zero_motion_snr_at_same_position": 2.792379375623274,
+      "group_snrs_model_uncalibrated": [
+        0.40326128076184675,
+        9.106495027913965
+      ],
+      "ra_deg": 134.66451397083176,
+      "dec_deg": 16.058392128882726
+    },
+    {
+      "x": 95.0,
+      "y": 87.0,
+      "vx": -2.0,
+      "vy": -1.0,
+      "n_frames": 8,
+      "snr_model_uncalibrated": 8.86125438472521,
+      "zero_motion_snr_at_same_position": 3.116588347519564,
+      "group_snrs_model_uncalibrated": [
+        -0.4287673098305575,
+        9.293037324410669
+      ],
+      "ra_deg": 134.66044178190276,
+      "dec_deg": 16.06307451655693
+    },
+    {
+      "x": 57.0,
+      "y": 81.0,
+      "vx": 1.0,
+      "vy": 7.0,
+      "n_frames": 8,
+      "snr_model_uncalibrated": 8.768470009616934,
+      "zero_motion_snr_at_same_position": 1.3690584225054454,
+      "group_snrs_model_uncalibrated": [
+        1.075170273228665,
+        8.757568799115937
+      ],
+      "ra_deg": 134.7223717384022,
+      "dec_deg": 16.03540017629212
+    }
+  ],
+  "exposures": [
+    {
+      "path": "data/spherex/2025W44_2B_0200_1D1.fits",
+      "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W44_2B/l2b-v27-2026-246/1/level2_2025W44_2B_0200_1D1_spx_l2b-v27-2026-246.fits?center=134.6917%2C16.0303&size=0.25",
+      "obs_id": "2025W44_2B_0200_1",
+      "mjd_avg": 60979.317698724,
+      "date_avg": "2025-10-31T07:37:29.170",
+      "shape": [
+        147,
+        146
+      ],
+      "original_shape": [
+        2040,
+        2040
+      ],
+      "unit": "MJy / sr",
+      "center_wave_um_preview": 0.7576945015683434,
+      "bandwidth_um_preview": 0.017440560765848167,
+      "masked_fraction": 0.30155623893392974
+    },
+    {
+      "path": "data/spherex/2025W44_2B_0200_2D1.fits",
+      "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W44_2B/l2b-v27-2026-246/1/level2_2025W44_2B_0200_2D1_spx_l2b-v27-2026-246.fits?center=134.6917%2C16.0303&size=0.25",
+      "obs_id": "2025W44_2B_0200_2",
+      "mjd_avg": 60979.319190992,
+      "date_avg": "2025-10-31T07:39:38.102",
+      "shape": [
+        146,
+        146
+      ],
+      "original_shape": [
+        2040,
+        2040
+      ],
+      "unit": "MJy / sr",
+      "center_wave_um_preview": 0.7750532508161356,
+      "bandwidth_um_preview": 0.018552912041818838,
+      "masked_fraction": 0.29836742353161944
+    },
+    {
+      "path": "data/spherex/2025W44_2B_0200_3D1.fits",
+      "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W44_2B/l2b_retry-v27-2026-246/1/level2_2025W44_2B_0200_3D1_spx_l2b_retry-v27-2026-246.fits?center=134.6917%2C16.0303&size=0.25",
+      "obs_id": "2025W44_2B_0200_3",
+      "mjd_avg": 60979.320683238,
+      "date_avg": "2025-10-31T07:41:47.032",
+      "shape": [
+        146,
+        146
+      ],
+      "original_shape": [
+        2040,
+        2040
+      ],
+      "unit": "MJy / sr",
+      "center_wave_um_preview": 0.7935033496598176,
+      "bandwidth_um_preview": 0.019196872004807998,
+      "masked_fraction": 0.31581910302120475
+    },
+    {
+      "path": "data/spherex/2025W44_2B_0200_4D1.fits",
+      "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W44_2B/l2b-v27-2026-246/1/level2_2025W44_2B_0200_4D1_spx_l2b-v27-2026-246.fits?center=134.6917%2C16.0303&size=0.25",
+      "obs_id": "2025W44_2B_0200_4",
+      "mjd_avg": 60979.322175495,
+      "date_avg": "2025-10-31T07:43:55.963",
+      "shape": [
+        146,
+        146
+      ],
+      "original_shape": [
+        2040,
+        2040
+      ],
+      "unit": "MJy / sr",
+      "center_wave_um_preview": 0.8123231565849179,
+      "bandwidth_um_preview": 0.019674879044274857,
+      "masked_fraction": 0.2948020266466504
+    },
+    {
+      "path": "data/spherex/2025W44_2B_0218_1D1.fits",
+      "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W44_2B/l2b-v27-2026-246/1/level2_2025W44_2B_0218_1D1_spx_l2b-v27-2026-246.fits?center=134.6917%2C16.0303&size=0.25",
+      "obs_id": "2025W44_2B_0218_1",
+      "mjd_avg": 60979.384477138,
+      "date_avg": "2025-10-31T09:13:38.825",
+      "shape": [
+        146,
+        146
+      ],
+      "original_shape": [
+        2040,
+        2040
+      ],
+      "unit": "MJy / sr",
+      "center_wave_um_preview": 1.0265809078068098,
+      "bandwidth_um_preview": 0.02731048783269462,
+      "masked_fraction": 0.31511540626759243
+    },
+    {
+      "path": "data/spherex/2025W44_2B_0218_2D1.fits",
+      "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W44_2B/l2b-v27-2026-246/1/level2_2025W44_2B_0218_2D1_spx_l2b-v27-2026-246.fits?center=134.6917%2C16.0303&size=0.25",
+      "obs_id": "2025W44_2B_0218_2",
+      "mjd_avg": 60979.385969384,
+      "date_avg": "2025-10-31T09:15:47.755",
+      "shape": [
+        146,
+        146
+      ],
+      "original_shape": [
+        2040,
+        2040
+      ],
+      "unit": "MJy / sr",
+      "center_wave_um_preview": 1.0509225008993437,
+      "bandwidth_um_preview": 0.028185617650524176,
+      "masked_fraction": 0.40542315631450554
+    },
+    {
+      "path": "data/spherex/2025W44_2B_0218_3D1.fits",
+      "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W44_2B/l2b-v27-2026-246/1/level2_2025W44_2B_0218_3D1_spx_l2b-v27-2026-246.fits?center=134.6917%2C16.0303&size=0.25",
+      "obs_id": "2025W44_2B_0218_3",
+      "mjd_avg": 60979.387461641,
+      "date_avg": "2025-10-31T09:17:56.686",
+      "shape": [
+        146,
+        146
+      ],
+      "original_shape": [
+        2040,
+        2040
+      ],
+      "unit": "MJy / sr",
+      "center_wave_um_preview": 1.075850515806704,
+      "bandwidth_um_preview": 0.029042970061434505,
+      "masked_fraction": 0.32051041471195346
+    },
+    {
+      "path": "data/spherex/2025W44_2B_0218_4D1.fits",
+      "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W44_2B/l2b-v27-2026-246/1/level2_2025W44_2B_0218_4D1_spx_l2b-v27-2026-246.fits?center=134.6917%2C16.0303&size=0.25",
+      "obs_id": "2025W44_2B_0218_4",
+      "mjd_avg": 60979.388953886,
+      "date_avg": "2025-10-31T09:20:05.616",
+      "shape": [
+        146,
+        146
+      ],
+      "original_shape": [
+        2040,
+        2040
+      ],
+      "unit": "MJy / sr",
+      "center_wave_um_preview": 1.1015059439141872,
+      "bandwidth_um_preview": 0.029880839078142117,
+      "masked_fraction": 0.5929817977106399
+    }
+  ],
+  "confirmed_asteroids": 0,
+  "conclusion": "Exploratory real-data execution only; candidates are unvalidated.",
+  "limitations": [
+    "WCS registration uses nearest native-pixel PSF statistics, with pixel rounding.",
+    "Gaussian sigma=1.2 pixels is provisional; supplied ePSFs are not modeled yet.",
+    "Different LVF wavelengths; constant flux across exposures is not verified.",
+    "WCS-WAVE values are visualization-grade, not CWAVE/CBAND science calibration.",
+    "All nonzero flags and bright pixels are masked conservatively.",
+    "Scores assume independent Gaussian pixel noise, not empirically calibrated.",
+    "Group scores are diagnostics after selection, not independent confirmation.",
+    "No ephemeris association, completeness or purity measurement."
+  ]
+}

@@ -1,0 +1,12 @@
+.git
+.venv
+**/node_modules
+**/dist
+**/__pycache__
+**/test-results
+skyshift
+data
+outputs
+El_Nino_ENSO_Documents
+.codex
+.env

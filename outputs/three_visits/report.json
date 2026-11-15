@@ -1,0 +1,58 @@
+{
+  "animation_axis": "visit_time",
+  "n_frames": 3,
+  "frames": [
+    {
+      "visit": 1,
+      "date": "2025-05-05T16:49:00.018",
+      "date_end": "2025-05-05T20:02:32.989",
+      "image": "outputs/three_visits/visit_01_processed.fits",
+      "input": "outputs/timelapse/mosaics/visit_01.fits",
+      "n_exposures": 3,
+      "coverage_fraction": 0.9362244897959183
+    },
+    {
+      "visit": 2,
+      "date": "2025-11-14T12:12:36.814",
+      "date_end": "2025-11-14T21:55:30.835",
+      "image": "outputs/three_visits/visit_02_processed.fits",
+      "input": "outputs/timelapse/mosaics/visit_02.fits",
+      "n_exposures": 7,
+      "coverage_fraction": 0.9362244897959183
+    },
+    {
+      "visit": 3,
+      "date": "2026-04-26T02:04:05.705",
+      "date_end": "2026-04-30T18:30:56.169",
+      "image": "outputs/three_visits/visit_03_processed.fits",
+      "input": "outputs/timelapse/mosaics/visit_03.fits",
+      "n_exposures": 5,
+      "coverage_fraction": 0.9528061224489796
+    }
+  ],
+  "gif": "outputs/three_visits/spherex_three_visits.gif",
+  "target": {
+    "ra_deg": 133.786245,
+    "dec_deg": -7.244372
+  },
+  "wavelength_filter": {
+    "center_um": 4.8847646170353345,
+    "tolerance_um": 0.12,
+    "selection": "Most balanced coverage across all full six-month periods; 4.6 \u00b5m preferred on ties"
+  },
+  "display_limits_mjy_per_pixel": [
+    -0.06543369146935092,
+    0.3594059575279671
+  ],
+  "input_type": "three original 2D visit mosaics; not three single exposures",
+  "tutorial": "https://caltech-ipac.github.io/irsa-tutorials/spherex-mosaic/",
+  "applied": [
+    "celestial WCS",
+    "reproject_exact",
+    "MJy/sr to mJy/pixel",
+    "aperture photometry",
+    "annulus background subtraction",
+    "shared display scale"
+  ],
+  "limitations": "D6 2D mosaics; no PAH 3.3 micron map or 102-band epoch cube inferred."
+}
