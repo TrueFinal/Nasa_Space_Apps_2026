@@ -53,9 +53,11 @@ test('invalid coordinate links show an actionable message without crashing',asyn
 
 test('contextual glossary works with hover, keyboard and touch without changing the view',async({page,browser})=>{
  await page.goto('/');await expect(page.locator('#source-badge')).toHaveText('SAVED REAL OBSERVATIONS');
- await expect(page.locator('.term-help')).toHaveCount(8);
+ await expect(page.locator('.term-help')).toHaveCount(10);
  await expect(page.getByRole('button',{name:'Explain CSV',exact:true})).toHaveCount(0);
  await expect(page.getByRole('button',{name:'Explain Download selection',exact:true})).toHaveCount(0);
+ await expect(page.getByRole('button',{name:'Explain Mean stack',exact:true})).toBeVisible();
+ await expect(page.getByRole('button',{name:'Explain Difference image',exact:true})).toBeVisible();
  const help=page.getByRole('button',{name:'Explain Right Ascension (RA)',exact:true});
  expect(await help.evaluate(e=>e.getBoundingClientRect().width)).toBeLessThanOrEqual(16);
  const tip=page.locator('#glossary-ra');
