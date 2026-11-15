@@ -134,10 +134,23 @@ class LabState:
             saved = list((self.output / "runs").glob("*/report.json"))
             if saved:
                 self.current_output = max(saved, key=lambda p: p.stat().st_mtime).parent
+        try:
+            selected = json.loads((self.output / "selected_analysis.json").read_text("utf-8"))["id"]
+            if selected and all(c in "0123456789abcdef" for c in selected):
+                candidate = self.output / "runs" / selected
+                if (candidate / "report.json").is_file():
+                    self.current_output = candidate
+        except (OSError, ValueError, KeyError, TypeError):
+            pass
         self.lock = threading.Lock()
         self.animation_lock = threading.Lock()
         self.executor = ThreadPoolExecutor(max_workers=1)
         self.running = False
+
+    def activate(self, output):
+        self.current_output = output
+        if output.parent == self.output / "runs":
+            write_json(self.output / "selected_analysis.json", {"id": output.name})
 
     def submit(self, params):
         _, _, _, cfg = validate_request(params)
@@ -168,7 +181,7 @@ class LabState:
                 "display_version": 2}, sort_keys=True).encode()).hexdigest()[:32]
             cached = self.output / "runs" / key
             if (cached / "report.json").is_file():
-                self.current_output = cached
+                self.activate(cached)
                 self.running = False
                 self.jobs[key] = {"status": "complete", "message": "Loaded cached analysis"}
                 return key
@@ -190,7 +203,7 @@ class LabState:
             # plates and RGB mosaics need not block an image search.
             write_json(output / "report.json", report)
             with self.lock:
-                self.current_output = output
+                self.activate(output)
                 self.jobs[key] = {"status": "complete", "message": "Análise concluída"}
         except Exception as exc:
             with self.lock:
@@ -295,6 +308,21 @@ def make_handler(state):
                     from .infrared_catalogs import build_join
                     report["dataset_join"] = build_join(report)
                 return self._send(200, report)
+            if route == "/api/analyses":
+                analyses = []
+                for path in sorted((state.output / "runs").glob("*/report.json"),
+                                   key=lambda p: p.stat().st_mtime, reverse=True):
+                    try:
+                        report = json.loads(path.read_text("utf-8"))
+                        frames = [f for f in report["frames"] if f.get("plot", {}).get("eligible", True)]
+                        analyses.append({"id": path.parent.name, "object": report["object"],
+                            "frames": len(frames), "low_um": report["config"]["low_um"],
+                            "high_um": report["config"]["high_um"],
+                            "synthetic": report.get("synthetic", False),
+                            "selected": path.parent == state.current_output})
+                    except (OSError, ValueError, KeyError):
+                        continue
+                return self._send(200, analyses)
             if route == "/api/cycles":
                 path = ROOT / "outputs" / "complete_cycles" / "report.json"
                 if not path.is_file():
@@ -382,7 +410,7 @@ def make_handler(state):
         def do_POST(self):
             if not self._local_request():
                 return self._send(403, {"error": "Origem não autorizada"})
-            if self.path != "/api/run":
+            if self.path not in ("/api/run", "/api/select-analysis"):
                 return self._send(404, {"error": "Rota não encontrada"})
             try:
                 length = int(self.headers.get("Content-Length", "0"))
@@ -391,6 +419,18 @@ def make_handler(state):
                 params = json.loads(self.rfile.read(length))
                 if not isinstance(params, dict):
                     raise ValueError("A consulta deve ser um objeto JSON.")
+                if self.path == "/api/select-analysis":
+                    identifier = str(params.get("id", ""))
+                    if not identifier or any(c not in "0123456789abcdef" for c in identifier):
+                        raise ValueError("Invalid saved analysis.")
+                    output = state.output / "runs" / identifier
+                    if not (output / "report.json").is_file():
+                        raise ValueError("Saved analysis not found.")
+                    with state.lock:
+                        if state.running:
+                            raise ValueError("Wait for the current search to finish.")
+                        state.activate(output)
+                    return self._send(200, {"selected": identifier})
                 key = state.submit(params)
                 return self._send(202, {"job": key})
             except (ValueError, TypeError, KeyError) as exc:

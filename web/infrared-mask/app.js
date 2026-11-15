@@ -1,7 +1,7 @@
 import { cropFor, available, starsFor, segmentsFor, backgroundFor, limitsFor, stretch, viewport, imagePoint, pixelAt, spectralPoints } from './plate.mjs';
 const $ = id => document.getElementById(id);
 let report, allFrames = [], index = 0, mode = 'science', timer, imageView, gaiaAvailable = false;
-let joinedSamples = [], channelData = [], playbackWanted = false, stackURL;
+let joinedSamples = [], channelData = [], playbackWanted = false, stackURL, savedAnalyses = [];
 const bandColors = ['#8dc9f1', '#91dfcb', '#d6d991', '#efbb84', '#e396ad', '#b4a1e2'];
 const nominalBands = [[.75, 1.09], [1.10, 1.62], [1.63, 2.41], [2.42, 3.82], [3.83, 4.41], [4.42, 5.00]];
 const statuses = { aperture_measurement: 'Aperture measured', masked_aperture: 'Masked aperture', insufficient_background: 'Insufficient background', target_outside_image: 'Target outside image', aperture_or_background_at_edge: 'Aperture at image edge' };
@@ -57,6 +57,7 @@ async function load() {
     card.append(node('strong', `D${d}`), node('span', `${number(lo)}–${number(hi)} μm`), node('small', label));
     return card;
   }));
+  $('channel-id').value = String(report.request_selection?.channel_id || 0);
   $('time').max = report.frames.length - 1; $('time').value = 0;
   $('limitations').replaceChildren(...report.limitations.map(s => node('li', translate(s))));
   $('provenance').textContent = JSON.stringify(report.provenance, null, 2);
@@ -87,6 +88,7 @@ async function load() {
   setupStack();
   render();
   startPlayback();
+  await populateSaved();
   return true;
 }
 function drawImage() {
@@ -246,6 +248,7 @@ $('detector-view').addEventListener('change', e => {
 $('full-spectrum').addEventListener('click', () => {
   const form = $('query').elements;
   form.low_um.value = .75; form.high_um.value = 5; form.detector.value = 0;
+  $('channel-id').value = '0';
 });
 $('image').addEventListener('mousemove', e => {
   if (!report || !imageView) return; const f = report.frames[index], r = e.currentTarget.getBoundingClientRect();
@@ -329,3 +332,28 @@ $('build-stack').addEventListener('click', async () => {
   } catch (error) { $('stack-status').textContent = error.message; }
   finally { updateStackRange(); }
 });
+
+async function populateSaved() {
+  try {
+    savedAnalyses = await api('/api/analyses');
+    $('saved-analyses').replaceChildren(...savedAnalyses.map(a => {
+      const option = node('option', a.object + ' · ' + a.frames + ' frames · ' + number(a.low_um,3) + '–' + number(a.high_um,3) + ' μm' + (a.synthetic ? ' · SYNTHETIC' : ' · real data'));
+      option.value = a.id; option.selected = a.selected; return option;
+    }));
+    const sequence = savedAnalyses.find(a => a.object === report.object && a.frames>1 && !a.synthetic);
+    $('open-multiframe').hidden = allFrames.length>1 || !sequence;
+    if (sequence) {
+      $('open-multiframe').textContent = 'Open saved ' + sequence.frames + '-frame sequence (' + number(sequence.low_um,2) + '–' + number(sequence.high_um,2) + ' μm)';
+      $('open-multiframe').dataset.id = sequence.id;
+    }
+  } catch (error) { console.error('Saved analyses unavailable:', error); }
+}
+async function openSaved(id) {
+  try {
+    stop();
+    await api('/api/select-analysis', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id})});
+    await load(); status('Saved observation sequence loaded.');
+  } catch (error) { status(error.message, true); }
+}
+$('open-saved').addEventListener('click', () => openSaved($('saved-analyses').value));
+$('open-multiframe').addEventListener('click', e => openSaved(e.currentTarget.dataset.id));

@@ -43,3 +43,10 @@ request to shorten the interval. The stack PNG can be downloaded.
 
 Playback suspends while the browser tab is hidden and resumes on return if the
 user had not explicitly paused it. Manual frame controls keep it paused.
+
+Saved observations can be reopened without an archive query. The list displays
+object, real/synthetic status, usable frame count and wavelength range. A
+single-exposure result offers a saved multi-frame sequence for the same object
+when one exists, with its different wavelength range explicitly shown. Selection
+persists in `outputs/infrared/selected_analysis.json` across server restarts.
+Restore full range clears the channel selector as well as the wavelength bounds.

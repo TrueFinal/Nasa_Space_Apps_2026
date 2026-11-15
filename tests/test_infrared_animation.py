@@ -60,6 +60,22 @@ def test_gif_route_and_cached_query_do_not_run_archive_again(tmp_path, monkeypat
         with pytest.raises(HTTPError) as error:
             urllib.request.urlopen(f'http://127.0.0.1:{server.server_port}/api/stack?detector=4&start=0&count=999')
         assert error.value.code == 400
+        base = f'http://127.0.0.1:{server.server_port}'
+        with urllib.request.urlopen(base + '/api/analyses') as res:
+            choices = json.load(res)
+        assert choices[0]['id'] == key and choices[0]['frames'] == 4
+        request = urllib.request.Request(base + '/api/select-analysis',
+            json.dumps({'id': key}).encode(), {'Content-Type': 'application/json'})
+        with urllib.request.urlopen(request) as res:
+            assert json.load(res)['selected'] == key
+        reopened = LabState(output)
+        assert reopened.current_output == cached
+        reopened.executor.shutdown()
+        request = urllib.request.Request(base + '/api/select-analysis',
+            json.dumps({'id': '../outside'}).encode(), {'Content-Type': 'application/json'})
+        with pytest.raises(HTTPError) as error:
+            urllib.request.urlopen(request)
+        assert error.value.code == 400
         with urllib.request.urlopen(f'http://127.0.0.1:{server.server_port}/inferno.mjs') as res:
             assert b'export function inferno' in res.read()
     finally:
