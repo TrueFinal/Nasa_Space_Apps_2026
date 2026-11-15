@@ -68,6 +68,7 @@ test('contextual glossary works with hover, keyboard and touch without changing 
  await page.keyboard.press('Escape');await expect(tip).toBeHidden();
  await expect(page.locator('#source-badge')).toHaveText('SAVED REAL OBSERVATIONS');
  const context=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
+ await context.addInitScript(()=>localStorage.setItem('zephyr-lab-tour-v1','test'));
  const phone=await context.newPage();await phone.goto('/lab');
  const button=phone.getByRole('button',{name:'Explain Motion trail',exact:true});
  await button.tap();const popup=phone.locator('#glossary-datamodetrail');await expect(popup).toBeVisible();

@@ -1,7 +1,7 @@
 import {readFile,writeFile,mkdir,readdir,copyFile,rm} from 'node:fs/promises';
 import {resolve} from 'node:path';
 const root=resolve(import.meta.dirname,'..'), assets={};
-for(const f of ['index.html','style.css','app.js','astro.js','catalogue.js','help.js','config.json','gifenc.js','gifenc.LICENSE.txt','zephyr-logo.svg']) {
+for(const f of ['index.html','style.css','app.js','astro.js','catalogue.js','help.js','tour.js','config.json','gifenc.js','gifenc.LICENSE.txt','zephyr-logo.svg']) {
   const type=f.endsWith('.svg')?'image/svg+xml':f.endsWith('.html')?'text/html;charset=utf-8':f.endsWith('.css')?'text/css':f.endsWith('.json')?'application/json':'text/javascript';
   assets['/'+f]={type,body:await readFile(`${root}/worker/${f}`,'utf8')};
 }

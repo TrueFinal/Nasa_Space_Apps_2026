@@ -43,3 +43,10 @@ test('home and laboratory remain distinct and home assets are bundled',async()=>
  assert.equal(image.headers.get('content-type'),'image/png');
  assert.deepEqual([...new Uint8Array(await image.arrayBuffer()).slice(0,4)],[137,80,78,71]);
 });
+
+test('all relative app imports are bundled, including the onboarding tour',async()=>{
+ const app=await worker.fetch(new Request('http://test/app.js'));const source=await app.text();
+ const paths=[...source.matchAll(/(?:from\s*|import\s*)['"]\.\/([^'"]+)['"]/g)].map(m=>m[1]);
+ assert.ok(paths.includes('tour.js'));
+ for(const path of paths){const res=await worker.fetch(new Request('http://test/'+path));assert.equal(res.status,200,path);assert.match(res.headers.get('content-type'),/javascript/,path);}
+});
