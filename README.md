@@ -60,6 +60,18 @@ um único cubo espectral em três épocas. Os produtos anteriores em
 `outputs/temporal_band/` e `outputs/spectral_cube/` são experimentos auxiliares;
 o GIF principal agora usa as três visitas completas.
 
+## Ciclos completos de seis meses
+
+`outputs/complete_cycles/spherex_complete_cycles.gif` tem um frame por ciclo completo,
+com as observações daquele intervalo combinadas na mesma grade celeste. O exemplo
+disponível contém dois ciclos: 3 exposições entre maio e novembro/2025 e 12 exposições
+entre novembro/2025 e maio/2026. Rode `uv run --extra viz python scripts/infrared_lab.py cycle-gif`
+para reconstruí-lo. A comparação temporal fixa D6 (~4,885 µm); a paleta inferno é
+apenas a escala visual de intensidade. O fluxo segue as etapas de visualização do
+tutorial IRSA (WCS celeste, unidade por pixel, fundo e escala comum), sem animar o
+eixo das bandas. Os arquivos-fonte atuais são mosaicos D6 bidimensionais, não cubos
+de 102 planos; portanto o GIF mostra somente o canal D6.
+
 A branch também inclui os dados FITS, catálogos, modelos e demais resultados
 locais. Abaixo está o histórico dos outros experimentos.
 

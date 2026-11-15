@@ -243,6 +243,19 @@ def make_handler(state):
                 if not state.current_output:
                     return self._send(404, {"error": "Nenhuma análise carregada"})
                 return self._send(200, (state.current_output / "report.json").read_bytes())
+            if route == "/api/cycles":
+                path = ROOT / "outputs" / "complete_cycles" / "report.json"
+                if not path.is_file():
+                    return self._send(404, {"error": "No complete-cycle animation is available"})
+                return self._send(200, path.read_bytes())
+            if route.startswith("/cycle-files/"):
+                name = route.removeprefix("/cycle-files/")
+                allowed = {"spherex_complete_cycles.gif", "cycle_01.png", "cycle_02.png", "complete_cycles.png", "report.json"}
+                path = ROOT / "outputs" / "complete_cycles" / name
+                if name not in allowed or not path.is_file():
+                    return self._send(404, {"error": "Cycle product not found"})
+                kind = "image/gif" if name.endswith(".gif") else "image/png" if name.endswith(".png") else "application/json; charset=utf-8"
+                return self._send(200, path.read_bytes(), kind)
             if route.startswith("/files/") and state.current_output:
                 name = route.removeprefix("/files/")
                 allowed = {"report.json", "measurements.csv", "manifest.json", "comparison.png",
@@ -328,6 +341,9 @@ def main():
     color = sub.add_parser("colorize-cube", help="Colorir cubo FITS IRSA; somente display IR")
     color.add_argument("cube", help="FITS com IMAGE, WCS-WAVE, NHITS e FLAGS")
     color.add_argument("--output", default="outputs/infrared_color")
+    cycles = sub.add_parser("cycle-gif", help="Compor o mesmo canal em cada ciclo completo de seis meses")
+    cycles.add_argument("--manifest", default="outputs/timelapse/timelapse_report.json")
+    cycles.add_argument("--output", default="outputs/complete_cycles")
     cal = sub.add_parser("calibration", help="Baixar CWAVE/CBAND oficial (33 MB por detector)")
     cal.add_argument("--release", choices=["dr1", "qr3"], default="qr3")
     cal.add_argument("--detector", choices=["all", "1", "2", "3", "4", "5", "6"], default="all")
@@ -364,6 +380,10 @@ def main():
             result = colorize_irsa_cube(args.cube, args.output)
             print(json.dumps({"output": str(Path(args.output).resolve()),
                               "channels": result["channels"]}, ensure_ascii=False))
+        elif args.command == "cycle-gif":
+            from .cycle_timelapse import build_complete_cycle_gif
+
+            build_complete_cycle_gif(args.manifest, args.output)
         elif args.command == "calibration":
             if args.detector == "all":
                 print(fetch_calibrations(args.output, args.release, print))

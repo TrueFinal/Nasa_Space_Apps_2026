@@ -70,17 +70,6 @@ async function load() {
   $('excluded-note').textContent = excluded.length ? `${excluded.length} exposure(s) excluded from the plot because the MPC/MOST position has no coverage. See the JSON for details.` : '';
   if (report.plotting?.preview) { $('preview').hidden = false; $('preview').href = `/${report.plotting.preview}`; }
   else $('preview').hidden = true;
-  const mosaic = report.color_mosaic;
-  $('color-mosaic').hidden = !mosaic?.preview;
-  if (mosaic?.preview) {
-    // Version the URL because each new analysis reuses the output filenames.
-    const version = encodeURIComponent(report.created_utc || '');
-    $('color-preview').src = `/${mosaic.preview}?v=${version}`;
-    $('color-download').href = `/${mosaic.preview}?v=${version}`;
-    const coverage = mosaic.channels.map(c => `${c.channel}: ${number(100 * c.coverage_fraction, 1)}%`).join(' · ');
-    const epochs = (mosaic.contributors || []).map(c => c.utc).sort();
-    $('color-coverage').textContent = `Channel coverage: ${coverage}. Complete RGB: ${number(100 * mosaic.complete_rgb_fraction, 1)}%. Field: ${mosaic.shape[1]} × ${mosaic.shape[0]} px, reference ${mosaic.reference_frame || 'IRSA cube'}.${epochs.length ? ` UTC epochs: ${epochs[0]} to ${epochs.at(-1)}.` : ''}`;
-  }
   render();
   return true;
 }
@@ -241,6 +230,12 @@ $('query').addEventListener('submit', async e => {
     if (await load()) status('Analysis complete. Check coverage, flags and astrometry before interpreting measurements.');
   } catch (err) { status(err.message, true); } finally { $('run').disabled = false; }
 });
+try {
+  const cycles = await api('/api/cycles');
+  $('cycle-metadata').textContent = cycles.cycles.map(c =>
+    `Cycle ${c.cycle}: ${c.start.slice(0, 10)}–${c.end.slice(0, 10)} · ${c.n_exposures} exposures across ${c.n_visits} visit mosaics`
+  ).join('  |  ');
+} catch (err) { $('cycle-metadata').textContent = `Cycle animation unavailable: ${err.message}`; }
 try {
   const state = await api('/api/state');
   $('server-note').textContent = state.archive_ready ? `Live archive queries enabled. Calibrations: ${(state.available_detectors || [4]).map(d => `D${d}`).join(', ')}.` : 'Live queries require local CWAVE/CBAND calibrations. Existing processed results remain available.';
