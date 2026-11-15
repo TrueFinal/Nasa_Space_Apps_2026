@@ -26,6 +26,12 @@ A consulta exata e a resposta estão em [simbad_brown_dwarf_check.json](simbad_b
 
 Fonte: [SIMBAD Harvard TAP](https://simbad.cfa.harvard.edu/simbad/sim-tap/).
 
+### Verificação empírica de cometa conhecido
+
+Uma consulta real ao MOST, `catalog=spherex`, objeto `3I`, intervalo 01–02/08/2025, retornou arquivos SPHEREx DR1 associados à trajetória de C/2025 N1 (ATLAS), incluindo `2025W31_2A_0156_1` nos detectores D3 e D6. A resposta está em [most_3iatlas_check.txt](most_3iatlas_check.txt), com a URL exata.
+
+Esse resultado mostra interseção entre trajetória prevista e exposições; não confirma a detecção fotométrica do cometa em cada imagem nem significa descoberta de um objeto novo.
+
 ## Caminho mais útil para o hackathon
 
 1. **Começar por objetos conhecidos:** consultar SIMBAD e Gaia por região, trazer nome/tipo catalogado, distância angular e origem da classificação. Propagar movimentos próprios e incluir incertezas, paralaxe e mistura de fontes quando relevantes. Proximidade no céu sozinha não garante que o mesmo objeto produziu o pico SPHEREx.
