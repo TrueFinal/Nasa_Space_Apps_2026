@@ -19,7 +19,6 @@ assert.equal([...html.matchAll(/href="\/lab"/g)].length, 3, 'Nav, SPHEREx CTA an
 for (const script of html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)) {
   if (script[1].trim()) new vm.Script(script[1], {filename: 'homepage-inline.js'});
 }
-for (const filename of ['three.min.js', 'OrbitControls.js']) new vm.Script(fs.readFileSync(path.join(root, 'assets', filename), 'utf8'), {filename});
 const logo = fs.readFileSync(path.join(root, 'assets/zephyr-logo.svg'), 'utf8');
 assert(logo.includes('viewBox="0 0 1100 620"'));
 assert(logo.includes('id="zephyrBeam"'));
@@ -28,3 +27,8 @@ const manifest = JSON.parse(fs.readFileSync(path.join(root, 'assets/manifest.jso
 for (const [name, metadata] of Object.entries(manifest.files)) assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.join(root, 'assets', name))).digest('hex'), metadata.sha256, `Asset changed without rebuilding: ${name}`);
 assert(fs.readFileSync(path.join(root, 'assets/home.css'), 'utf8').includes('bg-brand-red'), 'Brand Tailwind utilities must be present');
 console.log('Homepage checks passed: local assets, route links, anchors, JavaScript syntax, logo and SHA-256 manifest.');
+
+assert(!html.includes('spherex-canvas'), 'The 3D canvas must not return');
+assert(!html.includes('THREE.'), 'The 3D engine must not return');
+assert(!html.includes('Independent mission concept'));
+assert(html.includes('/site-assets/spherex-cutout.png'));

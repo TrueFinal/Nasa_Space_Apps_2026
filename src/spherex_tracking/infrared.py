@@ -281,10 +281,8 @@ def make_handler(state):
             site_assets = {
                 "home.css": "text/css",
                 "theme.css": "text/css",
-                "three.min.js": "text/javascript",
-                "OrbitControls.js": "text/javascript",
+                "spherex-cutout.png": "image/png",
                 "zephyr-logo.svg": "image/svg+xml",
-                "three-LICENSE.txt": "text/plain",
                 "manifest.json": "application/json",
             }
             if route.startswith("/site-assets/"):

@@ -230,7 +230,9 @@ def test_local_api_exposes_report_not_arbitrary_files(fixture, tmp_path):
             assert r.headers["Content-Type"] == "text/javascript; charset=utf-8"
             assert b"export function cropFor" in r.read()
         with urllib.request.urlopen(base + "/") as r:
-            assert b"spherex-canvas" in r.read()
+            page = r.read()
+            assert b"spherex-cutout.png" in page
+            assert b"spherex-canvas" not in page
             assert "script-src 'self' 'unsafe-inline'" in r.headers["Content-Security-Policy"]
         with urllib.request.urlopen(base + "/lab") as r:
             assert b'id="detector-view"' in r.read()
@@ -238,7 +240,7 @@ def test_local_api_exposes_report_not_arbitrary_files(fixture, tmp_path):
         for asset, kind in (
             ("theme.css", "text/css"),
             ("zephyr-logo.svg", "image/svg+xml"),
-            ("three.min.js", "text/javascript"),
+            ("spherex-cutout.png", "image/png"),
         ):
             with urllib.request.urlopen(base + "/site-assets/" + asset) as r:
                 assert r.headers["Content-Type"].startswith(kind)
