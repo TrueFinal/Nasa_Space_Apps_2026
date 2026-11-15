@@ -1,0 +1,224 @@
+{
+  "references": {
+    "gural": "https://doi.org/10.1088/1538-3873/aac1ff",
+    "stetzler": "https://arxiv.org/abs/2509.26279v1"
+  },
+  "data": "Eight real SPHEREx DR1 detector 1 exposures; controls labeled as injected",
+  "versions": {
+    "find-asteroids": "0.1.3",
+    "mcd-regression": "0.1.1",
+    "numpy": "2.5.4",
+    "astropy": "8.0.2"
+  },
+  "gural": {
+    "implementation": "Independent equations 1\u20132 + inverse-range spacing; not SALTAD/TGEN",
+    "original_source_status": "NASA repository distributes request forms, not executable source",
+    "ranges_au": [
+      null,
+      1.6,
+      0.8,
+      0.5333333333333333,
+      0.4
+    ],
+    "max_nonlinearity_at_0_4au_pixels": 1.5245103291783697,
+    "real": {
+      "best": {
+        "x": 108.0,
+        "y": 80.0,
+        "vx": -8.0,
+        "vy": 4.0,
+        "score": 11.80491176203381,
+        "distance_au": 0.4
+      },
+      "seconds": 85.51636955499998,
+      "n_templates": 1440
+    },
+    "linear_baseline": {
+      "best": {
+        "x": 92.0,
+        "y": 73.0,
+        "vx": -1.0,
+        "vy": 6.0,
+        "score": 9.797348952286336,
+        "distance_au": null
+      },
+      "seconds": 15.505315333000908,
+      "n_templates": 288
+    },
+    "injection_truth": {
+      "x": 50.0,
+      "y": 49.0,
+      "vx": 3.0,
+      "vy": -2.0,
+      "flux": 0.3064165584060391,
+      "expected_single_snrs_after_mask": [
+        3.0998399344514382,
+        2.9962558820036396,
+        3.015437593913132,
+        3.0110783537237227,
+        2.9349822433944377,
+        2.865911885671168,
+        1.2381574979701822,
+        2.9948934630247073
+      ],
+      "location_selection": "Favorable PSF-information position; not a completeness measurement"
+    },
+    "injection": {
+      "best": {
+        "x": 108.0,
+        "y": 80.0,
+        "vx": -8.0,
+        "vy": 4.0,
+        "score": 11.80491176203381,
+        "distance_au": 0.4
+      },
+      "seconds": 71.89658777499426,
+      "n_templates": 1440,
+      "best_position_error_pixels": 65.76473218982953,
+      "best_velocity_error_pixels_hour": 12.529964086141668,
+      "truth_recovered_as_top_candidate": false
+    },
+    "linear_on_parallax_injection": {
+      "best": {
+        "x": 92.0,
+        "y": 73.0,
+        "vx": -1.0,
+        "vy": 6.0,
+        "score": 9.797348952286336,
+        "distance_au": null
+      },
+      "seconds": 14.261359887001163,
+      "n_templates": 288,
+      "best_position_error_pixels": 48.373546489791295,
+      "best_velocity_error_pixels_hour": 8.94427190999916,
+      "truth_recovered_as_top_candidate": false
+    },
+    "forced_scores_at_injected_path": {
+      "parallax": -1.917621771602136,
+      "linear": -3.619381062720706,
+      "note": "Known-position diagnostic, not blind recovery"
+    }
+  },
+  "stetzler": {
+    "implementation": "Authors' find-asteroids CPU Hough + MCD refine/gather",
+    "catalog_extraction": "Native Gaussian PSF matched-filter local maxima; thresholds 2,3,5",
+    "bin_width_arcsec": 6.15,
+    "catalogs": {
+      "2.0": {
+        "n_peaks": 311,
+        "n_velocity_hypotheses": 952,
+        "velocity_spacing_deg_day": 0.023974871228151694,
+        "seconds_including_jit": 3.7613796980003826,
+        "candidates": [
+          {
+            "reference_day": 0.0,
+            "ra_at_reference_deg": 134.6852755478039,
+            "dec_at_reference_deg": 15.957033118562558,
+            "vra_deg_day": 0.21905403446955804,
+            "vdec_deg_day": 0.2120197395504561,
+            "raw_hough_votes": 4,
+            "n_gathered": 4,
+            "distinct_exposures": 4,
+            "exposure_ids": [
+              2,
+              4,
+              5,
+              6
+            ],
+            "median_residual_arcsec": 1.5136907146123646
+          }
+        ],
+        "minimum_distinct_exposures_for_review": 4,
+        "n_candidates_with_four_exposures": 1
+      },
+      "3.0": {
+        "n_peaks": 150,
+        "n_velocity_hypotheses": 952,
+        "velocity_spacing_deg_day": 0.023974871228151694,
+        "seconds_including_jit": 0.19459793200076092,
+        "candidates": [],
+        "minimum_distinct_exposures_for_review": 4,
+        "n_candidates_with_four_exposures": 0
+      },
+      "5.0": {
+        "n_peaks": 115,
+        "n_velocity_hypotheses": 358,
+        "velocity_spacing_deg_day": 0.04,
+        "seconds_including_jit": 0.03398631399613805,
+        "candidates": [],
+        "minimum_distinct_exposures_for_review": 4,
+        "n_candidates_with_four_exposures": 0
+      },
+      "linear_injection_snr2": {
+        "n_peaks": 315,
+        "n_velocity_hypotheses": 952,
+        "velocity_spacing_deg_day": 0.023974871228151694,
+        "seconds_including_jit": 0.27210143100091955,
+        "candidates": [
+          {
+            "reference_day": 0.0,
+            "ra_at_reference_deg": 134.6852755478039,
+            "dec_at_reference_deg": 15.957033118562558,
+            "vra_deg_day": 0.21905403446955804,
+            "vdec_deg_day": 0.2120197395504561,
+            "raw_hough_votes": 4,
+            "n_gathered": 4,
+            "distinct_exposures": 4,
+            "exposure_ids": [
+              2,
+              4,
+              5,
+              6
+            ],
+            "median_residual_arcsec": 1.5136907146123646,
+            "injection_max_track_error_pixels": 27.242888746655897,
+            "matches_injection": false
+          }
+        ],
+        "minimum_distinct_exposures_for_review": 4,
+        "n_candidates_with_four_exposures": 1,
+        "injected_track_recovered": false,
+        "input_catalog_truth_support": {
+          "radius_pixels": 2,
+          "exposures_with_peak_near_truth": [
+            1,
+            2,
+            4,
+            5,
+            6
+          ],
+          "n_exposures_with_peak_near_truth": 5
+        }
+      }
+    },
+    "linear_injection_truth": {
+      "x": 54.0,
+      "y": 57.0,
+      "vx": 3.0,
+      "vy": -2.0,
+      "flux": 0.3064165584060391,
+      "expected_single_snrs_after_mask": [
+        3.112571187640594,
+        3.105119320475151,
+        3.013322053884966,
+        3.1460049551912195,
+        3.015245079571769,
+        2.8685543884439464,
+        1.218385523397214,
+        2.9083078021585433
+      ],
+      "location_selection": "Favorable PSF-information position; not a completeness measurement"
+    }
+  },
+  "confirmed_asteroids": 0,
+  "limitations": [
+    "Gural observer axes assumed inertial equatorial; GEOCENTER alone does not prove axes.",
+    "Built-in Earth ephemeris, no light-time/aberration correction or range-rate bounds.",
+    "Gural first-order common template over small field, distances >=0.4au.",
+    "Gaussian PSF; LVF spectral differences, backgrounds and noise remain provisional.",
+    "Stetzler is linear; spatially correlated noise and repeated epochs can contaminate votes.",
+    "Real-background injections have favorable mask coverage and artificial constant flux.",
+    "Scores, Hough votes and post-selected candidates are not calibrated significance.",
+    "No population completeness, ephemeris confirmation or published speedup reproduction."
+  ]
+}

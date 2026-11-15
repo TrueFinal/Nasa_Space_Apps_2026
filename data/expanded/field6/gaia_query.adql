@@ -1,0 +1,1 @@
+SELECT source_id,ra,dec,ref_epoch,pmra,pmdec,phot_g_mean_mag,ruwe FROM gaiadr3.gaia_source WHERE 1=CONTAINS(POINT('ICRS',ra,dec),CIRCLE('ICRS',75.0,-20.0,0.5)) AND phot_g_mean_mag<20

@@ -1,0 +1,527 @@
+[
+  {
+    "x": 72.90156882785054,
+    "y": 31.65094713238811,
+    "vx": -4.502928887207968,
+    "vy": 9.22385450427128,
+    "speed_pixels_hour": 10.264300291749924,
+    "reference_time_hours": 0.8550622200127691,
+    "rms_pixels": 0.48676455735122676,
+    "baseline_hours": 1.7101238880422898,
+    "event_ids": [
+      102,
+      193,
+      65,
+      175,
+      100,
+      114,
+      158
+    ],
+    "epochs": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      7
+    ],
+    "n_epochs": 7,
+    "mean_source_like_score": 0.4113388274397169,
+    "velocity_tolerance_pixels_hour": 0.7309411959802345,
+    "velocity_resolved": true,
+    "link_method": "position seeds across temporal groups + fitted velocity",
+    "track_id": 1,
+    "candidate_ids": [
+      10,
+      23,
+      35,
+      61,
+      90,
+      103,
+      110
+    ],
+    "ra_at_reference_deg": 134.64865878007285,
+    "dec_at_reference_deg": 15.997943860921243,
+    "review_status": "candidato de movimento; sem identifica\u00e7\u00e3o orbital"
+  },
+  {
+    "x": 56.75494516587308,
+    "y": 42.00137058042792,
+    "vx": 11.524643782082716,
+    "vy": 2.490686679659696,
+    "speed_pixels_hour": 11.790713907144555,
+    "reference_time_hours": 0.8550622200127691,
+    "rms_pixels": 0.4221470308811429,
+    "baseline_hours": 1.674309456080664,
+    "event_ids": [
+      51,
+      179,
+      190,
+      189,
+      168,
+      87
+    ],
+    "epochs": [
+      1,
+      2,
+      4,
+      5,
+      6,
+      7
+    ],
+    "n_epochs": 6,
+    "mean_source_like_score": 0.39053382476170856,
+    "velocity_tolerance_pixels_hour": 0.7465764440738953,
+    "velocity_resolved": true,
+    "link_method": "position seeds across temporal groups + fitted velocity",
+    "track_id": 2,
+    "candidate_ids": [
+      14,
+      39,
+      82,
+      94,
+      104,
+      118
+    ],
+    "ra_at_reference_deg": 134.68186784017473,
+    "dec_at_reference_deg": 16.00728769281892,
+    "review_status": "candidato de movimento; sem identifica\u00e7\u00e3o orbital"
+  },
+  {
+    "x": 19.476772153395395,
+    "y": 79.15566305994004,
+    "vx": -3.891335181700607,
+    "vy": -1.8434219370406106,
+    "speed_pixels_hour": 4.305890608724687,
+    "reference_time_hours": 0.8550622200127691,
+    "rms_pixels": 0.6576982604180224,
+    "baseline_hours": 1.7101238880422898,
+    "event_ids": [
+      131,
+      174,
+      136,
+      52,
+      8,
+      43
+    ],
+    "epochs": [
+      0,
+      1,
+      2,
+      4,
+      6,
+      7
+    ],
+    "n_epochs": 6,
+    "mean_source_like_score": 0.47017211218674976,
+    "velocity_tolerance_pixels_hour": 0.7309411959802345,
+    "velocity_resolved": true,
+    "link_method": "position seeds across temporal groups + fitted velocity",
+    "track_id": 3,
+    "candidate_ids": [
+      66,
+      100,
+      126,
+      150,
+      193,
+      200
+    ],
+    "ra_at_reference_deg": 134.76568785567073,
+    "dec_at_reference_deg": 16.050550394427425,
+    "review_status": "candidato de movimento; sem identifica\u00e7\u00e3o orbital"
+  },
+  {
+    "x": 48.07456017492559,
+    "y": 19.012841981464497,
+    "vx": -6.023515568373117,
+    "vy": 1.2303640385038186,
+    "speed_pixels_hour": 6.1478887001699,
+    "reference_time_hours": 0.8550622200127691,
+    "rms_pixels": 0.26281436287189114,
+    "baseline_hours": 1.674309456080664,
+    "event_ids": [
+      91,
+      44,
+      123,
+      122,
+      15
+    ],
+    "epochs": [
+      1,
+      4,
+      5,
+      6,
+      7
+    ],
+    "n_epochs": 5,
+    "mean_source_like_score": 0.48762332201004027,
+    "velocity_tolerance_pixels_hour": 0.7465764440738953,
+    "velocity_resolved": true,
+    "link_method": "position seeds across temporal groups + fitted velocity",
+    "track_id": 4,
+    "candidate_ids": [
+      4,
+      32,
+      57,
+      77,
+      102,
+      196
+    ],
+    "ra_at_reference_deg": 134.68443666763864,
+    "dec_at_reference_deg": 15.965609448740738,
+    "review_status": "candidato de movimento; sem identifica\u00e7\u00e3o orbital"
+  },
+  {
+    "x": 62.333264366433184,
+    "y": 93.16653974169628,
+    "vx": -7.232676372204664,
+    "vy": -7.445045195905728,
+    "speed_pixels_hour": 10.379802766629364,
+    "reference_time_hours": 0.8550622200127691,
+    "rms_pixels": 0.4085998734261401,
+    "baseline_hours": 1.6384955761022866,
+    "event_ids": [
+      48,
+      115,
+      173,
+      12,
+      167
+    ],
+    "epochs": [
+      1,
+      3,
+      4,
+      5,
+      6
+    ],
+    "n_epochs": 5,
+    "mean_source_like_score": 0.46049380898475645,
+    "velocity_tolerance_pixels_hour": 0.7628949496302858,
+    "velocity_resolved": true,
+    "link_method": "position seeds across temporal groups + fitted velocity",
+    "track_id": 5,
+    "candidate_ids": [
+      20,
+      45,
+      71,
+      87,
+      115,
+      124,
+      154
+    ],
+    "ra_at_reference_deg": 134.6997132712085,
+    "dec_at_reference_deg": 16.093609714288156,
+    "review_status": "candidato de movimento; sem identifica\u00e7\u00e3o orbital"
+  },
+  {
+    "x": 20.89695596020963,
+    "y": 24.999999999999996,
+    "vx": -1.772057814294847,
+    "vy": 3.4882966794678393e-15,
+    "speed_pixels_hour": 1.772057814294847,
+    "reference_time_hours": 0.8550622200127691,
+    "rms_pixels": 0.41887881318569903,
+    "baseline_hours": 1.7101238880422898,
+    "event_ids": [
+      3,
+      148,
+      9,
+      137,
+      67
+    ],
+    "epochs": [
+      0,
+      1,
+      2,
+      4,
+      7
+    ],
+    "n_epochs": 5,
+    "mean_source_like_score": 0.5071787238121033,
+    "velocity_tolerance_pixels_hour": 0.7309411959802345,
+    "velocity_resolved": true,
+    "link_method": "position seeds across temporal groups + fitted velocity",
+    "track_id": 6,
+    "candidate_ids": [
+      7,
+      24,
+      91,
+      116,
+      161
+    ],
+    "ra_at_reference_deg": 134.73421129701734,
+    "dec_at_reference_deg": 15.962640976333235,
+    "review_status": "candidato de movimento; sem identifica\u00e7\u00e3o orbital"
+  },
+  {
+    "x": 20.099956521177134,
+    "y": 79.13532074473885,
+    "vx": 3.6985950481131393,
+    "vy": 1.957712527622017,
+    "speed_pixels_hour": 4.184763275352051,
+    "reference_time_hours": 0.8550622200127691,
+    "rms_pixels": 0.48016554262664574,
+    "baseline_hours": 1.6743100080639124,
+    "event_ids": [
+      165,
+      1,
+      13,
+      111,
+      28
+    ],
+    "epochs": [
+      0,
+      1,
+      4,
+      5,
+      6
+    ],
+    "n_epochs": 5,
+    "mean_source_like_score": 0.5207933008670806,
+    "velocity_tolerance_pixels_hour": 0.7465761979440336,
+    "velocity_resolved": true,
+    "link_method": "position seeds across temporal groups + fitted velocity",
+    "track_id": 7,
+    "candidate_ids": [
+      19,
+      28,
+      43,
+      64,
+      130,
+      201
+    ],
+    "ra_at_reference_deg": 134.76460836467845,
+    "dec_at_reference_deg": 16.05080982622365,
+    "review_status": "candidato de movimento; sem identifica\u00e7\u00e3o orbital"
+  },
+  {
+    "x": 67.85385281933713,
+    "y": 33.69245469323783,
+    "vx": 1.0265956023482665,
+    "vy": 10.589594511801938,
+    "speed_pixels_hour": 10.63923918591675,
+    "reference_time_hours": 0.8550622200127691,
+    "rms_pixels": 0.5142869037526397,
+    "baseline_hours": 1.6743100080639124,
+    "event_ids": [
+      69,
+      142,
+      79,
+      31,
+      36
+    ],
+    "epochs": [
+      0,
+      2,
+      4,
+      5,
+      6
+    ],
+    "n_epochs": 5,
+    "mean_source_like_score": 0.4872187376022339,
+    "velocity_tolerance_pixels_hour": 0.7465761979440336,
+    "velocity_resolved": true,
+    "link_method": "position seeds across temporal groups + fitted velocity",
+    "track_id": 8,
+    "candidate_ids": [
+      11,
+      22,
+      38,
+      81,
+      92,
+      199
+    ],
+    "ra_at_reference_deg": 134.6584005672255,
+    "dec_at_reference_deg": 15.99891135994175,
+    "review_status": "candidato de movimento; sem identifica\u00e7\u00e3o orbital"
+  },
+  {
+    "x": 12.740418948223942,
+    "y": 45.93407983694821,
+    "vx": -4.391590610830839,
+    "vy": 3.579199458170311,
+    "speed_pixels_hour": 5.665398207937747,
+    "reference_time_hours": 0.8550622200127691,
+    "rms_pixels": 0.3296848290757035,
+    "baseline_hours": 1.7101238880422898,
+    "event_ids": [
+      192,
+      128,
+      2,
+      49
+    ],
+    "epochs": [
+      0,
+      1,
+      2,
+      7
+    ],
+    "n_epochs": 4,
+    "mean_source_like_score": 0.46770188957452774,
+    "velocity_tolerance_pixels_hour": 0.7309411959802345,
+    "velocity_resolved": true,
+    "link_method": "position seeds across temporal groups + fitted velocity",
+    "track_id": 9,
+    "candidate_ids": [
+      96,
+      108,
+      120,
+      125,
+      168
+    ],
+    "ra_at_reference_deg": 134.7594128755799,
+    "dec_at_reference_deg": 15.99304916253056,
+    "review_status": "candidato de movimento; sem identifica\u00e7\u00e3o orbital"
+  },
+  {
+    "x": 21.686542364014375,
+    "y": 39.04405977302839,
+    "vx": -7.087324556647989,
+    "vy": 4.920856355490919,
+    "speed_pixels_hour": 8.628151403553428,
+    "reference_time_hours": 0.8550622200127691,
+    "rms_pixels": 0.3917449365774226,
+    "baseline_hours": 1.7101238880422898,
+    "event_ids": [
+      141,
+      18,
+      32,
+      4
+    ],
+    "epochs": [
+      0,
+      2,
+      4,
+      7
+    ],
+    "n_epochs": 4,
+    "mean_source_like_score": 0.5369991436600685,
+    "velocity_tolerance_pixels_hour": 0.7309411959802345,
+    "velocity_resolved": true,
+    "link_method": "position seeds across temporal groups + fitted velocity",
+    "track_id": 10,
+    "candidate_ids": [
+      13,
+      25,
+      93,
+      164
+    ],
+    "ra_at_reference_deg": 134.74038522472065,
+    "dec_at_reference_deg": 15.985980419640285,
+    "review_status": "candidato de movimento; sem identifica\u00e7\u00e3o orbital"
+  },
+  {
+    "x": 88.67055069137453,
+    "y": 79.16289516212639,
+    "vx": 8.933651543637136,
+    "vy": 0.21739776212296272,
+    "speed_pixels_hour": 8.936296307201674,
+    "reference_time_hours": 0.8550622200127691,
+    "rms_pixels": 0.47391615795297937,
+    "baseline_hours": 1.5668675040942617,
+    "event_ids": [
+      14,
+      37,
+      113,
+      151
+    ],
+    "epochs": [
+      3,
+      4,
+      5,
+      6
+    ],
+    "n_epochs": 4,
+    "mean_source_like_score": 0.4897284060716629,
+    "velocity_tolerance_pixels_hour": 0.7977700710071021,
+    "velocity_resolved": true,
+    "link_method": "position seeds across temporal groups + fitted velocity",
+    "track_id": 11,
+    "candidate_ids": [
+      18,
+      44,
+      85,
+      111,
+      131
+    ],
+    "ra_at_reference_deg": 134.64705312450894,
+    "dec_at_reference_deg": 16.08308310544276,
+    "review_status": "candidato de movimento; sem identifica\u00e7\u00e3o orbital"
+  },
+  {
+    "x": 94.9836285217831,
+    "y": 79.00000000000003,
+    "vx": -0.6094972701517223,
+    "vy": -2.3535170591892965e-15,
+    "speed_pixels_hour": 0.6094972701517223,
+    "reference_time_hours": 0.8550622200127691,
+    "rms_pixels": 0.5057592646339918,
+    "baseline_hours": 1.6743100080639124,
+    "event_ids": [
+      0,
+      187,
+      17,
+      33
+    ],
+    "epochs": [
+      0,
+      1,
+      4,
+      6
+    ],
+    "n_epochs": 4,
+    "mean_source_like_score": 0.5299592912197113,
+    "velocity_tolerance_pixels_hour": 0.7465761979440336,
+    "velocity_resolved": false,
+    "link_method": "position seeds across temporal groups + fitted velocity",
+    "track_id": 12,
+    "candidate_ids": [
+      29,
+      65,
+      151,
+      203
+    ],
+    "ra_at_reference_deg": 134.6361424249257,
+    "dec_at_reference_deg": 16.08578581746974,
+    "review_status": "candidato de movimento; sem identifica\u00e7\u00e3o orbital"
+  },
+  {
+    "x": 18.51440063674435,
+    "y": 15.560255185852405,
+    "vx": -0.645471826880975,
+    "vy": -5.639943434838446,
+    "speed_pixels_hour": 5.676759271580428,
+    "reference_time_hours": 0.8550622200127691,
+    "rms_pixels": 0.7327680780325969,
+    "baseline_hours": 1.638495552004315,
+    "event_ids": [
+      40,
+      144,
+      188,
+      76
+    ],
+    "epochs": [
+      2,
+      4,
+      6,
+      7
+    ],
+    "n_epochs": 4,
+    "mean_source_like_score": 0.4345288872718811,
+    "velocity_tolerance_pixels_hour": 0.7628949608504694,
+    "velocity_resolved": true,
+    "link_method": "position seeds across temporal groups + fitted velocity",
+    "track_id": 13,
+    "candidate_ids": [
+      1,
+      74,
+      89,
+      101,
+      158
+    ],
+    "ra_at_reference_deg": 134.73323574142793,
+    "dec_at_reference_deg": 15.946084847517723,
+    "review_status": "candidato de movimento; sem identifica\u00e7\u00e3o orbital"
+  }
+]

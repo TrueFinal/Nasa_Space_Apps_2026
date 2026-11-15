@@ -1,0 +1,62 @@
+{
+  "experiment": "synthetic Gaussian noise; NOT SPHEREx data",
+  "seed": 42,
+  "n_exposures": 32,
+  "time_span_hours": 3.003871073677565,
+  "reference_time_hours": 1.4923391141168867,
+  "truth": {
+    "x": 30.3,
+    "y": 31.8,
+    "vx": 5.3,
+    "vy": -2.7,
+    "flux": 9.358496855986486,
+    "sigma": 1.2,
+    "reference_time_hours": 1.4923391141168867
+  },
+  "best_candidate": {
+    "x": 30.40199476292732,
+    "y": 31.70195309571455,
+    "vx": 5.624658381083599,
+    "vy": -2.6049645661520273,
+    "snr": 12.384718060859448,
+    "flux": 9.112657984862246,
+    "n_frames": 32
+  },
+  "candidates": [
+    {
+      "x": 30.40199476292732,
+      "y": 31.70195309571455,
+      "vx": 5.624658381083599,
+      "vy": -2.6049645661520273,
+      "snr": 12.384718060859448,
+      "flux": 9.112657984862246,
+      "n_frames": 32
+    }
+  ],
+  "expected_single_frame_snr_median": 2.2000779694248047,
+  "measured_forced_single_frame_snr_median": 2.3360492294351465,
+  "ideal_combined_snr_at_true_path": 12.718715492038617,
+  "position_error_pixels": 0.1414783626727431,
+  "velocity_error_pixels_per_hour": 0.338282127956083,
+  "null_trials": 8,
+  "null_maximum_snrs": [
+    3.2231725148870605,
+    3.709935392301918,
+    2.9985323253306486,
+    3.115266237327541,
+    3.6279409596505627,
+    3.619673582075858,
+    3.7656537909217263,
+    3.0978136732324018
+  ],
+  "empirical_null_tail_fraction_plus_one": 0.1111111111111111,
+  "null_check_note": "Same coarse+refined search on independent star+noise fields. Few trials: a smoke check, not calibrated discovery significance.",
+  "recovered_within_tolerance": true,
+  "limitations": [
+    "Gaussian independent noise and PSF; no source photon noise or trailing model.",
+    "Scalar sky subtraction and heuristic bright-star masking.",
+    "Grid paths are rounded to integer pixels; refinement fits native pixels.",
+    "No WCS registration, SPHEREx spectral calibration or ephemeris validation yet.",
+    "This single injection does not measure population completeness or purity."
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "metrics_path": "/home/tatiana/Transfer\u00eancias/projetos/nasaSpaceApps/outputs/expanded/training_metrics.json",
+  "training_report": "/home/tatiana/Transfer\u00eancias/projetos/nasaSpaceApps/outputs/expanded/expanded_report.json",
+  "n_training_samples": 35496,
+  "n_spherex_images": 64
+}

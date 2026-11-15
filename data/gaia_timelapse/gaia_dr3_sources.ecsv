@@ -1,0 +1,66 @@
+# %ECSV 1.0
+# ---
+# datatype:
+# - name: source_id
+#   datatype: int64
+#   description: Unique source identifier (unique within a particular Data Release)
+#   meta: !!omap
+#   - {ucd: meta.id}
+# - name: ra
+#   unit: deg
+#   datatype: float64
+#   description: Right ascension
+#   meta: !!omap
+#   - {ucd: pos.eq.ra;meta.main}
+#   - {utype: 'stc:AstroCoords.Position3D.Value3.C1'}
+# - name: dec
+#   unit: deg
+#   datatype: float64
+#   description: Declination
+#   meta: !!omap
+#   - {ucd: pos.eq.dec;meta.main}
+#   - {utype: 'stc:AstroCoords.Position3D.Value3.C2'}
+# - name: ref_epoch
+#   unit: yr
+#   datatype: float64
+#   description: Reference epoch
+#   meta: !!omap
+#   - {ucd: meta.ref;time.epoch}
+#   - {utype: 'stc:AstroCoords.Time.TimeInstant'}
+# - name: pmra
+#   unit: mas / yr
+#   datatype: float64
+#   description: Proper motion in right ascension direction
+#   meta: !!omap
+#   - {ucd: pos.pm;pos.eq.ra}
+#   - {utype: 'stc:AstroCoords.Velocity3D.Value3.C1'}
+# - name: pmdec
+#   unit: mas / yr
+#   datatype: float64
+#   description: Proper motion in declination direction
+#   meta: !!omap
+#   - {ucd: pos.pm;pos.eq.dec}
+#   - {utype: 'stc:AstroCoords.Velocity3D.Value3.C2'}
+# - name: phot_g_mean_mag
+#   unit: mag
+#   datatype: float32
+#   description: G-band mean magnitude
+#   meta: !!omap
+#   - {ucd: phot.mag;em.opt}
+# - name: ruwe
+#   datatype: float32
+#   description: Renormalised unit weight error
+#   meta: !!omap
+#   - {ucd: stat.error}
+# schema: astropy-2.0
+source_id ra dec ref_epoch pmra pmdec phot_g_mean_mag ruwe
+5756955888473585792 133.80661208331566 -7.244409802623241 2016.0 0.3402394931000672 -4.176894794304436 18.72071 0.9138868
+5756955781099740544 133.79676153899175 -7.256261417130816 2016.0 -2.109355014400466 -17.413260563936237 16.687052 0.9561862
+5756956605732310656 133.782210092001 -7.241133942273309 2016.0 -11.287122597850777 0.6035269420228303 19.765112 0.9885647
+5756955785394371328 133.79701301042874 -7.257862301162162 2016.0 -2.0829915743543155 -17.433272879188863 13.29808 0.9963189
+5756955849818062592 133.78947676591187 -7.250829646048526 2016.0 0.2276546862035596 0.0019254484688564816 18.638525 0.97778326
+5756955952897282176 133.7974204064675 -7.241044615844017 2016.0 -2.4257981397640385 1.2694741185085487 17.863937 1.0047826
+5756956605732312832 133.77297903490364 -7.235994486453764 2016.0 -7.938016569803354 5.367407646362681 18.914661 1.008785
+5756956674451791104 133.7733312217189 -7.23383462923404 2016.0 -0.7647840421203693 1.2426960290667828 19.040812 0.98637897
+5756956708811536128 133.79335868483315 -7.2221490338052625 2016.0 -15.141539345113713 0.8482737907688825 16.929567 0.98822975
+5756956605732311808 133.77587755282298 -7.2378048249931135 2016.0 -9.388249833048505 4.675988574465769 19.787073 1.1218679

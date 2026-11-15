@@ -1,0 +1,7 @@
+{
+  "url": "https://irsa.ipac.caltech.edu/data/demos/notebooks/spherex/M101_irsa.fits",
+  "target": "M101",
+  "sha256": "44e89f460c55f46f7e384ba7dfe8927fa8e56163875aba3766499a5646813447",
+  "size_bytes": 87295680,
+  "product": "IRSA tutorial observed mosaic cube, 102 spectral planes"
+}
