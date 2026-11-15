@@ -47,10 +47,10 @@ def source_git(source, *args):
 def inside(root, name):
     """Accept local relative paths only, including on Windows."""
     if not isinstance(name, str) or "\\" in name or ":" in name:
-        raise ValueError("Caminho de dados inválido")
+        raise ValueError("Invalid data path")
     path = (Path(root) / name).resolve()
     if not path.is_relative_to(Path(root).resolve()):
-        raise ValueError("Caminho fora dos dados de referência")
+        raise ValueError("Path outside reference data")
     return path
 
 
@@ -175,10 +175,10 @@ class PublicData:
 
     def file(self, name):
         if name not in self.manifest["files"]:
-            raise ValueError("Arquivo fora do manifesto de referência")
+            raise ValueError("File outside reference manifest")
         path = inside(self.root / "public", name)
         if digest(path) != self.manifest["files"][name]["sha256"]:
-            raise ValueError("Arquivo de referência alterado; importe novamente a origem")
+            raise ValueError("Reference file modified; reimport the source")
         return path
 
     def read(self, name):
@@ -198,7 +198,7 @@ class PublicData:
     def object(self, slug, frames=None):
         entry = next((o for o in self.manifest["objects"] if o["slug"] == slug), None)
         if not entry:
-            raise ValueError("Objeto de referência não importado")
+            raise ValueError("Reference object not imported")
         obj = self.read(f"{slug}/object.json")
         obj["spectrum"] = [p for p in obj.get("spectrum", []) if 0.75 <= p["um"] <= 5]
         if not entry["sets"] and not frames:
@@ -211,12 +211,12 @@ class PublicData:
             }
         frames = frames or entry["sets"][0]["file"]
         if frames not in [s["file"] for s in entry["sets"]]:
-            raise ValueError("Conjunto de imagens não importado")
+            raise ValueError("Image set not imported")
         data = self.read(f"{slug}/{frames}")
         for epoch in data["epochs"]:
             name = f"{slug}/{epoch['data_url']}"
             if name not in self.manifest["files"]:
-                raise ValueError("Imagem fora do manifesto")
+                raise ValueError("Image outside manifest")
             epoch["data_url"] = f"/skyshift-data/{name}"
         return {
             "entry": entry,

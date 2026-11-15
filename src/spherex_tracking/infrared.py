@@ -103,7 +103,7 @@ def synthetic_manifest(directory):
         )
     ra, dec = wcs.all_pix2world(42, 25, 0)
     manifest = {
-        "object": "Demonstração sintética — não são dados NASA",
+        "object": "Synthetic demonstration — not NASA data",
         "synthetic": True,
         "gaia_status": {"status": "synthetic"},
         "gaia": [
@@ -173,12 +173,12 @@ class LabState:
         )
         if missing:
             raise ValueError(
-                f"Calibrações ausentes: {', '.join(f'D{d}' for d in sorted(missing))}. "
-                "Execute calibration --detector all e reinicie com a pasta de calibrações."
+                f"Missing calibrations: {', '.join(f'D{d}' for d in sorted(missing))}. "
+                "Run calibration --detector all and restart with the calibration directory."
             )
         with self.lock:
             if self.running:
-                raise ValueError("Já existe uma consulta em processamento.")
+                raise ValueError("A query is already running.")
             self.running = True
             identity = {
                 "params": params,
@@ -196,7 +196,7 @@ class LabState:
                 self.running = False
                 self.jobs[key] = {"status": "complete", "message": "Loaded cached analysis"}
                 return key
-            self.jobs[key] = {"status": "running", "message": "Iniciando consulta"}
+            self.jobs[key] = {"status": "running", "message": "Starting query"}
         self.executor.submit(self._run, key, params, sample, render_previews)
         return key
 
@@ -220,12 +220,12 @@ class LabState:
             # The interactive player uses native arrays directly. Large comparison
             # plates and RGB mosaics need not block an image search.
             if render_previews:
-                progress("Gerando placas e mosaico RGB para o laboratório FITS")
+                progress("Generating plates and RGB mosaic for the FITS laboratory")
                 render_comparison(report, output)
             write_json(output / "report.json", report)
             with self.lock:
                 self.activate(output)
-                self.jobs[key] = {"status": "complete", "message": "Análise concluída"}
+                self.jobs[key] = {"status": "complete", "message": "Analysis complete"}
         except Exception as exc:
             with self.lock:
                 self.jobs[key] = {"status": "error", "message": str(exc)}
@@ -301,7 +301,7 @@ def make_handler(state):
 
         def do_GET(self):
             if not self._local_request():
-                return self._send(403, {"error": "Origem não autorizada"})
+                return self._send(403, {"error": "Unauthorized origin"})
             route = unquote(urlsplit(self.path).path)
             if route.startswith("/api/skyshift") or route.startswith("/skyshift-data/"):
                 from .skyshift import public_data
@@ -319,17 +319,17 @@ def make_handler(state):
                     if route.startswith("/skyshift-data/"):
                         name = route.removeprefix("/skyshift-data/")
                         if not name.endswith(".bin"):
-                            raise ValueError("Apenas imagens binárias nesta rota")
+                            raise ValueError("Only binary images are allowed on this route")
                         return self._send(
                             200, data.file(name).read_bytes(), "application/octet-stream"
                         )
-                    return self._send(404, {"error": "Rota de dados inexistente"})
+                    return self._send(404, {"error": "Data route not found"})
                 except FileNotFoundError:
                     return self._send(
                         404,
                         {
-                            "error": "Observações de referência não importadas. "
-                            "Consulte a documentação de importação."
+                            "error": "Reference observations have not been imported. "
+                            "See the import documentation."
                         },
                     )
                 except (ValueError, KeyError) as exc:
@@ -469,11 +469,11 @@ def make_handler(state):
                     job = state.jobs.get(route.rsplit("/", 1)[-1])
                     snapshot = dict(job) if job else None
                 return self._send(
-                    200 if snapshot else 404, snapshot or {"error": "Consulta inexistente"}
+                    200 if snapshot else 404, snapshot or {"error": "Query not found"}
                 )
             if route == "/api/report":
                 if not state.current_output:
-                    return self._send(404, {"error": "Nenhuma análise carregada"})
+                    return self._send(404, {"error": "No analysis loaded"})
                 report = json.loads((state.current_output / "report.json").read_text("utf-8"))
                 if "dataset_join" not in report:
                     from .infrared_catalogs import build_join
@@ -546,7 +546,7 @@ def make_handler(state):
                         self._send(200, report[field])
                         if field in report
                         else self._send(
-                            404, {"error": "Este produto não está disponível para a análise atual"}
+                            404, {"error": "This product is unavailable for the current analysis"}
                         )
                     )
                 if name == "animation.gif":
@@ -581,7 +581,7 @@ def make_handler(state):
                     "comparison_negative.png",
                 } | {f"exposure_{i:02d}.fits" for i in range(MAX_EXPOSURES)}
                 if name not in allowed or not (state.current_output / name).is_file():
-                    return self._send(404, {"error": "Arquivo não encontrado"})
+                    return self._send(404, {"error": "File not found"})
                 kind = (
                     "image/png"
                     if name.endswith(".png")
@@ -623,20 +623,20 @@ def make_handler(state):
                     else "text/javascript"
                 )
                 return self._send(200, data, kind + "; charset=utf-8")
-            return self._send(404, {"error": "Rota não encontrada"})
+            return self._send(404, {"error": "Route not found"})
 
         def do_POST(self):
             if not self._local_request():
-                return self._send(403, {"error": "Origem não autorizada"})
+                return self._send(403, {"error": "Unauthorized origin"})
             if self.path not in ("/api/run", "/api/native-run", "/api/select-analysis"):
-                return self._send(404, {"error": "Rota não encontrada"})
+                return self._send(404, {"error": "Route not found"})
             try:
                 length = int(self.headers.get("Content-Length", "0"))
                 if not 0 < length <= 4096:
-                    raise ValueError("Corpo deve conter até 4096 bytes.")
+                    raise ValueError("Request body must be at most 4096 bytes.")
                 params = json.loads(self.rfile.read(length))
                 if not isinstance(params, dict):
-                    raise ValueError("A consulta deve ser um objeto JSON.")
+                    raise ValueError("The query must be a JSON object.")
                 if self.path == "/api/select-analysis":
                     identifier = str(params.get("id", ""))
                     if not identifier or any(c not in "0123456789abcdef" for c in identifier):

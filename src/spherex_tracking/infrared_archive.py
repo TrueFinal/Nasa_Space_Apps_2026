@@ -57,7 +57,7 @@ def download(url, path, max_bytes=64 * 1024 * 1024):
     hosts = {"irsa.ipac.caltech.edu", "nasa-irsa-spherex.s3.us-east-1.amazonaws.com"}
     if parsed.scheme != "https" or parsed.hostname not in hosts or parsed.port:
         raise ValueError(
-            "Somente URLs HTTPS do arquivo público IRSA e seu bucket oficial são permitidas."
+            "Only HTTPS URLs from the public IRSA archive and its official bucket are allowed."
         )
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -71,13 +71,13 @@ def download(url, path, max_bytes=64 * 1024 * 1024):
         request = urllib.request.Request(url, headers={"User-Agent": "Zephyr-IR-mask/0.1"})
         with _open(request) as response:
             if urllib.parse.urlsplit(response.url).hostname not in hosts:
-                raise ValueError("Redirecionamento para host não autorizado.")
+                raise ValueError("Redirect to unauthorized host.")
             size = 0
             with temporary.open("wb") as stream:
                 while chunk := response.read(256 * 1024):
                     size += len(chunk)
                     if size > max_bytes:
-                        raise ValueError("Arquivo excede o limite configurado.")
+                        raise ValueError("File exceeds the configured limit.")
                     stream.write(chunk)
         temporary.replace(path)
         write_json(meta, {"url": url, "sha256": sha256(path), "bytes": size})
@@ -89,20 +89,20 @@ def download(url, path, max_bytes=64 * 1024 * 1024):
 def validate_request(params):
     allowed = {"object", "start", "end", "low_um", "high_um", "max_exposures", "detector", "channel_id", "sample_id", "include_context"}
     if set(params) - allowed:
-        raise ValueError("Parâmetro de consulta desconhecido.")
+        raise ValueError("Unknown query parameter.")
     name = str(params.get("object", "1766")).strip()
     if not name or len(name) > 80 or any(ord(ch) < 32 for ch in name):
-        raise ValueError("Identificação MPC inválida.")
+        raise ValueError("Invalid MPC identifier.")
     start = date.fromisoformat(str(params.get("start", "2026-07-20")))
     end = date.fromisoformat(str(params.get("end", "2026-07-25")))
     if not 0 < (end - start).days <= 7:
-        raise ValueError("O piloto aceita intervalos maiores que zero e de até sete dias.")
+        raise ValueError("The pilot accepts intervals greater than zero and up to seven days.")
     count = float(params.get("max_exposures", 12))
     if not count.is_integer():
-        raise ValueError("Número de exposições deve ser inteiro.")
+        raise ValueError("Exposure count must be an integer.")
     detector = float(params.get("detector", 0))
     if not detector.is_integer():
-        raise ValueError("Detector deve ser inteiro.")
+        raise ValueError("Detector must be an integer.")
     channel_id = float(params.get("channel_id", 0))
     if not channel_id.is_integer() or not 0 <= channel_id <= 102:
         raise ValueError("Select a SPHEREx channel from 1 to 102, or all (0).")
@@ -171,9 +171,9 @@ def _preview_at_target(path, ra, dec):
 def fetch_calibration(output, release="qr3", detector=4):
     """Discover the actual version name; docs examples can lag archive filenames."""
     if release not in ("dr1", "qr3"):
-        raise ValueError("Coleção de calibração inválida.")
+        raise ValueError("Invalid calibration collection.")
     if detector not in DETECTOR_BANDS:
-        raise ValueError("Selecione uma calibração D1–D6.")
+        raise ValueError("Select a D1–D6 calibration.")
     output = Path(output)
     url = (
         S3
@@ -186,7 +186,7 @@ def fetch_calibration(output, release="qr3", detector=4):
     tree = ET.parse(listing)
     namespace = {"s3": "http://s3.amazonaws.com/doc/2006-03-01/"}
     if tree.findtext("s3:IsTruncated", namespaces=namespace) != "false":
-        raise ValueError("Lista de calibrações incompleta; selecione manualmente uma versão.")
+        raise ValueError("Incomplete calibration list; select a version manually.")
     keys = [el.text for el in tree.findall("s3:Contents/s3:Key", namespace)]
     keys = [
         key
@@ -195,8 +195,8 @@ def fetch_calibration(output, release="qr3", detector=4):
     ]
     if len(keys) != 1:
         raise ValueError(
-            f"Arquivo contém múltiplas versões D{detector} ou nenhuma; "
-            "selecione uma calibração explicitamente."
+            f"Archive contains multiple D{detector} versions or none; "
+            "select a calibration explicitly."
         )
     calibration_url = IRSA + "ibe/data/spherex/" + keys[0]
     result = download(calibration_url, output, 40 * 1024 * 1024)
@@ -206,7 +206,7 @@ def fetch_calibration(output, release="qr3", detector=4):
             or "CBAND" not in h
             or int(h["CWAVE"].header.get("DETECTOR", h[0].header.get("DETECTOR", -1))) != detector
         ):
-            raise ValueError("Produto de calibração espectral inesperado.")
+            raise ValueError("Unexpected spectral calibration product.")
     return result
 
 
@@ -214,12 +214,12 @@ def resolve_calibration(location, detector):
     location = Path(location).resolve()
     path = location if location.is_file() else location / f"calibration_D{detector}.fits"
     if not path.is_file():
-        raise ValueError(f"Calibração D{detector} ausente: execute calibration --detector all.")
+        raise ValueError(f"Missing D{detector} calibration: run calibration --detector all.")
     with fits.open(path, memmap=True) as h:
         declared = h["CWAVE"].header.get("DETECTOR", h[0].header.get("DETECTOR"))
         valid = "CBAND" in h and h["CWAVE"].shape == h["CBAND"].shape
     if declared is None or int(declared) != detector or not valid:
-        raise ValueError(f"Calibração D{detector} incompatível: confira detector e CWAVE/CBAND.")
+        raise ValueError(f"Incompatible D{detector} calibration: check detector and CWAVE/CBAND.")
     return path
 
 
@@ -243,7 +243,7 @@ def fetch_calibrations(directory, release="qr3", progress=lambda s: None):
     directory.mkdir(parents=True, exist_ok=True)
 
     def fetch(detector):
-        progress(f"Baixando calibração oficial D{detector}")
+        progress(f"Downloading official D{detector} calibration")
         return detector, fetch_calibration(
             directory / f"calibration_D{detector}.fits", release, detector
         )
@@ -360,7 +360,7 @@ def prepare_archive(
         query.pop("obj_name")
         query.update(input_type="mpc_input", obj_type="Asteroid", mpc_data=mpc_orbit_line)
     url = MOST + "?" + urllib.parse.urlencode(query)
-    progress("Consultando posições e exposições no MOST/IRSA")
+    progress("Querying positions and exposures in MOST/IRSA")
     if coordinate_sample:
         table, image_queries = coordinate_candidates(coordinate_sample, start, end, cfg, cache)
         table_path = None
@@ -382,7 +382,7 @@ def prepare_archive(
         if key in seen:
             continue
         seen.add(key)
-        progress(f"Inspecionando recorte D{detector} {obs}")
+        progress(f"Inspecting D{detector} cutout {obs}")
         ra, dec = float(row["ra_obj"]), float(row["dec_obj"])
         image_url = (
             urllib.parse.urljoin(IRSA, str(row["uri"]))
@@ -420,7 +420,7 @@ def prepare_archive(
         with fits.open(image_path, memmap=False) as hdul:
             header = hdul["IMAGE"].header
             if int(header.get("DETECTOR", -1)) != detector:
-                raise ValueError("Detector do FITS difere do produto retornado pelo MOST.")
+                raise ValueError("FITS detector differs from the product returned by MOST.")
             wave, _ = spectral_maps(
                 hdul,
                 header,
@@ -491,10 +491,10 @@ def prepare_archive(
                 "Please retry later or open a saved observation sequence."
             )
         raise ValueError(
-            "Nenhuma exposição coloca o alvo na faixa calibrada. "
-            "Altere datas/alvo; não foi substituída por outra banda."
+            "No exposure places the target within the calibrated range. "
+            "Change dates/target; no other band was substituted."
         )
-    progress("Consultando Gaia DR3 para sinalizar contaminação")
+    progress("Querying Gaia DR3 to flag contamination")
     import astropy.units as u
     from astropy.coordinates import SkyCoord
     from concurrent.futures import ThreadPoolExecutor

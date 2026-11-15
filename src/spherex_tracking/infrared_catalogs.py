@@ -60,7 +60,7 @@ def resolve_mpc(name, cache):
 
     name = str(name).strip()
     if not name or len(name) > 80 or any(ord(c) < 32 for c in name):
-        raise ValueError("Identificação MPC inválida.")
+        raise ValueError("Invalid MPC identifier.")
     cache = Path(cache)
     cache.mkdir(parents=True, exist_ok=True)
     path = cache / (hashlib.sha256(name.encode()).hexdigest()[:24] + ".json")

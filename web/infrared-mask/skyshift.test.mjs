@@ -73,10 +73,10 @@ test('public explorer loads aligned frames, changes view and handles spectrum-on
   assert.equal(get('sky-loaded').hidden, false);
   assert.equal(get('sky-play').disabled, false);
   assert.match(get('sky-image-note').textContent, /D1/);
-  assert.match(get('sky-spectrum-note').textContent, /1 amostra/);
+  assert.match(get('sky-spectrum-note').textContent, /1 sample/);
   get('sky-mode').value = 'difference'; get('sky-mode').events.input();
-  assert.match(get('sky-image-note').textContent, /diferença/);
+  assert.match(get('sky-image-note').textContent, /difference/);
   get('sky-object').value = 'only'; await get('sky-object').events.change();
   assert.equal(get('sky-play').disabled, true);
-  assert.match(get('sky-image-note').textContent, /não tem imagens/);
+  assert.match(get('sky-image-note').textContent, /no precomputed public images/);
 });

@@ -214,7 +214,7 @@ def test_sample_requests_use_only_trusted_report_coordinates(tmp_path, monkeypat
         state.submit({"sample_id": sample["id"], "detector": 4, "low_um": 3.3, "high_um": 3.5})
         assert calls[0][3]["ra"] == sample["ra"]
         assert calls[0][3]["dec"] == sample["dec"]
-        with pytest.raises(ValueError, match="desconhecido"):
+        with pytest.raises(ValueError, match="Unknown"):
             archive.validate_request({"sample_id": sample["id"], "ra": 1})
     finally:
         state.executor.shutdown()

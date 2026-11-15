@@ -96,7 +96,7 @@ def test_out_of_tree_paths_and_modified_data_are_rejected(imported):
             data.file(name)
     path = dest / "public/star/frames/one.bin"
     path.write_bytes(b"wrong")
-    with pytest.raises(ValueError, match="alterado"):
+    with pytest.raises(ValueError, match="modified"):
         data.file("star/frames/one.bin")
 
 

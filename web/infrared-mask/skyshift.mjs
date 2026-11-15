@@ -5,7 +5,7 @@ const colors = ['#8dc9f1', '#91dfcb', '#d6d991', '#efbb84', '#e396ad', '#b4a1e2'
 let summary, current, epochs = [], arrays = [], index = 0, timer, version = 0;
 let preparedSource, preparedBackground, preparedFrames;
 const option = (value, text) => { const o = document.createElement('option'); o.value = value; o.textContent = text; return o; };
-const fmt = (v, n = 2) => Number.isFinite(v) ? v.toLocaleString('pt-BR', { maximumFractionDigits: n }) : '—';
+const fmt = (v, n = 2) => Number.isFinite(v) ? v.toLocaleString('en-US', { maximumFractionDigits: n }) : '—';
 async function json(url) {
   const res = await fetch(url);
   const data = await res.json();
@@ -66,16 +66,16 @@ function draw() {
   }
   $('sky-epoch').textContent = `${index + 1}/${epochs.length} · MJD ${fmt(epoch.mjd_mid, 6)}`;
   $('sky-time').value = index;
-  $('sky-image-note').textContent = `${current.entry.name} · ${current.frames.clock} · D${epoch.det} · ${fmt(epoch.um_min, 4)}–${fmt(epoch.um_max, 4)} μm · ${epoch.n_exposures} exposição(ões) · ${fmt(current.frames.pixel_arcsec, 3)}″/px · norte ↑ / leste ← · MJy/sr${mode === 'difference' ? ' (diferença)' : ''}. ${background ? 'Mediana removida só no display.' : 'Nível original do produto derivado.'}`;
+  $('sky-image-note').textContent = `${current.entry.name} · ${current.frames.clock} · D${epoch.det} · ${fmt(epoch.um_min, 4)}–${fmt(epoch.um_max, 4)} μm · ${epoch.n_exposures} exposure(s) · ${fmt(current.frames.pixel_arcsec, 3)}″/px · north ↑ / east ← · MJy/sr${mode === 'difference' ? ' (difference)' : ''}. ${background ? 'Median removed only in display.' : 'Original level of the derived product.'}`;
 }
 function spectrum() {
   const c = $('sky-spectrum'), ctx = c.getContext('2d');
   ctx.clearRect(0, 0, c.width, c.height);
   const all = current.object.spectrum;
   const points = all.filter(p => !p.saturated && Number.isFinite(p.flux_ujy) && p.err_ujy > 0 && Number.isFinite(p.err_ujy));
-  $('sky-spectrum-note').textContent = `${points.length} amostra(s) de 0,75–5,00 μm com incerteza; ${all.filter(p => p.saturated).length} saturada(s) excluída(s). Cores indicam D1–D6; barras: ±1σ. Épocas distintas, sem interpolação e sem substituir a nossa fotometria.`;
+  $('sky-spectrum-note').textContent = `${points.length} sample(s) from 0.75–5.00 μm with uncertainty; ${all.filter(p => p.saturated).length} saturated sample(s) excluded. Colors indicate D1–D6; bars: ±1σ. Different epochs, without interpolation or replacing our photometry.`;
   ctx.fillStyle = '#9baeba'; ctx.font = '12px system-ui';
-  if (!points.length) { ctx.fillText('Sem amostras infravermelhas válidas neste produto.', 30, 40); return; }
+  if (!points.length) { ctx.fillText('No valid infrared samples in this product.', 30, 40); return; }
   const low = Math.min(...points.map(p => p.flux_ujy - p.err_ujy));
   const high = Math.max(...points.map(p => p.flux_ujy + p.err_ujy));
   const span = Math.max(high - low, 1), y0 = low - span * .05, y1 = high + span * .05;
@@ -86,7 +86,7 @@ function spectrum() {
     const f = y0 + (y1 - y0) * i / 4; ctx.fillText(fmt(f, 1), 5, y(f));
     const um = .75 + 4.25 * i / 4; ctx.fillText(fmt(um), x(um) - 10, c.height - 30);
   }
-  ctx.fillText('Fluxo publicado · μJy', 80, 15); ctx.fillText('Comprimento de onda · μm', 330, c.height - 7);
+  ctx.fillText('Published flux · μJy', 80, 15); ctx.fillText('Wavelength · μm', 330, c.height - 7);
   for (const p of points) {
     ctx.strokeStyle = ctx.fillStyle = colors[p.det - 1];
     ctx.beginPath(); ctx.moveTo(x(p.um), y(p.flux_ujy - p.err_ujy)); ctx.lineTo(x(p.um), y(p.flux_ujy + p.err_ujy)); ctx.stroke();
@@ -96,23 +96,23 @@ function spectrum() {
 function motion() {
   const m = current.object.measure;
   $('sky-motion').textContent = m
-    ? `Movimento publicado: ${fmt(m.shift_arcsec, 3)}″ ± ${fmt(m.sigma_arcsec, 3)}″ em ${fmt(m.dt_yr, 4)} ano(s); previsão ${fmt(m.predicted_arcsec, 3)}″. ${m.source ? `D${m.source.det}, visitas ${m.source.visits.join(' e ')}.` : 'Detector/visitas da medição não informados neste produto.'} Medida do objeto de referência, independente do quadro mostrado e da nossa análise.`
-    : `Sem medida de deslocamento publicada para este objeto. ${current.object.measure_reason || ''}`;
+    ? `Published motion: ${fmt(m.shift_arcsec, 3)}″ ± ${fmt(m.sigma_arcsec, 3)}″ over ${fmt(m.dt_yr, 4)} year(s); prediction ${fmt(m.predicted_arcsec, 3)}″. ${m.source ? `D${m.source.det}, visits ${m.source.visits.join(' and ')}.` : 'Measurement detector/visits are not specified in this product.'} Reference-object measurement, independent of the displayed frame and our analysis.`
+    : `No published displacement measurement for this object. ${current.object.measure_reason || ''}`;
 }
 async function selectDetector() {
   stop(); const request = ++version;
   arrays = []; $('sky-play').disabled = true;
   $('sky-image').getContext('2d').clearRect(0, 0, 800, 600);
-  $('sky-image-note').textContent = 'Carregando os quadros do detector selecionado…';
+  $('sky-image-note').textContent = 'Loading frames for the selected detector…';
   const det = +$('sky-detector').value;
   epochs = current.frames.epochs.filter(e => e.det === det).sort((a, b) => a.mjd_mid - b.mjd_mid);
-  $('sky-status').textContent = `Carregando ${epochs.length} quadro(s) de D${det}…`;
+  $('sky-status').textContent = `Loading ${epochs.length} frame(s) from D${det}…`;
   try {
     const result = [];
     // Keep acquisition bounded, and discard stale responses after a selection change.
     for (const e of epochs) {
       const res = await fetch(e.data_url);
-      if (!res.ok) throw new Error(`Imagem indisponível: HTTP ${res.status}`);
+      if (!res.ok) throw new Error(`Image unavailable: HTTP ${res.status}`);
       const bytes = await res.arrayBuffer();
       if (request !== version) return;
       result.push(decode(bytes, e, current.frames.size));
@@ -122,7 +122,7 @@ async function selectDetector() {
     for (const o of $('sky-mode').options) o.disabled = o.value !== 'blink' && !aligned;
     $('sky-mode').value = 'blink';
     $('sky-play').disabled = arrays.length < 2;
-    $('sky-status').textContent = `${summary.summary.candidates.toLocaleString('pt-BR')} candidatos no arquivo público; ${summary.objects.length} objetos com produtos detalhados. Origem ${summary.commit.slice(0, 7)}. ${aligned ? 'Grade comum neste conjunto.' : 'Centros variáveis: sem média/diferença.'}`;
+    $('sky-status').textContent = `${summary.summary.candidates.toLocaleString('en-US')} candidates in the public archive; ${summary.objects.length} objects with detailed products. Source ${summary.commit.slice(0, 7)}. ${aligned ? 'Shared grid in this set.' : 'Varying centers: mean/difference unavailable.'}`;
     draw();
   } catch (e) { if (request === version) $('sky-status').textContent = e.message; }
 }
@@ -146,14 +146,14 @@ async function selectObject() {
     const result = await json(`/api/skyshift/object?slug=${encodeURIComponent(obj.slug)}`);
     if (request !== version) return;
     current = result;
-    $('sky-set').replaceChildren(option('', 'Sem imagens pré-calculadas'));
+    $('sky-set').replaceChildren(option('', 'No precomputed images'));
     $('sky-detector').replaceChildren(); $('sky-play').disabled = true;
     $('sky-image').getContext('2d').clearRect(0, 0, 800, 600);
-    $('sky-image-note').textContent = 'Este objeto tem produto espectral, mas não tem imagens públicas pré-calculadas.';
-    $('sky-epoch').textContent = ''; $('sky-status').textContent = 'Produto espectral carregado; imagem indisponível.';
+    $('sky-image-note').textContent = 'This object has a spectral product but no precomputed public images.';
+    $('sky-epoch').textContent = ''; $('sky-status').textContent = 'Spectral product loaded; image unavailable.';
     spectrum(); motion(); return;
   }
-  $('sky-set').replaceChildren(...obj.sets.map(s => option(s.file, `${s.clock === 'months' ? 'Visitas' : 'Exposições'}${s.fov ? ` · ${s.fov}′` : ''}`)));
+  $('sky-set').replaceChildren(...obj.sets.map(s => option(s.file, `${s.clock === 'months' ? 'Visits' : 'Exposures'}${s.fov ? ` · ${s.fov}′` : ''}`)));
   $('sky-set').value = obj.sets[0].file;
   await selectSet();
 }
@@ -175,11 +175,17 @@ try {
   $('sky-object').replaceChildren(...summary.objects.map(o => option(o.slug, o.name)));
   $('sky-object').value = summary.objects.find(o => o.slug === 'barnard')?.slug || summary.objects[0]?.slug;
   const analysis = summary.analysis;
-  const names = { build_validation: 'Validações', distant: 'Objetos distantes', native_photometry: 'Fotometria independente' };
+  const reasons = {
+    'A agregação usa medidas publicadas; recuperação/astrometria bruta requer novos recortes.': 'Aggregation uses published measurements; raw retrieval/astrometry requires new cutouts.',
+    'Tabelas Parquet das zonas e órfãos não constam em web/public/data.': 'Zone and orphan Parquet tables are not included in web/public/data.',
+    'Ajustes físicos completos requerem recortes e geometria Horizons; não foram inferidos do RGB.': 'Full physical fits require cutouts and Horizons geometry; they were not inferred from RGB.',
+    'Produtos públicos foram importados; não houve novo levantamento nem teste de latência remoto.': 'Public products were imported; no new survey or remote latency test was performed.',
+  };
+  const names = { build_validation: 'Validations', distant: 'Distant objects', native_photometry: 'Independent photometry' };
   $('sky-analysis').textContent = analysis ? [
-    ...(analysis.runs || []).map(r => `${names[r.name] || 'Análise'}: ${r.status}`),
+    ...(analysis.runs || []).map(r => `${names[r.name] || 'Analysis'}: ${r.status}`),
     ...(analysis.checks || []).map(c => `${c.id} · ${c.status}: ${c.headline}`),
-    ...(analysis.not_rerun || []).map(r => `Não recalculado: ${r.reason}`),
-  ].join('\n\n') : 'Análises ainda não executadas.';
+    ...(analysis.not_rerun || []).map(r => `Not recalculated: ${reasons[r.reason] || r.reason}`),
+  ].join('\n\n') : 'Analyses have not been run yet.';
   await selectObject();
 } catch (e) { $('sky-status').textContent = e.message; }

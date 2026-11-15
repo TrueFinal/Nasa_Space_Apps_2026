@@ -50,8 +50,8 @@ test('report renders all image modes, frame navigation, missing measurements and
   assert.equal(get('query').elements.low_um.value, 3.3);
   assert.equal(get('color-mosaic').hidden, false);
   assert.equal(get('color-preview').src, '/files/color_mosaic.png?v=2026-11-15T12%3A00%3A00');
-  assert.match(get('color-coverage').textContent, /RGB completo: 0,0%/);
-  assert.match(get('color-coverage').textContent, /2026-07-20T12:00:00 a 2026-07-25T12:00:00/);
+  assert.match(get('color-coverage').textContent, /Complete RGB: 0\.0%/);
+  assert.match(get('color-coverage').textContent, /2026-07-20T12:00:00 to 2026-07-25T12:00:00/);
   for (const button of get('tabs').children) get('tabs').events.click({ target: button });
   get('time').events.input({ target: { value: '1' } });
   assert.equal(get('fits').href, '/files/exposure_01.fits');
@@ -59,7 +59,7 @@ test('report renders all image modes, frame navigation, missing measurements and
   assert.equal(get('metrics').children[2].children[0].textContent, '—');
   get('image').events.mousemove({ currentTarget: get('image'), clientX: 200, clientY: 500 });
   assert.match(get('pixel').textContent, /target/);
-  assert.match(get('status').textContent, /carregada/);
+  assert.match(get('status').textContent, /loaded/);
   assert.equal(get('band-coverage').children.length, 6);
   get('detector-view').events.change({ target: { value: '6' } });
   assert.equal(get('measurements').children.length, 1);
@@ -90,7 +90,7 @@ test('unavailable Gaia suppresses stale catalogue overlays and shows the reason'
   assert.equal(get('gaia-overlay').disabled, true);
   assert.equal(get('color-mosaic').hidden, true); // Older reports remain usable.
   assert.equal(get('gaia-notice').hidden, false);
-  assert.match(get('plot-note').textContent, /sem pontos/);
+  assert.match(get('plot-note').textContent, /no points/);
 });
 
 test('frames with no image at the MPC prediction are excluded from the player', async () => {
@@ -99,7 +99,7 @@ test('frames with no image at the MPC prediction are excluded from the player', 
   const document = { getElementById: get, createElement: element, addEventListener() {} };
   await run(document, async path => ({ ok: true, json: async () => path === '/api/state' ? { has_report: true } : report }));
   assert.equal(get('loaded').hidden, true);
-  assert.match(get('status').textContent, /Nenhuma imagem/);
+  assert.match(get('status').textContent, /No image/);
 });
 
 test('MPC lookup, 102-channel selection and joined samples prepare coordinate-based image requests', async () => {
@@ -124,10 +124,10 @@ test('MPC lookup, 102-channel selection and joined samples prepare coordinate-ba
   assert.equal(get('query').elements.low_um.value, 3.35);
   assert.equal(get('query').elements.detector.value, 4);
   assert.equal(get('query').elements.start.value, '2026-07-22');
-  assert.match(get('sample-info').textContent, /28,0000000/);
+  assert.match(get('sample-info').textContent, /28\.0000000/);
   assert.equal(get('context-links').children[0].href, sample.wiseview_url);
   await get('mpc-search').events.click();
   assert.equal(get('query').elements.object.value, '1766');
-  assert.match(get('mpc-status').textContent, /validada/);
+  assert.match(get('mpc-status').textContent, /validated/);
   assert.equal(get('mpc-search').disabled, false);
 });
