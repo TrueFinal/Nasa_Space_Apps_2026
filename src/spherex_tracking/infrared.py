@@ -103,7 +103,7 @@ def synthetic_manifest(directory):
         )
     ra, dec = wcs.all_pix2world(42, 25, 0)
     manifest = {
-        "object": "Demonstração sintética — não são dados NASA",
+        "object": "Synthetic demonstration — not NASA data",
         "synthetic": True,
         "gaia_status": {"status": "synthetic"},
         "gaia": [
@@ -153,44 +153,54 @@ class LabState:
         if output.parent == self.output / "runs":
             write_json(self.output / "selected_analysis.json", {"id": output.name})
 
-    def submit(self, params):
+    def submit(self, params, *, render_previews=False):
         _, _, _, cfg = validate_request(params)
         sample = None
         if params.get("sample_id"):
             if not self.current_output:
                 raise ValueError("Load an analysis before selecting a joined sample.")
             from .infrared_catalogs import build_join
+
             report = json.loads((self.current_output / "report.json").read_text("utf-8"))
             joined = report.get("dataset_join") or build_join(report)
             sample = next((s for s in joined["samples"] if s["id"] == params["sample_id"]), None)
             if sample is None:
-                raise ValueError("Sample does not belong to the current analysis; refresh selection.")
+                raise ValueError(
+                    "Sample does not belong to the current analysis; refresh selection."
+                )
         missing = set(detectors_for(cfg.low_um, cfg.high_um, cfg.detector)) - set(
             available_calibrations(self.calibration)
         )
         if missing:
             raise ValueError(
-                f"Calibrações ausentes: {', '.join(f'D{d}' for d in sorted(missing))}. "
-                "Execute calibration --detector all e reinicie com a pasta de calibrações."
+                f"Missing calibrations: {', '.join(f'D{d}' for d in sorted(missing))}. "
+                "Run calibration --detector all and restart with the calibration directory."
             )
         with self.lock:
             if self.running:
-                raise ValueError("Já existe uma consulta em processamento.")
+                raise ValueError("A query is already running.")
             self.running = True
-            key = hashlib.sha256(json.dumps({"params": params, "sample": sample,
-                "calibration": str(self.calibration), "coordinates": self.coordinates,
-                "display_version": 2}, sort_keys=True).encode()).hexdigest()[:32]
+            identity = {
+                "params": params,
+                "sample": sample,
+                "calibration": str(self.calibration),
+                "coordinates": self.coordinates,
+                "display_version": 2,
+            }
+            if render_previews:
+                identity["render_previews"] = True
+            key = hashlib.sha256(json.dumps(identity, sort_keys=True).encode()).hexdigest()[:32]
             cached = self.output / "runs" / key
             if (cached / "report.json").is_file():
                 self.activate(cached)
                 self.running = False
                 self.jobs[key] = {"status": "complete", "message": "Loaded cached analysis"}
                 return key
-            self.jobs[key] = {"status": "running", "message": "Iniciando consulta"}
-        self.executor.submit(self._run, key, params, sample)
+            self.jobs[key] = {"status": "running", "message": "Starting query"}
+        self.executor.submit(self._run, key, params, sample, render_previews)
         return key
 
-    def _run(self, key, params, sample=None):
+    def _run(self, key, params, sample=None, render_previews=False):
         def progress(message):
             with self.lock:
                 self.jobs[key]["message"] = message
@@ -198,14 +208,24 @@ class LabState:
         try:
             cache = ROOT / "data" / "infrared" / key
             output = self.output / "runs" / key
-            manifest = prepare_archive(params, cache, self.calibration, self.coordinates, progress, coordinate_sample=sample)
+            manifest = prepare_archive(
+                params,
+                cache,
+                self.calibration,
+                self.coordinates,
+                progress,
+                coordinate_sample=sample,
+            )
             report = run_manifest(manifest, output, progress=progress)
             # The interactive player uses native arrays directly. Large comparison
             # plates and RGB mosaics need not block an image search.
+            if render_previews:
+                progress("Generating plates and RGB mosaic for the FITS laboratory")
+                render_comparison(report, output)
             write_json(output / "report.json", report)
             with self.lock:
                 self.activate(output)
-                self.jobs[key] = {"status": "complete", "message": "Análise concluída"}
+                self.jobs[key] = {"status": "complete", "message": "Analysis complete"}
         except Exception as exc:
             with self.lock:
                 self.jobs[key] = {"status": "error", "message": str(exc)}
@@ -220,7 +240,14 @@ def make_handler(state):
         def log_message(self, fmt, *args):
             pass
 
-        def _send(self, code, payload, content_type="application/json; charset=utf-8", home=False, sky=False):
+        def _send(
+            self,
+            code,
+            payload,
+            content_type="application/json; charset=utf-8",
+            home=False,
+            sky=False,
+        ):
             scripts = "'self' 'unsafe-inline'" if home else "'self'"
             data = (
                 json.dumps(payload, ensure_ascii=False, allow_nan=False).encode()
@@ -234,15 +261,22 @@ def make_handler(state):
             self.send_header("X-Content-Type-Options", "nosniff")
             self.send_header(
                 "Content-Security-Policy",
-                ("default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'wasm-unsafe-eval'; "
-                 "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; "
-                 "font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; "
-                 "connect-src 'self' data: blob: https:; "
-                 "worker-src 'self' blob:; frame-ancestors *" if sky else "default-src 'self'; "
-                "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
-                f"script-src {scripts}; "
-                "font-src 'self' data: https://fonts.gstatic.com; "
-                "img-src 'self' data: blob:; connect-src 'self'; frame-ancestors 'none'"),
+                (
+                    "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net "
+                    "'wasm-unsafe-eval'; "
+                    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com "
+                    "https://cdn.jsdelivr.net; "
+                    "font-src 'self' data: https://fonts.gstatic.com; "
+                    "img-src 'self' data: blob: https:; "
+                    "connect-src 'self' data: blob: https:; "
+                    "worker-src 'self' blob:; frame-ancestors *"
+                    if sky
+                    else "default-src 'self'; "
+                    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
+                    f"script-src {scripts}; "
+                    "font-src 'self' data: https://fonts.gstatic.com; "
+                    "img-src 'self' data: blob:; connect-src 'self'; frame-ancestors 'none'"
+                ),
             )
             self.end_headers()
             self.wfile.write(data)
@@ -250,51 +284,144 @@ def make_handler(state):
         def _local_request(self):
             # Local binding plus DNS-rebinding and cross-origin POST protection.
             host = self.headers.get("Host", "").split(":")[0]
-            if self.server.server_address[0] in ("127.0.0.1", "localhost") and host not in ("127.0.0.1", "localhost"):
+            if self.server.server_address[0] in ("127.0.0.1", "localhost") and host not in (
+                "127.0.0.1",
+                "localhost",
+            ):
                 return False
             origin = self.headers.get("Origin")
             if not origin:
                 return True
             parsed = urlsplit(origin)
-            return parsed.scheme in ("http", "https") and parsed.netloc == self.headers.get("Host") and parsed.path in ("", "/")
+            return (
+                parsed.scheme in ("http", "https")
+                and parsed.netloc == self.headers.get("Host")
+                and parsed.path in ("", "/")
+            )
 
         def do_GET(self):
             if not self._local_request():
-                return self._send(403, {"error": "Origem não autorizada"})
+                return self._send(403, {"error": "Unauthorized origin"})
             route = unquote(urlsplit(self.path).path)
+            if route.startswith("/api/skyshift") or route.startswith("/skyshift-data/"):
+                from .skyshift import public_data
+
+                try:
+                    data = public_data()
+                    if route == "/api/skyshift":
+                        return self._send(200, data.summary())
+                    if route == "/api/skyshift/object":
+                        query = parse_qs(urlsplit(self.path).query)
+                        return self._send(
+                            200,
+                            data.object(query.get("slug", [""])[0], query.get("frames", [None])[0]),
+                        )
+                    if route.startswith("/skyshift-data/"):
+                        name = route.removeprefix("/skyshift-data/")
+                        if not name.endswith(".bin"):
+                            raise ValueError("Only binary images are allowed on this route")
+                        return self._send(
+                            200, data.file(name).read_bytes(), "application/octet-stream"
+                        )
+                    return self._send(404, {"error": "Data route not found"})
+                except FileNotFoundError:
+                    return self._send(
+                        404,
+                        {
+                            "error": "Reference observations have not been imported. "
+                            "See the import documentation."
+                        },
+                    )
+                except (ValueError, KeyError) as exc:
+                    return self._send(400, {"error": str(exc)})
             if route in ("/", "/index.html"):
-                return self._send(200, (ROOT / "web/site/index.html").read_bytes(), "text/html; charset=utf-8", home=True)
+                return self._send(
+                    200,
+                    (ROOT / "web/site/index.html").read_bytes(),
+                    "text/html; charset=utf-8",
+                    home=True,
+                )
             if route.startswith("/site-assets/"):
                 name = route.removeprefix("/site-assets/")
-                assets = {"home.css":"text/css", "theme.css":"text/css", "navigation.css":"text/css", "navigation.js":"text/javascript", "spherex-cutout.png":"image/png", "zephyr-logo.svg":"image/svg+xml", "manifest.json":"application/json"}
+                assets = {
+                    "home.css": "text/css",
+                    "theme.css": "text/css",
+                    "navigation.css": "text/css",
+                    "navigation.js": "text/javascript",
+                    "spherex-cutout.png": "image/png",
+                    "zephyr-logo.svg": "image/svg+xml",
+                    "manifest.json": "application/json",
+                }
                 if name not in assets:
-                    return self._send(404, {"error":"Asset not found."})
+                    return self._send(404, {"error": "Asset not found."})
                 return self._send(200, (ROOT / "web/site/assets" / name).read_bytes(), assets[name])
-            if route in ("/lab", "/lab/", "/sky", "/sky/", "/mpc", "/mpc/") or route.startswith("/sky-assets/"):
+            if route in ("/lab", "/lab/", "/sky", "/sky/", "/mpc", "/mpc/") or route.startswith(
+                "/sky-assets/"
+            ):
                 base = ROOT / "web/sky-explorer/worker"
-                name = route.removeprefix("/sky-assets/") if route.startswith("/sky-assets/") else "index.html"
-                allowed = {"index.html", "app.js", "astro.js", "catalogue.js", "style.css", "config.json", "gifenc.js", "gifenc.LICENSE.txt", "help.js", "tour.js", "zephyr-logo.svg"}
-                allowed |= {f"samples/{n}.json" for n in ("barnard", "epsilon", "wise0855", "rwaur", "rdra")}
+                name = (
+                    route.removeprefix("/sky-assets/")
+                    if route.startswith("/sky-assets/")
+                    else "index.html"
+                )
+                allowed = {
+                    "index.html",
+                    "app.js",
+                    "astro.js",
+                    "catalogue.js",
+                    "style.css",
+                    "config.json",
+                    "gifenc.js",
+                    "gifenc.LICENSE.txt",
+                    "help.js",
+                    "tour.js",
+                    "zephyr-logo.svg",
+                }
+                allowed |= {
+                    f"samples/{n}.json" for n in ("barnard", "epsilon", "wise0855", "rwaur", "rdra")
+                }
                 if name not in allowed:
-                    return self._send(404, {"error":"Asset not found."})
+                    return self._send(404, {"error": "Asset not found."})
                 path = base / name
                 data = path.read_bytes()
                 if name == "index.html":
-                    data = data.replace(b'href="/style.css"', b'href="/sky-assets/style.css"').replace(b'src="/app.js"', b'src="/sky-assets/app.js"').replace(b'src="/zephyr-logo.svg"', b'src="/sky-assets/zephyr-logo.svg"')
-                kind = "image/svg+xml" if name.endswith(".svg") else "text/html" if name.endswith('.html') else "text/css" if name.endswith('.css') else "application/json" if name.endswith('.json') else "text/javascript"
-                return self._send(200,data,kind+"; charset=utf-8",sky=True)
-            if route.startswith('/sky-api/'):
+                    data = (
+                        data.replace(b'href="/style.css"', b'href="/sky-assets/style.css"')
+                        .replace(b'src="/app.js"', b'src="/sky-assets/app.js"')
+                        .replace(b'src="/zephyr-logo.svg"', b'src="/sky-assets/zephyr-logo.svg"')
+                    )
+                    data = data.replace(
+                        b'<nav id="navigation">',
+                        b'<nav id="navigation"><a href="/native-lab">Native FITS lab</a>',
+                    )
+                kind = (
+                    "image/svg+xml"
+                    if name.endswith(".svg")
+                    else "text/html"
+                    if name.endswith(".html")
+                    else "text/css"
+                    if name.endswith(".css")
+                    else "application/json"
+                    if name.endswith(".json")
+                    else "text/javascript"
+                )
+                return self._send(200, data, kind + "; charset=utf-8", sky=True)
+            if route.startswith("/sky-api/"):
                 from .sky_proxy import proxy
+
                 try:
-                    params = {k:v[0] for k,v in parse_qs(urlsplit(self.path).query).items()}
-                    data,kind = proxy(route.removeprefix('/sky-api/'), params, ROOT/'data/sky_proxy')
-                    return self._send(200,data,kind,sky=True)
-                except (ValueError,KeyError) as exc:
-                    return self._send(400,{"error":str(exc)})
+                    params = {k: v[0] for k, v in parse_qs(urlsplit(self.path).query).items()}
+                    data, kind = proxy(
+                        route.removeprefix("/sky-api/"), params, ROOT / "data/sky_proxy"
+                    )
+                    return self._send(200, data, kind, sky=True)
+                except (ValueError, KeyError) as exc:
+                    return self._send(400, {"error": str(exc)})
                 except OSError as exc:
-                    return self._send(502,{"error":str(exc)})
+                    return self._send(502, {"error": str(exc)})
             if route == "/api/channels":
                 from .infrared_catalogs import channel_grid
+
                 return self._send(200, channel_grid())
             if route == "/api/stack":
                 if not state.current_output:
@@ -303,10 +430,13 @@ def make_handler(state):
                     query = parse_qs(urlsplit(self.path).query)
                     if set(query) - {"detector", "start", "count"}:
                         raise ValueError("Unknown stack parameter.")
-                    detector, start, count = (int(query.get(k, [default])[0])
-                        for k, default in (("detector", "4"), ("start", "0"), ("count", "3")))
+                    detector, start, count = (
+                        int(query.get(k, [default])[0])
+                        for k, default in (("detector", "4"), ("start", "0"), ("count", "3"))
+                    )
                     output = state.current_output
                     from .infrared_stack import render_stack
+
                     with state.animation_lock:
                         report = json.loads((output / "report.json").read_text("utf-8"))
                         path = render_stack(report, output, detector, start, count)
@@ -315,9 +445,12 @@ def make_handler(state):
                     return self._send(400, {"error": str(exc)})
             if route == "/api/mpc":
                 from .infrared_catalogs import resolve_mpc
+
                 query = parse_qs(urlsplit(self.path).query).get("object", [""])[0]
-                try: return self._send(200, resolve_mpc(query, ROOT / "data/infrared/mpc"))
-                except (OSError, ValueError, KeyError) as exc: return self._send(502, {"error": f"MPC lookup unavailable: {exc}"})
+                try:
+                    return self._send(200, resolve_mpc(query, ROOT / "data/infrared/mpc"))
+                except (OSError, ValueError, KeyError) as exc:
+                    return self._send(502, {"error": f"MPC lookup unavailable: {exc}"})
             if route == "/api/state":
                 return self._send(
                     200,
@@ -336,28 +469,43 @@ def make_handler(state):
                     job = state.jobs.get(route.rsplit("/", 1)[-1])
                     snapshot = dict(job) if job else None
                 return self._send(
-                    200 if snapshot else 404, snapshot or {"error": "Consulta inexistente"}
+                    200 if snapshot else 404, snapshot or {"error": "Query not found"}
                 )
             if route == "/api/report":
                 if not state.current_output:
-                    return self._send(404, {"error": "Nenhuma análise carregada"})
+                    return self._send(404, {"error": "No analysis loaded"})
                 report = json.loads((state.current_output / "report.json").read_text("utf-8"))
                 if "dataset_join" not in report:
                     from .infrared_catalogs import build_join
+
                     report["dataset_join"] = build_join(report)
+                from .skyshift import enrich_report
+
+                enrich_report(report)
                 return self._send(200, report)
             if route == "/api/analyses":
                 analyses = []
-                for path in sorted((state.output / "runs").glob("*/report.json"),
-                                   key=lambda p: p.stat().st_mtime, reverse=True):
+                for path in sorted(
+                    (state.output / "runs").glob("*/report.json"),
+                    key=lambda p: p.stat().st_mtime,
+                    reverse=True,
+                ):
                     try:
                         report = json.loads(path.read_text("utf-8"))
-                        frames = [f for f in report["frames"] if f.get("plot", {}).get("eligible", True)]
-                        analyses.append({"id": path.parent.name, "object": report["object"],
-                            "frames": len(frames), "low_um": report["config"]["low_um"],
-                            "high_um": report["config"]["high_um"],
-                            "synthetic": report.get("synthetic", False),
-                            "selected": path.parent == state.current_output})
+                        frames = [
+                            f for f in report["frames"] if f.get("plot", {}).get("eligible", True)
+                        ]
+                        analyses.append(
+                            {
+                                "id": path.parent.name,
+                                "object": report["object"],
+                                "frames": len(frames),
+                                "low_um": report["config"]["low_um"],
+                                "high_um": report["config"]["high_um"],
+                                "synthetic": report.get("synthetic", False),
+                                "selected": path.parent == state.current_output,
+                            }
+                        )
                     except (OSError, ValueError, KeyError):
                         continue
                 return self._send(200, analyses)
@@ -368,20 +516,46 @@ def make_handler(state):
                 return self._send(200, path.read_bytes())
             if route.startswith("/cycle-files/"):
                 name = route.removeprefix("/cycle-files/")
-                allowed = {"spherex_complete_cycles.gif", "cycle_01.png", "cycle_02.png", "complete_cycles.png", "report.json"}
+                allowed = {
+                    "spherex_complete_cycles.gif",
+                    "cycle_01.png",
+                    "cycle_02.png",
+                    "complete_cycles.png",
+                    "report.json",
+                }
                 path = ROOT / "outputs" / "complete_cycles" / name
                 if name not in allowed or not path.is_file():
                     return self._send(404, {"error": "Cycle product not found"})
-                kind = "image/gif" if name.endswith(".gif") else "image/png" if name.endswith(".png") else "application/json; charset=utf-8"
+                kind = (
+                    "image/gif"
+                    if name.endswith(".gif")
+                    else "image/png"
+                    if name.endswith(".png")
+                    else "application/json; charset=utf-8"
+                )
                 return self._send(200, path.read_bytes(), kind)
             if route.startswith("/files/") and state.current_output:
                 name = route.removeprefix("/files/")
+                if name in ("skyshift_context.json", "skyshift_photometry.json"):
+                    from .skyshift import enrich_report
+
+                    report = json.loads((state.current_output / "report.json").read_text("utf-8"))
+                    field = name.removesuffix(".json")
+                    report = enrich_report(report)
+                    return (
+                        self._send(200, report[field])
+                        if field in report
+                        else self._send(
+                            404, {"error": "This product is unavailable for the current analysis"}
+                        )
+                    )
                 if name == "animation.gif":
                     output = state.current_output
                     with state.animation_lock:
                         path = output / "animation_gray_r.gif"
                         if not path.exists():
                             from .infrared_animation import render_animation
+
                             report = json.loads((output / "report.json").read_text("utf-8"))
                             try:
                                 render_animation(report, output)
@@ -390,14 +564,24 @@ def make_handler(state):
                     return self._send(200, path.read_bytes(), "image/gif")
                 if name == "joined_samples.json" and not (state.current_output / name).exists():
                     from .infrared_catalogs import build_join
+
                     report = json.loads((state.current_output / "report.json").read_text("utf-8"))
                     return self._send(200, report.get("dataset_join") or build_join(report))
-                allowed = {"report.json", "measurements.csv", "manifest.json", "comparison.png",
-                           "color_mosaic.png", "color_mosaic_rgba.png", "color_mosaic.json", "joined_samples.json"} | {
-                    f"exposure_{i:02d}.fits" for i in range(MAX_EXPOSURES)
-                }
+                allowed = {
+                    "report.json",
+                    "measurements.csv",
+                    "manifest.json",
+                    "comparison.png",
+                    "color_mosaic.png",
+                    "color_mosaic_rgba.png",
+                    "color_mosaic.json",
+                    "joined_samples.json",
+                    "skyshift_context.json",
+                    "skyshift_photometry.json",
+                    "comparison_negative.png",
+                } | {f"exposure_{i:02d}.fits" for i in range(MAX_EXPOSURES)}
                 if name not in allowed or not (state.current_output / name).is_file():
-                    return self._send(404, {"error": "Arquivo não encontrado"})
+                    return self._send(404, {"error": "File not found"})
                 kind = (
                     "image/png"
                     if name.endswith(".png")
@@ -408,20 +592,51 @@ def make_handler(state):
                     else "application/json; charset=utf-8"
                 )
                 return self._send(200, (state.current_output / name).read_bytes(), kind)
-            return self._send(404, {"error": "Rota não encontrada"})
+            if route in ("/native-lab", "/native-lab/") or route.startswith("/native-assets/"):
+                base = ROOT / "web/infrared-mask"
+                name = (
+                    route.removeprefix("/native-assets/")
+                    if route.startswith("/native-assets/")
+                    else "index.html"
+                )
+                allowed = {
+                    "index.html",
+                    "app.js",
+                    "plate.mjs",
+                    "skyshift.mjs",
+                    "skyshift-math.mjs",
+                    "style.css",
+                }
+                if name not in allowed:
+                    return self._send(404, {"error": "Asset not found."})
+                data = (base / name).read_bytes()
+                if name == "index.html":
+                    for asset in ("app.js", "style.css", "skyshift.mjs"):
+                        data = data.replace(
+                            f'="/{asset}"'.encode(), f'="/native-assets/{asset}"'.encode()
+                        )
+                kind = (
+                    "text/html"
+                    if name.endswith(".html")
+                    else "text/css"
+                    if name.endswith(".css")
+                    else "text/javascript"
+                )
+                return self._send(200, data, kind + "; charset=utf-8")
+            return self._send(404, {"error": "Route not found"})
 
         def do_POST(self):
             if not self._local_request():
-                return self._send(403, {"error": "Origem não autorizada"})
-            if self.path not in ("/api/run", "/api/select-analysis"):
-                return self._send(404, {"error": "Rota não encontrada"})
+                return self._send(403, {"error": "Unauthorized origin"})
+            if self.path not in ("/api/run", "/api/native-run", "/api/select-analysis"):
+                return self._send(404, {"error": "Route not found"})
             try:
                 length = int(self.headers.get("Content-Length", "0"))
                 if not 0 < length <= 4096:
-                    raise ValueError("Corpo deve conter até 4096 bytes.")
+                    raise ValueError("Request body must be at most 4096 bytes.")
                 params = json.loads(self.rfile.read(length))
                 if not isinstance(params, dict):
-                    raise ValueError("A consulta deve ser um objeto JSON.")
+                    raise ValueError("The query must be a JSON object.")
                 if self.path == "/api/select-analysis":
                     identifier = str(params.get("id", ""))
                     if not identifier or any(c not in "0123456789abcdef" for c in identifier):
@@ -434,7 +649,7 @@ def make_handler(state):
                             raise ValueError("Wait for the current search to finish.")
                         state.activate(output)
                     return self._send(200, {"selected": identifier})
-                key = state.submit(params)
+                key = state.submit(params, render_previews=self.path == "/api/native-run")
                 return self._send(202, {"job": key})
             except (ValueError, TypeError, KeyError) as exc:
                 return self._send(400, {"error": str(exc)})
@@ -453,7 +668,9 @@ def main():
     color = sub.add_parser("colorize-cube", help="Colorir cubo FITS IRSA; somente display IR")
     color.add_argument("cube", help="FITS com IMAGE, WCS-WAVE, NHITS e FLAGS")
     color.add_argument("--output", default="outputs/infrared_color")
-    cycles = sub.add_parser("cycle-gif", help="Compor o mesmo canal em cada ciclo completo de seis meses")
+    cycles = sub.add_parser(
+        "cycle-gif", help="Compor o mesmo canal em cada ciclo completo de seis meses"
+    )
     cycles.add_argument("--manifest", default="outputs/timelapse/timelapse_report.json")
     cycles.add_argument("--output", default="outputs/complete_cycles")
     cal = sub.add_parser("calibration", help="Baixar CWAVE/CBAND oficial (33 MB por detector)")
@@ -472,7 +689,12 @@ def main():
     archive.add_argument("--high-um", type=float, default=5.0)
     archive.add_argument("--max-exposures", type=int, default=12)
     archive.add_argument("--detector", type=int, default=0)
-    archive.add_argument("--channel-id", type=int, default=0, help="SPHEREx channel 1–102; 0 selects a free wavelength range")
+    archive.add_argument(
+        "--channel-id",
+        type=int,
+        default=0,
+        help="SPHEREx channel 1–102; 0 selects a free wavelength range",
+    )
     archive.add_argument("--calibration", default="data/infrared/calibrations")
     archive.add_argument("--coordinates", choices=["sky", "detector"], default="sky")
     archive.add_argument(
@@ -485,15 +707,21 @@ def main():
     serve.add_argument("--calibration", default="data/infrared/calibrations")
     serve.add_argument("--coordinates", choices=["sky", "detector"], default="sky")
     serve.add_argument("--port", type=int, default=8766)
-    serve.add_argument("--host", default="127.0.0.1", help="Use 0.0.0.0 for a public deployment behind HTTPS")
+    serve.add_argument(
+        "--host", default="127.0.0.1", help="Use 0.0.0.0 for a public deployment behind HTTPS"
+    )
     args = parser.parse_args()
     try:
         if args.command == "colorize-cube":
             from .infrared_color import colorize_irsa_cube
 
             result = colorize_irsa_cube(args.cube, args.output)
-            print(json.dumps({"output": str(Path(args.output).resolve()),
-                              "channels": result["channels"]}, ensure_ascii=False))
+            print(
+                json.dumps(
+                    {"output": str(Path(args.output).resolve()), "channels": result["channels"]},
+                    ensure_ascii=False,
+                )
+            )
         elif args.command == "cycle-gif":
             from .cycle_timelapse import build_complete_cycle_gif
 

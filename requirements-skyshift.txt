@@ -1,0 +1,5 @@
+# Optional: execute upstream scripts from the explicitly selected SkyShift clone.
+-r requirements-infrared.txt
+numpy>=2.0,<3
+scipy>=1.13,<2
+sep>=1.4,<2

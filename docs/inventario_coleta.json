@@ -1,0 +1,2851 @@
+{
+  "snapshot_created": {
+    "retrieved_at_utc": "2026-11-14T20:02:18.050055+00:00",
+    "retrieved_at_local": "2026-11-14T17:02:18.050055-03:00"
+  },
+  "scope": "verified original NOAA snapshots and small authenticated NASA provider subsets; not a full historical extraction",
+  "branch": "feature/data-ingestion-mvp",
+  "full_historical_window_downloaded": false,
+  "observational_files_obtained": [
+    {
+      "dataset": "noaa_roni",
+      "organization": "NOAA Climate Prediction Center",
+      "product": "RONI",
+      "version": "official-revisable",
+      "collection_id": null,
+      "doi": null,
+      "variables_requested": [
+        "RONI"
+      ],
+      "spatial_resolution": "Niño 3.4 relative to tropical SST",
+      "temporal_resolution": "overlapping 3-month seasons",
+      "requested_period": null,
+      "region": {
+        "id": "global_index",
+        "crs": "EPSG:4326",
+        "index_region_bbox": [
+          -170,
+          -5,
+          -120,
+          5
+        ]
+      },
+      "source_url": "https://www.cpc.ncep.noaa.gov/data/indices/RONI.ascii.txt",
+      "endpoint": "https://www.cpc.ncep.noaa.gov/data/indices/RONI.ascii.txt",
+      "request_parameters": {},
+      "access_method": "HTTPS_original_full_history",
+      "quality": "revisable official series; no local phase classification",
+      "transformations": [],
+      "retrieved_at_utc": "2026-11-14T19:30:25.076820+00:00",
+      "retrieved_at_local": "2026-11-14T16:30:25.076820-03:00",
+      "request_key": "2fc4b8c66e6d2c688ed373297a214fc2b5e28d54a3550783ca4946491db31400",
+      "path": "raw/noaa_roni/RONI/global_index/series-1297887f581b6190.txt",
+      "size_bytes": 14752,
+      "sha256": "1297887f581b6190e459cbbf8bdec9a703ff65c1a229e2de4dd94285254f35c8",
+      "status": "complete",
+      "audit": {
+        "variables": {
+          "RONI": {
+            "units": "degree_Celsius",
+            "source": "NOAA definition"
+          }
+        },
+        "dimensions": {
+          "overlapping_season": 921
+        },
+        "temporal_records": 921,
+        "observation_period": {
+          "start": "1950-01",
+          "end": "2026-09"
+        },
+        "time_convention": "year and central month of official overlapping season",
+        "missing_values": 0,
+        "classification": "preserved in companion official HTML; not inferred",
+        "integrity": "valid_ASCII_records"
+      }
+    },
+    {
+      "dataset": "noaa_roni",
+      "organization": "NOAA Climate Prediction Center",
+      "product": "RONI",
+      "version": "official-revisable",
+      "collection_id": null,
+      "doi": null,
+      "variables_requested": [],
+      "spatial_resolution": "Niño 3.4 relative to tropical SST",
+      "temporal_resolution": "overlapping 3-month seasons",
+      "requested_period": null,
+      "region": {
+        "id": "global_index",
+        "crs": "EPSG:4326",
+        "index_region_bbox": [
+          -170,
+          -5,
+          -120,
+          5
+        ]
+      },
+      "source_url": "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso/roni/",
+      "endpoint": "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso/roni/",
+      "request_parameters": {},
+      "access_method": "HTTPS_original_full_history",
+      "quality": "revisable official series; no local phase classification",
+      "transformations": [],
+      "retrieved_at_utc": "2026-11-14T19:30:25.373874+00:00",
+      "retrieved_at_local": "2026-11-14T16:30:25.373874-03:00",
+      "request_key": "ab8df636fa84fc6d6caa64865b3a7db1ba44e7aa1bb99f178cf59941515ec287",
+      "path": "raw/noaa_roni/RONI/global_index/classification-45a29af6d57b0a23.html",
+      "size_bytes": 98060,
+      "sha256": "45a29af6d57b0a231dcc2fd50b636e823c43d591208e9dd6196358bfaed85834",
+      "status": "complete",
+      "audit": {
+        "integrity": "HTML_historical_table_present",
+        "classification": "original HTML retained verbatim, including official styling",
+        "variables": {},
+        "temporal_records": null,
+        "missing_values": null
+      }
+    },
+    {
+      "dataset": "gpm_monthly",
+      "product": "GPM_3IMERGM",
+      "version": "07",
+      "collection_id": "C2723754851-GES_DISC",
+      "doi": "10.5067/GPM/IMERG/3B-MONTH/07",
+      "variables_requested": [
+        "Grid/precipitation"
+      ],
+      "available_period": {
+        "start": "1998-01-01T00:00:00.000Z",
+        "end": "2025-09-30T23:59:59.999Z"
+      },
+      "requested_period": {
+        "start": "2015-12-01T00:00:00+00:00",
+        "end": "2015-12-31T23:59:59.999999+00:00"
+      },
+      "effective_query_period": {
+        "start": "2015-12-01T00:00:00+00:00",
+        "end": "2015-12-31T23:59:59.999999+00:00"
+      },
+      "region": {
+        "description": "Caixa provisória de 1 grau próxima de Brasília, somente para verificar transferência de grades terrestres com baixo volume; não é área de estudo aprovada, polígono de bacia nem evidência de cobertura de estações ANA.",
+        "crs": "EPSG:4326",
+        "domain": "land",
+        "provisional": true,
+        "bbox": [
+          -48.25,
+          -16.25,
+          -47.25,
+          -15.25
+        ],
+        "id": "brasilia_smoke",
+        "extraction": "bounding_box",
+        "geometry_id": "e2ae1810deb9b58ce574a78359b0c6aeca602b2638695ca5b3aaaea044727cab"
+      },
+      "matching_granules": 1,
+      "access_method": "Harmony_provider_bbox_subset_without_aggregation",
+      "temporal_selection": "CMR granule overlap; preserves full native time records",
+      "authentication_required": true,
+      "organization": "NASA GES DISC",
+      "spatial_resolution": "0.1 degree",
+      "temporal_resolution": "monthly",
+      "source_url": [
+        "https://data.gesdisc.earthdata.nasa.gov/data/GPM_L3/GPM_3IMERGM.07/2015/3B-MO.MS.MRG.3IMERG.20151201-S000000-E235959.12.V07B.HDF5"
+      ],
+      "endpoint": "https://harmony.earthdata.nasa.gov/C2723754851-GES_DISC/ogc-api-coverages/1.0.0/collections/parameter_vars/coverage/rangeset",
+      "result_url_without_query": "https://harmony.earthdata.nasa.gov/service-results/harmony-prod-staging/public/9a24a691-70d4-4540-a554-919b0aa8dfe9/464916899/GPM_3IMERGM.07_3B-MO.MS.MRG.3IMERG.20151201-S000000-E235959.12.V07B_Grid_precipitation_subsetted.nc4",
+      "harmony_job_id": "9a24a691-70d4-4540-a554-919b0aa8dfe9",
+      "request_parameters": [
+        [
+          "subset",
+          "lat(-16.25:-15.25)"
+        ],
+        [
+          "subset",
+          "lon(-48.25:-47.25)"
+        ],
+        [
+          "variable",
+          "Grid/precipitation"
+        ],
+        [
+          "granuleId",
+          "G2819757905-GES_DISC"
+        ],
+        [
+          "format",
+          "application/netcdf"
+        ],
+        [
+          "forceAsync",
+          "true"
+        ],
+        [
+          "ignoreErrors",
+          "false"
+        ],
+        [
+          "skipPreview",
+          "true"
+        ],
+        [
+          "maxResults",
+          "1"
+        ]
+      ],
+      "granule_id": "G2819757905-GES_DISC",
+      "granule_observation_period": {
+        "start": "2015-12-01T00:00:00.000Z",
+        "end": "2015-12-31T23:59:59.999Z"
+      },
+      "transformations": [
+        "CMR temporal granule selection; provider bbox/variable subset"
+      ],
+      "quality": "model/reanalysis/analysis as specified by original product",
+      "retrieved_at_utc": "2026-11-14T19:57:16.927252+00:00",
+      "retrieved_at_local": "2026-11-14T16:57:16.927252-03:00",
+      "request_key": "fc1b86c0e558ec3af5654b44140e61522acfb43d2957fc1248245636c0403b20",
+      "path": "raw/gpm_monthly/GPM_3IMERGM/brasilia_smoke/G2819757905-GES_DISC-0-8f2007f800b66fcd.nc4",
+      "size_bytes": 44180,
+      "sha256": "8f2007f800b66fcd52408e04bbd14e9b3adcc194cc45e8335ed611604a55d300",
+      "status": "complete",
+      "audit": {
+        "integrity": "all_requested_variable_blocks_read",
+        "variables": {
+          "Grid/precipitation": {
+            "requested_name": "Grid/precipitation",
+            "units": "mm/hr",
+            "dimensions": [
+              "time",
+              "lon",
+              "lat"
+            ],
+            "shape": [
+              1,
+              11,
+              11
+            ],
+            "dtype": "float32",
+            "missing_values": 0,
+            "attributes": {
+              "DimensionNames": "time,lon,lat",
+              "Units": "mm/hr",
+              "units": "mm/hr",
+              "coordinates": "time lon lat",
+              "_FillValue": "-9999.9",
+              "CodeMissingValue": "-9999.9",
+              "LongName": "Merged microwave-infrared-gauge precipitation estimate"
+            }
+          }
+        },
+        "missing_values": 0,
+        "dimensions": {
+          "Grid/time": 1,
+          "Grid/lon": 11,
+          "Grid/lat": 11,
+          "Grid/latv": 2,
+          "Grid/lonv": 2,
+          "Grid/nv": 2
+        },
+        "coordinates": {
+          "Grid/lon": {
+            "min": -48.25,
+            "max": -47.25,
+            "count": 11,
+            "units": "degrees_east",
+            "step": 0.09999847412109375
+          },
+          "Grid/lat": {
+            "min": -16.25,
+            "max": -15.25,
+            "count": 11,
+            "units": "degrees_north",
+            "step": 0.10000038146972656
+          }
+        },
+        "temporal_records": 1,
+        "observation_period": {
+          "start": "2015-12-01 00:00:00",
+          "end": "2015-12-01 00:00:00"
+        },
+        "quality": "attributes retained; no quality masking applied"
+      }
+    },
+    {
+      "dataset": "gldas",
+      "product": "GLDAS_NOAH025_M",
+      "version": "2.1",
+      "collection_id": "C1342986036-GES_DISC",
+      "doi": "10.5067/SXAVCZFAQLNO",
+      "variables_requested": [
+        "SoilMoi0_10cm_inst",
+        "SoilMoi10_40cm_inst",
+        "SoilMoi40_100cm_inst",
+        "SoilMoi100_200cm_inst",
+        "RootMoist_inst",
+        "Evap_tavg",
+        "Qs_acc",
+        "Qsb_acc"
+      ],
+      "available_period": {
+        "start": "2000-01-01T00:00:00.000Z",
+        "end": "2026-07-31T23:59:59.000Z"
+      },
+      "requested_period": {
+        "start": "2015-12-01T00:00:00+00:00",
+        "end": "2015-12-31T23:59:59.999999+00:00"
+      },
+      "effective_query_period": {
+        "start": "2015-12-01T00:00:00+00:00",
+        "end": "2015-12-31T23:59:59.999999+00:00"
+      },
+      "region": {
+        "description": "Caixa provisória de 1 grau próxima de Brasília, somente para verificar transferência de grades terrestres com baixo volume; não é área de estudo aprovada, polígono de bacia nem evidência de cobertura de estações ANA.",
+        "crs": "EPSG:4326",
+        "domain": "land",
+        "provisional": true,
+        "bbox": [
+          -48.25,
+          -16.25,
+          -47.25,
+          -15.25
+        ],
+        "id": "brasilia_smoke",
+        "extraction": "bounding_box",
+        "geometry_id": "e2ae1810deb9b58ce574a78359b0c6aeca602b2638695ca5b3aaaea044727cab"
+      },
+      "matching_granules": 1,
+      "access_method": "Harmony_provider_bbox_subset_without_aggregation",
+      "temporal_selection": "CMR granule overlap; preserves full native time records",
+      "authentication_required": true,
+      "organization": "NASA GES DISC",
+      "spatial_resolution": "0.25 degree",
+      "temporal_resolution": "monthly",
+      "source_url": [
+        "https://data.gesdisc.earthdata.nasa.gov/data/GLDAS/GLDAS_NOAH025_M.2.1/2015/GLDAS_NOAH025_M.A201512.021.nc4"
+      ],
+      "endpoint": "https://harmony.earthdata.nasa.gov/C1342986036-GES_DISC/ogc-api-coverages/1.0.0/collections/parameter_vars/coverage/rangeset",
+      "result_url_without_query": "https://harmony.earthdata.nasa.gov/service-results/harmony-prod-staging/public/1d9d21dd-6fd0-4af8-b0cb-44f75754472f/464920963/GLDAS_NOAH025_M.2.1_GLDAS_NOAH025_M.A201512.021_subsetted.nc4",
+      "harmony_job_id": "1d9d21dd-6fd0-4af8-b0cb-44f75754472f",
+      "request_parameters": [
+        [
+          "subset",
+          "lat(-16.25:-15.25)"
+        ],
+        [
+          "subset",
+          "lon(-48.25:-47.25)"
+        ],
+        [
+          "variable",
+          "SoilMoi0_10cm_inst"
+        ],
+        [
+          "variable",
+          "SoilMoi10_40cm_inst"
+        ],
+        [
+          "variable",
+          "SoilMoi40_100cm_inst"
+        ],
+        [
+          "variable",
+          "SoilMoi100_200cm_inst"
+        ],
+        [
+          "variable",
+          "RootMoist_inst"
+        ],
+        [
+          "variable",
+          "Evap_tavg"
+        ],
+        [
+          "variable",
+          "Qs_acc"
+        ],
+        [
+          "variable",
+          "Qsb_acc"
+        ],
+        [
+          "granuleId",
+          "G1413724045-GES_DISC"
+        ],
+        [
+          "format",
+          "application/netcdf"
+        ],
+        [
+          "forceAsync",
+          "true"
+        ],
+        [
+          "ignoreErrors",
+          "false"
+        ],
+        [
+          "skipPreview",
+          "true"
+        ],
+        [
+          "maxResults",
+          "1"
+        ]
+      ],
+      "granule_id": "G1413724045-GES_DISC",
+      "granule_observation_period": {
+        "start": "2015-12-01T00:00:00.000Z",
+        "end": "2015-12-31T23:59:59.000Z"
+      },
+      "transformations": [
+        "CMR temporal granule selection; provider bbox/variable subset"
+      ],
+      "quality": "model/reanalysis/analysis as specified by original product",
+      "retrieved_at_utc": "2026-11-14T19:57:29.213994+00:00",
+      "retrieved_at_local": "2026-11-14T16:57:29.213994-03:00",
+      "request_key": "698ef30c3d5ac0a8edd0bac4dcb111fd47a392a6545333b5d9053c4d0936498e",
+      "path": "raw/gldas/GLDAS_NOAH025_M/brasilia_smoke/G1413724045-GES_DISC-0-30c622fdeaf2f759.nc4",
+      "size_bytes": 83186,
+      "sha256": "30c622fdeaf2f7591f2d46e4b415000bb715d5a3bcf004e3e21bcd5859b62aa0",
+      "status": "complete",
+      "audit": {
+        "integrity": "all_requested_variable_blocks_read",
+        "variables": {
+          "SoilMoi0_10cm_inst": {
+            "requested_name": "SoilMoi0_10cm_inst",
+            "units": "kg m-2",
+            "dimensions": [
+              "time",
+              "lat",
+              "lon"
+            ],
+            "shape": [
+              1,
+              4,
+              4
+            ],
+            "dtype": "float32",
+            "missing_values": 0,
+            "attributes": {
+              "standard_name": "soil_moisture_content",
+              "long_name": "Soil moisture",
+              "units": "kg m-2",
+              "_FillValue": "-9999.0",
+              "missing_value": "-9999.0",
+              "cell_methods": "time: mean",
+              "vmin": "2.0",
+              "vmax": "100.0"
+            }
+          },
+          "SoilMoi10_40cm_inst": {
+            "requested_name": "SoilMoi10_40cm_inst",
+            "units": "kg m-2",
+            "dimensions": [
+              "time",
+              "lat",
+              "lon"
+            ],
+            "shape": [
+              1,
+              4,
+              4
+            ],
+            "dtype": "float32",
+            "missing_values": 0,
+            "attributes": {
+              "standard_name": "soil_moisture_content",
+              "long_name": "Soil moisture",
+              "units": "kg m-2",
+              "_FillValue": "-9999.0",
+              "missing_value": "-9999.0",
+              "cell_methods": "time: mean",
+              "vmin": "6.116536",
+              "vmax": "300.00003"
+            }
+          },
+          "SoilMoi40_100cm_inst": {
+            "requested_name": "SoilMoi40_100cm_inst",
+            "units": "kg m-2",
+            "dimensions": [
+              "time",
+              "lat",
+              "lon"
+            ],
+            "shape": [
+              1,
+              4,
+              4
+            ],
+            "dtype": "float32",
+            "missing_values": 0,
+            "attributes": {
+              "standard_name": "soil_moisture_content",
+              "long_name": "Soil moisture",
+              "units": "kg m-2",
+              "_FillValue": "-9999.0",
+              "missing_value": "-9999.0",
+              "cell_methods": "time: mean",
+              "vmin": "12.000001",
+              "vmax": "600.0"
+            }
+          },
+          "SoilMoi100_200cm_inst": {
+            "requested_name": "SoilMoi100_200cm_inst",
+            "units": "kg m-2",
+            "dimensions": [
+              "time",
+              "lat",
+              "lon"
+            ],
+            "shape": [
+              1,
+              4,
+              4
+            ],
+            "dtype": "float32",
+            "missing_values": 0,
+            "attributes": {
+              "standard_name": "soil_moisture_content",
+              "long_name": "Soil moisture",
+              "units": "kg m-2",
+              "_FillValue": "-9999.0",
+              "missing_value": "-9999.0",
+              "cell_methods": "time: mean",
+              "vmin": "20.073166",
+              "vmax": "1000.0"
+            }
+          },
+          "RootMoist_inst": {
+            "requested_name": "RootMoist_inst",
+            "units": "kg m-2",
+            "dimensions": [
+              "time",
+              "lat",
+              "lon"
+            ],
+            "shape": [
+              1,
+              4,
+              4
+            ],
+            "dtype": "float32",
+            "missing_values": 0,
+            "attributes": {
+              "standard_name": "root_zone_soil_moisture",
+              "long_name": "Root zone soil moisture",
+              "units": "kg m-2",
+              "_FillValue": "-9999.0",
+              "missing_value": "-9999.0",
+              "cell_methods": "time: mean",
+              "vmin": "2.0",
+              "vmax": "891.8663"
+            }
+          },
+          "Evap_tavg": {
+            "requested_name": "Evap_tavg",
+            "units": "kg m-2 s-1",
+            "dimensions": [
+              "time",
+              "lat",
+              "lon"
+            ],
+            "shape": [
+              1,
+              4,
+              4
+            ],
+            "dtype": "float32",
+            "missing_values": 0,
+            "attributes": {
+              "standard_name": "water_evaporation_flux",
+              "long_name": "Evapotranspiration",
+              "units": "kg m-2 s-1",
+              "_FillValue": "-9999.0",
+              "missing_value": "-9999.0",
+              "cell_methods": "time: mean",
+              "vmin": "-2.3084895e-06",
+              "vmax": "7.817458e-05"
+            }
+          },
+          "Qs_acc": {
+            "requested_name": "Qs_acc",
+            "units": "kg m-2",
+            "dimensions": [
+              "time",
+              "lat",
+              "lon"
+            ],
+            "shape": [
+              1,
+              4,
+              4
+            ],
+            "dtype": "float32",
+            "missing_values": 0,
+            "attributes": {
+              "standard_name": "surface_runoff_amount",
+              "long_name": "Storm surface runoff",
+              "units": "kg m-2",
+              "_FillValue": "-9999.0",
+              "missing_value": "-9999.0",
+              "cell_methods": "time: mean",
+              "vmin": "0.0",
+              "vmax": "2.9759786"
+            }
+          },
+          "Qsb_acc": {
+            "requested_name": "Qsb_acc",
+            "units": "kg m-2",
+            "dimensions": [
+              "time",
+              "lat",
+              "lon"
+            ],
+            "shape": [
+              1,
+              4,
+              4
+            ],
+            "dtype": "float32",
+            "missing_values": 0,
+            "attributes": {
+              "standard_name": "subsurface_runoff_amount",
+              "long_name": "Baseflow-groundwater runoff",
+              "units": "kg m-2",
+              "_FillValue": "-9999.0",
+              "missing_value": "-9999.0",
+              "cell_methods": "time: mean",
+              "vmin": "0.0",
+              "vmax": "1.8418143"
+            }
+          }
+        },
+        "missing_values": 0,
+        "dimensions": {
+          "lon": 4,
+          "time": 1,
+          "lat": 4,
+          "bnds": 2
+        },
+        "coordinates": {
+          "lon": {
+            "min": -48.125,
+            "max": -47.375,
+            "count": 4,
+            "units": "degrees_east",
+            "step": 0.25
+          },
+          "lat": {
+            "min": -16.125,
+            "max": -15.375,
+            "count": 4,
+            "units": "degrees_north",
+            "step": 0.25
+          }
+        },
+        "temporal_records": 1,
+        "observation_period": {
+          "start": "2015-12-01 00:00:00",
+          "end": "2015-12-01 00:00:00"
+        },
+        "quality": "attributes retained; no quality masking applied"
+      }
+    },
+    {
+      "dataset": "merra2",
+      "product": "M2TMNXSLV",
+      "version": "5.12.4",
+      "collection_id": "C1276812859-GES_DISC",
+      "doi": "10.5067/AP1B0BA5PD2K",
+      "variables_requested": [
+        "U10M",
+        "V10M",
+        "SLP",
+        "T2M",
+        "TQV"
+      ],
+      "available_period": {
+        "start": "1980-01-01T00:00:00.000Z",
+        "end": "2026-09-30T23:59:59.000Z"
+      },
+      "requested_period": {
+        "start": "2015-12-01T00:00:00+00:00",
+        "end": "2015-12-31T23:59:59.999999+00:00"
+      },
+      "effective_query_period": {
+        "start": "2015-12-01T00:00:00+00:00",
+        "end": "2015-12-31T23:59:59.999999+00:00"
+      },
+      "region": {
+        "description": "Região Niño 3.4 definida na especificação",
+        "crs": "EPSG:4326",
+        "domain": "ocean",
+        "bbox": [
+          -170,
+          -5,
+          -120,
+          5
+        ],
+        "id": "nino34",
+        "extraction": "bounding_box",
+        "geometry_id": "0f29a8f695bd2547ccc3ec7b6764cb6bd83d58da16cf7db944d99605d2d15254"
+      },
+      "matching_granules": 1,
+      "access_method": "Harmony_provider_bbox_subset_without_aggregation",
+      "temporal_selection": "CMR granule overlap; preserves full native time records",
+      "authentication_required": true,
+      "organization": "NASA GES DISC",
+      "spatial_resolution": "0.5 latitude x 0.625 longitude degree",
+      "temporal_resolution": "monthly",
+      "source_url": [
+        "https://data.gesdisc.earthdata.nasa.gov/data/MERRA2_MONTHLY/M2TMNXSLV.5.12.4/2015/MERRA2_400.tavgM_2d_slv_Nx.201512.nc4"
+      ],
+      "endpoint": "https://harmony.earthdata.nasa.gov/C1276812859-GES_DISC/ogc-api-coverages/1.0.0/collections/parameter_vars/coverage/rangeset",
+      "result_url_without_query": "https://harmony.earthdata.nasa.gov/service-results/harmony-prod-staging/public/d2ca1938-4f1c-4abd-bc6d-61e7f3f4b9ad/464921121/M2TMNXSLV.5.12.4_MERRA2_400.tavgM_2d_slv_Nx.201512_subsetted.nc4",
+      "harmony_job_id": "d2ca1938-4f1c-4abd-bc6d-61e7f3f4b9ad",
+      "request_parameters": [
+        [
+          "subset",
+          "lat(-5:5)"
+        ],
+        [
+          "subset",
+          "lon(-170:-120)"
+        ],
+        [
+          "variable",
+          "U10M"
+        ],
+        [
+          "variable",
+          "V10M"
+        ],
+        [
+          "variable",
+          "SLP"
+        ],
+        [
+          "variable",
+          "T2M"
+        ],
+        [
+          "variable",
+          "TQV"
+        ],
+        [
+          "granuleId",
+          "G1278026042-GES_DISC"
+        ],
+        [
+          "format",
+          "application/netcdf"
+        ],
+        [
+          "forceAsync",
+          "true"
+        ],
+        [
+          "ignoreErrors",
+          "false"
+        ],
+        [
+          "skipPreview",
+          "true"
+        ],
+        [
+          "maxResults",
+          "1"
+        ]
+      ],
+      "granule_id": "G1278026042-GES_DISC",
+      "granule_observation_period": {
+        "start": "2015-12-01T00:00:00.000Z",
+        "end": "2015-12-31T23:59:59.000Z"
+      },
+      "transformations": [
+        "CMR temporal granule selection; provider bbox/variable subset"
+      ],
+      "quality": "model/reanalysis/analysis as specified by original product",
+      "retrieved_at_utc": "2026-11-14T19:57:46.017736+00:00",
+      "retrieved_at_local": "2026-11-14T16:57:46.017736-03:00",
+      "request_key": "87d4dac4c2c773076bbc3ff5673e39566852050a443e74351db72d398de7941d",
+      "path": "raw/merra2/M2TMNXSLV/nino34/G1278026042-GES_DISC-0-8c42502466a03f93.nc4",
+      "size_bytes": 86639,
+      "sha256": "8c42502466a03f934b48f53ba64e183bc058dfe31b90f2c5b953f3eabc1762fe",
+      "status": "complete",
+      "audit": {
+        "integrity": "all_requested_variable_blocks_read",
+        "variables": {
+          "U10M": {
+            "requested_name": "U10M",
+            "units": "m s-1",
+            "dimensions": [
+              "time",
+              "lat",
+              "lon"
+            ],
+            "shape": [
+              1,
+              21,
+              81
+            ],
+            "dtype": "float32",
+            "missing_values": 0,
+            "attributes": {
+              "long_name": "10-meter_eastward_wind",
+              "units": "m s-1",
+              "_FillValue": "1e+15",
+              "missing_value": "1e+15",
+              "fmissing_value": "1e+15",
+              "vmax": "1e+15",
+              "vmin": "-1e+15",
+              "valid_range": "[-1.e+15  1.e+15]"
+            }
+          },
+          "V10M": {
+            "requested_name": "V10M",
+            "units": "m s-1",
+            "dimensions": [
+              "time",
+              "lat",
+              "lon"
+            ],
+            "shape": [
+              1,
+              21,
+              81
+            ],
+            "dtype": "float32",
+            "missing_values": 0,
+            "attributes": {
+              "long_name": "10-meter_northward_wind",
+              "units": "m s-1",
+              "_FillValue": "1e+15",
+              "missing_value": "1e+15",
+              "fmissing_value": "1e+15",
+              "vmax": "1e+15",
+              "vmin": "-1e+15",
+              "valid_range": "[-1.e+15  1.e+15]"
+            }
+          },
+          "SLP": {
+            "requested_name": "SLP",
+            "units": "Pa",
+            "dimensions": [
+              "time",
+              "lat",
+              "lon"
+            ],
+            "shape": [
+              1,
+              21,
+              81
+            ],
+            "dtype": "float32",
+            "missing_values": 0,
+            "attributes": {
+              "long_name": "sea_level_pressure",
+              "units": "Pa",
+              "_FillValue": "1e+15",
+              "missing_value": "1e+15",
+              "fmissing_value": "1e+15",
+              "vmax": "1e+15",
+              "vmin": "-1e+15",
+              "valid_range": "[-1.e+15  1.e+15]"
+            }
+          },
+          "T2M": {
+            "requested_name": "T2M",
+            "units": "K",
+            "dimensions": [
+              "time",
+              "lat",
+              "lon"
+            ],
+            "shape": [
+              1,
+              21,
+              81
+            ],
+            "dtype": "float32",
+            "missing_values": 0,
+            "attributes": {
+              "long_name": "2-meter_air_temperature",
+              "units": "K",
+              "_FillValue": "1e+15",
+              "missing_value": "1e+15",
+              "fmissing_value": "1e+15",
+              "vmax": "1e+15",
+              "vmin": "-1e+15",
+              "valid_range": "[-1.e+15  1.e+15]"
+            }
+          },
+          "TQV": {
+            "requested_name": "TQV",
+            "units": "kg m-2",
+            "dimensions": [
+              "time",
+              "lat",
+              "lon"
+            ],
+            "shape": [
+              1,
+              21,
+              81
+            ],
+            "dtype": "float32",
+            "missing_values": 0,
+            "attributes": {
+              "long_name": "total_precipitable_water_vapor",
+              "units": "kg m-2",
+              "_FillValue": "1e+15",
+              "missing_value": "1e+15",
+              "fmissing_value": "1e+15",
+              "vmax": "1e+15",
+              "vmin": "-1e+15",
+              "valid_range": "[-1.e+15  1.e+15]"
+            }
+          }
+        },
+        "missing_values": 0,
+        "dimensions": {
+          "lon": 81,
+          "time": 1,
+          "lat": 21
+        },
+        "coordinates": {
+          "lon": {
+            "min": -170.0,
+            "max": -120.0,
+            "count": 81,
+            "units": "degrees_east",
+            "step": 0.625
+          },
+          "lat": {
+            "min": -5.0,
+            "max": 5.0,
+            "count": 21,
+            "units": "degrees_north",
+            "step": 0.5
+          }
+        },
+        "temporal_records": 1,
+        "observation_period": {
+          "start": "2015-12-01 00:30:00",
+          "end": "2015-12-01 00:30:00"
+        },
+        "quality": "attributes retained; no quality masking applied"
+      }
+    },
+    {
+      "dataset": "gpm_daily",
+      "product": "GPM_3IMERGDF",
+      "version": "07",
+      "collection_id": "C2723754864-GES_DISC",
+      "doi": "10.5067/GPM/IMERGDF/DAY/07",
+      "variables_requested": [
+        "precipitation"
+      ],
+      "available_period": {
+        "start": "1998-01-01T00:00:00.000Z",
+        "end": "2025-09-30T23:59:59.999Z"
+      },
+      "requested_period": {
+        "start": "2015-12-01T00:00:00+00:00",
+        "end": "2015-12-02T23:59:59.999999+00:00"
+      },
+      "effective_query_period": {
+        "start": "2015-12-01T00:00:00+00:00",
+        "end": "2015-12-02T23:59:59.999999+00:00"
+      },
+      "region": {
+        "description": "Caixa provisória de 1 grau próxima de Brasília, somente para verificar transferência de grades terrestres com baixo volume; não é área de estudo aprovada, polígono de bacia nem evidência de cobertura de estações ANA.",
+        "crs": "EPSG:4326",
+        "domain": "land",
+        "provisional": true,
+        "bbox": [
+          -48.25,
+          -16.25,
+          -47.25,
+          -15.25
+        ],
+        "id": "brasilia_smoke",
+        "extraction": "bounding_box",
+        "geometry_id": "e2ae1810deb9b58ce574a78359b0c6aeca602b2638695ca5b3aaaea044727cab"
+      },
+      "matching_granules": 2,
+      "access_method": "Harmony_provider_bbox_subset_without_aggregation",
+      "temporal_selection": "CMR granule overlap; preserves full native time records",
+      "authentication_required": true,
+      "organization": "NASA GES DISC",
+      "spatial_resolution": "0.1 degree",
+      "temporal_resolution": "daily",
+      "source_url": [
+        "https://data.gesdisc.earthdata.nasa.gov/data/GPM_L3/GPM_3IMERGDF.07/2015/12/3B-DAY.MS.MRG.3IMERG.20151201-S000000-E235959.V07B.nc4"
+      ],
+      "endpoint": "https://harmony.earthdata.nasa.gov/C2723754864-GES_DISC/ogc-api-coverages/1.0.0/collections/parameter_vars/coverage/rangeset",
+      "result_url_without_query": "https://harmony.earthdata.nasa.gov/service-results/harmony-prod-staging/public/fa076328-559d-4019-b294-185e412e6e21/464932891/GPM_3IMERGDF.07_3B-DAY.MS.MRG.3IMERG.20151201-S000000-E235959.V07B_precipitation_subsetted.nc4",
+      "harmony_job_id": "fa076328-559d-4019-b294-185e412e6e21",
+      "request_parameters": [
+        [
+          "subset",
+          "lat(-16.25:-15.25)"
+        ],
+        [
+          "subset",
+          "lon(-48.25:-47.25)"
+        ],
+        [
+          "variable",
+          "precipitation"
+        ],
+        [
+          "granuleId",
+          "G2819929145-GES_DISC"
+        ],
+        [
+          "format",
+          "application/netcdf"
+        ],
+        [
+          "forceAsync",
+          "true"
+        ],
+        [
+          "ignoreErrors",
+          "false"
+        ],
+        [
+          "skipPreview",
+          "true"
+        ],
+        [
+          "maxResults",
+          "1"
+        ]
+      ],
+      "granule_id": "G2819929145-GES_DISC",
+      "granule_observation_period": {
+        "start": "2015-12-01T00:00:00.000Z",
+        "end": "2015-12-01T23:59:59.999Z"
+      },
+      "transformations": [
+        "CMR temporal granule selection; provider bbox/variable subset"
+      ],
+      "quality": "model/reanalysis/analysis as specified by original product",
+      "retrieved_at_utc": "2026-11-14T19:58:27.387289+00:00",
+      "retrieved_at_local": "2026-11-14T16:58:27.387289-03:00",
+      "request_key": "39a30d6460af18c92e081e2faccc8d184ddabb6efe644aacbbfdb05d294522d0",
+      "path": "raw/gpm_daily/GPM_3IMERGDF/brasilia_smoke/G2819929145-GES_DISC-0-ae19577ed64e4621.nc4",
+      "size_bytes": 35863,
+      "sha256": "ae19577ed64e46210626eed41b2d521c9f7503a20ea5b67f96598d82dfe3cb65",
+      "status": "complete",
+      "audit": {
+        "integrity": "all_requested_variable_blocks_read",
+        "variables": {
+          "precipitation": {
+            "requested_name": "precipitation",
+            "units": "mm/day",
+            "dimensions": [
+              "time",
+              "lon",
+              "lat"
+            ],
+            "shape": [
+              1,
+              11,
+              11
+            ],
+            "dtype": "float32",
+            "missing_values": 0,
+            "attributes": {
+              "units": "mm/day",
+              "long_name": "Daily mean precipitation rate (combined microwave-IR) estimate. Formerly precipitationCal.",
+              "coordinates": "time lon lat",
+              "_FillValue": "-9999.9"
+            }
+          }
+        },
+        "missing_values": 0,
+        "dimensions": {
+          "lon": 11,
+          "time": 1,
+          "lat": 11,
+          "nv": 2
+        },
+        "coordinates": {
+          "lon": {
+            "min": -48.25,
+            "max": -47.25,
+            "count": 11,
+            "units": "degrees_east",
+            "step": 0.09999847412109375
+          },
+          "lat": {
+            "min": -16.249999999999996,
+            "max": -15.249999999999996,
+            "count": 11,
+            "units": "degrees_north",
+            "step": 0.09999999999999432
+          }
+        },
+        "temporal_records": 1,
+        "observation_period": {
+          "start": "2015-12-01 00:00:00",
+          "end": "2015-12-01 00:00:00"
+        },
+        "quality": "attributes retained; no quality masking applied"
+      }
+    },
+    {
+      "dataset": "gpm_daily",
+      "product": "GPM_3IMERGDF",
+      "version": "07",
+      "collection_id": "C2723754864-GES_DISC",
+      "doi": "10.5067/GPM/IMERGDF/DAY/07",
+      "variables_requested": [
+        "precipitation"
+      ],
+      "available_period": {
+        "start": "1998-01-01T00:00:00.000Z",
+        "end": "2025-09-30T23:59:59.999Z"
+      },
+      "requested_period": {
+        "start": "2015-12-01T00:00:00+00:00",
+        "end": "2015-12-02T23:59:59.999999+00:00"
+      },
+      "effective_query_period": {
+        "start": "2015-12-01T00:00:00+00:00",
+        "end": "2015-12-02T23:59:59.999999+00:00"
+      },
+      "region": {
+        "description": "Caixa provisória de 1 grau próxima de Brasília, somente para verificar transferência de grades terrestres com baixo volume; não é área de estudo aprovada, polígono de bacia nem evidência de cobertura de estações ANA.",
+        "crs": "EPSG:4326",
+        "domain": "land",
+        "provisional": true,
+        "bbox": [
+          -48.25,
+          -16.25,
+          -47.25,
+          -15.25
+        ],
+        "id": "brasilia_smoke",
+        "extraction": "bounding_box",
+        "geometry_id": "e2ae1810deb9b58ce574a78359b0c6aeca602b2638695ca5b3aaaea044727cab"
+      },
+      "matching_granules": 2,
+      "access_method": "Harmony_provider_bbox_subset_without_aggregation",
+      "temporal_selection": "CMR granule overlap; preserves full native time records",
+      "authentication_required": true,
+      "organization": "NASA GES DISC",
+      "spatial_resolution": "0.1 degree",
+      "temporal_resolution": "daily",
+      "source_url": [
+        "https://data.gesdisc.earthdata.nasa.gov/data/GPM_L3/GPM_3IMERGDF.07/2015/12/3B-DAY.MS.MRG.3IMERG.20151202-S000000-E235959.V07B.nc4"
+      ],
+      "endpoint": "https://harmony.earthdata.nasa.gov/C2723754864-GES_DISC/ogc-api-coverages/1.0.0/collections/parameter_vars/coverage/rangeset",
+      "result_url_without_query": "https://harmony.earthdata.nasa.gov/service-results/harmony-prod-staging/public/5e25f725-37dc-490f-966f-3d8e2dcd7699/464932996/GPM_3IMERGDF.07_3B-DAY.MS.MRG.3IMERG.20151202-S000000-E235959.V07B_precipitation_subsetted.nc4",
+      "harmony_job_id": "5e25f725-37dc-490f-966f-3d8e2dcd7699",
+      "request_parameters": [
+        [
+          "subset",
+          "lat(-16.25:-15.25)"
+        ],
+        [
+          "subset",
+          "lon(-48.25:-47.25)"
+        ],
+        [
+          "variable",
+          "precipitation"
+        ],
+        [
+          "granuleId",
+          "G2819921532-GES_DISC"
+        ],
+        [
+          "format",
+          "application/netcdf"
+        ],
+        [
+          "forceAsync",
+          "true"
+        ],
+        [
+          "ignoreErrors",
+          "false"
+        ],
+        [
+          "skipPreview",
+          "true"
+        ],
+        [
+          "maxResults",
+          "1"
+        ]
+      ],
+      "granule_id": "G2819921532-GES_DISC",
+      "granule_observation_period": {
+        "start": "2015-12-02T00:00:00.000Z",
+        "end": "2015-12-02T23:59:59.999Z"
+      },
+      "transformations": [
+        "CMR temporal granule selection; provider bbox/variable subset"
+      ],
+      "quality": "model/reanalysis/analysis as specified by original product",
+      "retrieved_at_utc": "2026-11-14T19:58:41.856639+00:00",
+      "retrieved_at_local": "2026-11-14T16:58:41.856639-03:00",
+      "request_key": "1089e2e3a45f960773f9b76a58e42c816bf95d68732567f1f070581691acfbd9",
+      "path": "raw/gpm_daily/GPM_3IMERGDF/brasilia_smoke/G2819921532-GES_DISC-0-49f3c33055e06667.nc4",
+      "size_bytes": 35512,
+      "sha256": "49f3c33055e06667edcf05b96be445260da744d36b7efff5971ecaba39d50232",
+      "status": "complete",
+      "audit": {
+        "integrity": "all_requested_variable_blocks_read",
+        "variables": {
+          "precipitation": {
+            "requested_name": "precipitation",
+            "units": "mm/day",
+            "dimensions": [
+              "time",
+              "lon",
+              "lat"
+            ],
+            "shape": [
+              1,
+              11,
+              11
+            ],
+            "dtype": "float32",
+            "missing_values": 0,
+            "attributes": {
+              "units": "mm/day",
+              "long_name": "Daily mean precipitation rate (combined microwave-IR) estimate. Formerly precipitationCal.",
+              "coordinates": "time lon lat",
+              "_FillValue": "-9999.9"
+            }
+          }
+        },
+        "missing_values": 0,
+        "dimensions": {
+          "lon": 11,
+          "time": 1,
+          "lat": 11,
+          "nv": 2
+        },
+        "coordinates": {
+          "lon": {
+            "min": -48.25,
+            "max": -47.25,
+            "count": 11,
+            "units": "degrees_east",
+            "step": 0.09999847412109375
+          },
+          "lat": {
+            "min": -16.249999999999996,
+            "max": -15.249999999999996,
+            "count": 11,
+            "units": "degrees_north",
+            "step": 0.09999999999999432
+          }
+        },
+        "temporal_records": 1,
+        "observation_period": {
+          "start": "2015-12-02 00:00:00",
+          "end": "2015-12-02 00:00:00"
+        },
+        "quality": "attributes retained; no quality masking applied"
+      }
+    },
+    {
+      "dataset": "mur_sst",
+      "product": "MUR-JPL-L4-GLOB-v4.1",
+      "version": "4.1",
+      "collection_id": "C1996881146-POCLOUD",
+      "doi": "10.5067/GHGMR-4FJ04",
+      "variables_requested": [
+        "analysed_sst",
+        "analysis_error"
+      ],
+      "available_period": {
+        "start": "2002-05-31T21:00:00.000Z",
+        "end": "2026-11-13T21:00:00.000Z"
+      },
+      "requested_period": {
+        "start": "2015-12-01T00:00:00+00:00",
+        "end": "2015-12-01T23:59:59.999999+00:00"
+      },
+      "effective_query_period": {
+        "start": "2015-12-01T00:00:00+00:00",
+        "end": "2015-12-01T23:59:59.999999+00:00"
+      },
+      "region": {
+        "description": "Região Niño 3.4 definida na especificação",
+        "crs": "EPSG:4326",
+        "domain": "ocean",
+        "bbox": [
+          -170,
+          -5,
+          -120,
+          5
+        ],
+        "id": "nino34",
+        "extraction": "bounding_box",
+        "geometry_id": "0f29a8f695bd2547ccc3ec7b6764cb6bd83d58da16cf7db944d99605d2d15254"
+      },
+      "matching_granules": 2,
+      "access_method": "Harmony_provider_bbox_subset_without_aggregation",
+      "temporal_selection": "CMR granule overlap; preserves full native time records",
+      "authentication_required": true,
+      "organization": "NASA JPL PO.DAAC",
+      "spatial_resolution": "0.01 degree",
+      "temporal_resolution": "daily",
+      "source_url": [
+        "https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/MUR-JPL-L4-GLOB-v4.1/20151201090000-JPL-L4_GHRSST-SSTfnd-MUR-GLOB-v02.0-fv04.1.nc"
+      ],
+      "endpoint": "https://harmony.earthdata.nasa.gov/C1996881146-POCLOUD/ogc-api-coverages/1.0.0/collections/parameter_vars/coverage/rangeset",
+      "result_url_without_query": "https://harmony.earthdata.nasa.gov/service-results/harmony-prod-staging/public/874ec672-8db8-4b12-8c43-bddfaea10708/464914319/20151201090000-JPL-L4_GHRSST-SSTfnd-MUR-GLOB-v02.0-fv04_subsetted.nc4",
+      "harmony_job_id": "874ec672-8db8-4b12-8c43-bddfaea10708",
+      "request_parameters": [
+        [
+          "subset",
+          "lat(-5:5)"
+        ],
+        [
+          "subset",
+          "lon(-170:-120)"
+        ],
+        [
+          "variable",
+          "analysed_sst"
+        ],
+        [
+          "variable",
+          "analysis_error"
+        ],
+        [
+          "granuleId",
+          "G2028180986-POCLOUD"
+        ],
+        [
+          "format",
+          "application/netcdf"
+        ],
+        [
+          "forceAsync",
+          "true"
+        ],
+        [
+          "ignoreErrors",
+          "false"
+        ],
+        [
+          "skipPreview",
+          "true"
+        ],
+        [
+          "maxResults",
+          "1"
+        ]
+      ],
+      "granule_id": "G2028180986-POCLOUD",
+      "granule_observation_period": {
+        "start": "2015-11-30T21:00:00.000Z",
+        "end": "2015-12-01T21:00:00.000Z"
+      },
+      "transformations": [
+        "CMR temporal granule selection; provider bbox/variable subset"
+      ],
+      "quality": "model/reanalysis/analysis as specified by original product",
+      "retrieved_at_utc": "2026-11-14T19:58:57.633438+00:00",
+      "retrieved_at_local": "2026-11-14T16:58:57.633438-03:00",
+      "request_key": "908b8b7e69c9bfc579074e24c58a0be9f11b884a85abffb9b9e46cd063a5ee4d",
+      "path": "raw/mur_sst/MUR-JPL-L4-GLOB-v4.1/nino34/G2028180986-POCLOUD-0-44d51052179c5877.nc4",
+      "size_bytes": 5234208,
+      "sha256": "44d51052179c5877a37a2916c52869982d855a8eae075a86a8a5c0e181ca9f68",
+      "status": "complete",
+      "audit": {
+        "integrity": "all_requested_variable_blocks_read",
+        "variables": {
+          "analysed_sst": {
+            "requested_name": "analysed_sst",
+            "units": "kelvin",
+            "dimensions": [
+              "time",
+              "lat",
+              "lon"
+            ],
+            "shape": [
+              1,
+              1001,
+              5001
+            ],
+            "dtype": "int16",
+            "missing_values": 0,
+            "attributes": {
+              "long_name": "analysed sea surface temperature",
+              "standard_name": "sea_surface_foundation_temperature",
+              "units": "kelvin",
+              "_FillValue": "-32768",
+              "add_offset": "298.15",
+              "scale_factor": "0.001",
+              "valid_min": "-32767",
+              "valid_max": "32767",
+              "comment": "\"Final\" version using Multi-Resolution Variational Analysis (MRVA) method for interpolation",
+              "coordinates": "lon lat",
+              "source": "AVHRR19_G-NAVO, AVHRR_METOP_A-EUMETSAT, MODIS_A-JPL, MODIS_T-JPL, WSAT-REMSS, iQUAM-NOAA/NESDIS, Ice_Conc-OSISAF"
+            }
+          },
+          "analysis_error": {
+            "requested_name": "analysis_error",
+            "units": "kelvin",
+            "dimensions": [
+              "time",
+              "lat",
+              "lon"
+            ],
+            "shape": [
+              1,
+              1001,
+              5001
+            ],
+            "dtype": "int16",
+            "missing_values": 0,
+            "attributes": {
+              "long_name": "estimated error standard deviation of analysed_sst",
+              "units": "kelvin",
+              "_FillValue": "-32768",
+              "add_offset": "0.0",
+              "scale_factor": "0.01",
+              "valid_min": "0",
+              "valid_max": "32767",
+              "comment": "none",
+              "coordinates": "lon lat"
+            }
+          }
+        },
+        "missing_values": 0,
+        "dimensions": {
+          "time": 1,
+          "lat": 1001,
+          "lon": 5001
+        },
+        "coordinates": {
+          "lat": {
+            "min": -5.0,
+            "max": 5.0,
+            "count": 1001,
+            "units": "degrees_north",
+            "step": 0.009999990463256836
+          },
+          "lon": {
+            "min": -170.0,
+            "max": -120.0,
+            "count": 5001,
+            "units": "degrees_east",
+            "step": 0.0099945068359375
+          }
+        },
+        "temporal_records": 1,
+        "observation_period": {
+          "start": "2015-12-01 09:00:00",
+          "end": "2015-12-01 09:00:00"
+        },
+        "quality": "attributes retained; no quality masking applied"
+      }
+    },
+    {
+      "dataset": "mur_sst",
+      "product": "MUR-JPL-L4-GLOB-v4.1",
+      "version": "4.1",
+      "collection_id": "C1996881146-POCLOUD",
+      "doi": "10.5067/GHGMR-4FJ04",
+      "variables_requested": [
+        "analysed_sst",
+        "analysis_error"
+      ],
+      "available_period": {
+        "start": "2002-05-31T21:00:00.000Z",
+        "end": "2026-11-13T21:00:00.000Z"
+      },
+      "requested_period": {
+        "start": "2015-12-01T00:00:00+00:00",
+        "end": "2015-12-01T23:59:59.999999+00:00"
+      },
+      "effective_query_period": {
+        "start": "2015-12-01T00:00:00+00:00",
+        "end": "2015-12-01T23:59:59.999999+00:00"
+      },
+      "region": {
+        "description": "Região Niño 3.4 definida na especificação",
+        "crs": "EPSG:4326",
+        "domain": "ocean",
+        "bbox": [
+          -170,
+          -5,
+          -120,
+          5
+        ],
+        "id": "nino34",
+        "extraction": "bounding_box",
+        "geometry_id": "0f29a8f695bd2547ccc3ec7b6764cb6bd83d58da16cf7db944d99605d2d15254"
+      },
+      "matching_granules": 2,
+      "access_method": "Harmony_provider_bbox_subset_without_aggregation",
+      "temporal_selection": "CMR granule overlap; preserves full native time records",
+      "authentication_required": true,
+      "organization": "NASA JPL PO.DAAC",
+      "spatial_resolution": "0.01 degree",
+      "temporal_resolution": "daily",
+      "source_url": [
+        "https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/MUR-JPL-L4-GLOB-v4.1/20151202090000-JPL-L4_GHRSST-SSTfnd-MUR-GLOB-v02.0-fv04.1.nc"
+      ],
+      "endpoint": "https://harmony.earthdata.nasa.gov/C1996881146-POCLOUD/ogc-api-coverages/1.0.0/collections/parameter_vars/coverage/rangeset",
+      "result_url_without_query": "https://harmony.earthdata.nasa.gov/service-results/harmony-prod-staging/public/a86563ee-e404-44f2-94e3-d182c22dff49/464933208/20151202090000-JPL-L4_GHRSST-SSTfnd-MUR-GLOB-v02.0-fv04_subsetted.nc4",
+      "harmony_job_id": "a86563ee-e404-44f2-94e3-d182c22dff49",
+      "request_parameters": [
+        [
+          "subset",
+          "lat(-5:5)"
+        ],
+        [
+          "subset",
+          "lon(-170:-120)"
+        ],
+        [
+          "variable",
+          "analysed_sst"
+        ],
+        [
+          "variable",
+          "analysis_error"
+        ],
+        [
+          "granuleId",
+          "G2028182364-POCLOUD"
+        ],
+        [
+          "format",
+          "application/netcdf"
+        ],
+        [
+          "forceAsync",
+          "true"
+        ],
+        [
+          "ignoreErrors",
+          "false"
+        ],
+        [
+          "skipPreview",
+          "true"
+        ],
+        [
+          "maxResults",
+          "1"
+        ]
+      ],
+      "granule_id": "G2028182364-POCLOUD",
+      "granule_observation_period": {
+        "start": "2015-12-01T21:00:00.000Z",
+        "end": "2015-12-02T21:00:00.000Z"
+      },
+      "transformations": [
+        "CMR temporal granule selection; provider bbox/variable subset"
+      ],
+      "quality": "model/reanalysis/analysis as specified by original product",
+      "retrieved_at_utc": "2026-11-14T19:59:22.022910+00:00",
+      "retrieved_at_local": "2026-11-14T16:59:22.022910-03:00",
+      "request_key": "c955470926a96aa7c29ff8666b40a51aa1d255b60f7b74334b7e3d4010f28ad8",
+      "path": "raw/mur_sst/MUR-JPL-L4-GLOB-v4.1/nino34/G2028182364-POCLOUD-0-bd41c2b3be9cad25.nc4",
+      "size_bytes": 5214269,
+      "sha256": "bd41c2b3be9cad256108d264c1fed9ce3fc92b1c6f2f62d78d51c26c0032de02",
+      "status": "complete",
+      "audit": {
+        "integrity": "all_requested_variable_blocks_read",
+        "variables": {
+          "analysed_sst": {
+            "requested_name": "analysed_sst",
+            "units": "kelvin",
+            "dimensions": [
+              "time",
+              "lat",
+              "lon"
+            ],
+            "shape": [
+              1,
+              1001,
+              5001
+            ],
+            "dtype": "int16",
+            "missing_values": 0,
+            "attributes": {
+              "long_name": "analysed sea surface temperature",
+              "standard_name": "sea_surface_foundation_temperature",
+              "units": "kelvin",
+              "_FillValue": "-32768",
+              "add_offset": "298.15",
+              "scale_factor": "0.001",
+              "valid_min": "-32767",
+              "valid_max": "32767",
+              "comment": "\"Final\" version using Multi-Resolution Variational Analysis (MRVA) method for interpolation",
+              "coordinates": "lon lat",
+              "source": "AVHRR19_G-NAVO, AVHRR_METOP_A-EUMETSAT, MODIS_A-JPL, MODIS_T-JPL, WSAT-REMSS, iQUAM-NOAA/NESDIS, Ice_Conc-OSISAF"
+            }
+          },
+          "analysis_error": {
+            "requested_name": "analysis_error",
+            "units": "kelvin",
+            "dimensions": [
+              "time",
+              "lat",
+              "lon"
+            ],
+            "shape": [
+              1,
+              1001,
+              5001
+            ],
+            "dtype": "int16",
+            "missing_values": 0,
+            "attributes": {
+              "long_name": "estimated error standard deviation of analysed_sst",
+              "units": "kelvin",
+              "_FillValue": "-32768",
+              "add_offset": "0.0",
+              "scale_factor": "0.01",
+              "valid_min": "0",
+              "valid_max": "32767",
+              "comment": "none",
+              "coordinates": "lon lat"
+            }
+          }
+        },
+        "missing_values": 0,
+        "dimensions": {
+          "time": 1,
+          "lat": 1001,
+          "lon": 5001
+        },
+        "coordinates": {
+          "lat": {
+            "min": -5.0,
+            "max": 5.0,
+            "count": 1001,
+            "units": "degrees_north",
+            "step": 0.009999990463256836
+          },
+          "lon": {
+            "min": -170.0,
+            "max": -120.0,
+            "count": 5001,
+            "units": "degrees_east",
+            "step": 0.0099945068359375
+          }
+        },
+        "temporal_records": 1,
+        "observation_period": {
+          "start": "2015-12-02 09:00:00",
+          "end": "2015-12-02 09:00:00"
+        },
+        "quality": "attributes retained; no quality masking applied"
+      }
+    }
+  ],
+  "download_inventory": {
+    "noaa_roni": {
+      "file_count": 2,
+      "total_bytes": 112812,
+      "files": [
+        {
+          "path": "raw/noaa_roni/RONI/global_index/series-1297887f581b6190.txt",
+          "size_bytes": 14752,
+          "sha256": "1297887f581b6190e459cbbf8bdec9a703ff65c1a229e2de4dd94285254f35c8",
+          "sha256_verified": true,
+          "variables": {
+            "RONI": {
+              "units": "degree_Celsius",
+              "source": "NOAA definition"
+            }
+          },
+          "dimensions": {
+            "overlapping_season": 921
+          },
+          "temporal_records": 921,
+          "observation_period": {
+            "start": "1950-01",
+            "end": "2026-09"
+          },
+          "time_convention": "year and central month of official overlapping season",
+          "missing_values": 0,
+          "classification": "preserved in companion official HTML; not inferred",
+          "integrity": "valid_ASCII_records"
+        },
+        {
+          "path": "raw/noaa_roni/RONI/global_index/classification-45a29af6d57b0a23.html",
+          "size_bytes": 98060,
+          "sha256": "45a29af6d57b0a231dcc2fd50b636e823c43d591208e9dd6196358bfaed85834",
+          "sha256_verified": true,
+          "integrity": "HTML_historical_table_present",
+          "classification": "original HTML retained verbatim, including official styling",
+          "variables": {},
+          "temporal_records": null,
+          "missing_values": null
+        }
+      ],
+      "integrity_problems": []
+    },
+    "gpm_monthly": {
+      "file_count": 1,
+      "total_bytes": 44180,
+      "files": [
+        {
+          "path": "raw/gpm_monthly/GPM_3IMERGM/brasilia_smoke/G2819757905-GES_DISC-0-8f2007f800b66fcd.nc4",
+          "size_bytes": 44180,
+          "sha256": "8f2007f800b66fcd52408e04bbd14e9b3adcc194cc45e8335ed611604a55d300",
+          "sha256_verified": true,
+          "integrity": "all_requested_variable_blocks_read",
+          "variables": {
+            "Grid/precipitation": {
+              "requested_name": "Grid/precipitation",
+              "units": "mm/hr",
+              "dimensions": [
+                "time",
+                "lon",
+                "lat"
+              ],
+              "shape": [
+                1,
+                11,
+                11
+              ],
+              "dtype": "float32",
+              "missing_values": 0,
+              "attributes": {
+                "DimensionNames": "time,lon,lat",
+                "Units": "mm/hr",
+                "units": "mm/hr",
+                "coordinates": "time lon lat",
+                "_FillValue": "-9999.9",
+                "CodeMissingValue": "-9999.9",
+                "LongName": "Merged microwave-infrared-gauge precipitation estimate"
+              }
+            }
+          },
+          "missing_values": 0,
+          "dimensions": {
+            "Grid/time": 1,
+            "Grid/lon": 11,
+            "Grid/lat": 11,
+            "Grid/latv": 2,
+            "Grid/lonv": 2,
+            "Grid/nv": 2
+          },
+          "coordinates": {
+            "Grid/lon": {
+              "min": -48.25,
+              "max": -47.25,
+              "count": 11,
+              "units": "degrees_east",
+              "step": 0.09999847412109375
+            },
+            "Grid/lat": {
+              "min": -16.25,
+              "max": -15.25,
+              "count": 11,
+              "units": "degrees_north",
+              "step": 0.10000038146972656
+            }
+          },
+          "temporal_records": 1,
+          "observation_period": {
+            "start": "2015-12-01 00:00:00",
+            "end": "2015-12-01 00:00:00"
+          },
+          "quality": "attributes retained; no quality masking applied"
+        }
+      ],
+      "integrity_problems": []
+    },
+    "gldas": {
+      "file_count": 1,
+      "total_bytes": 83186,
+      "files": [
+        {
+          "path": "raw/gldas/GLDAS_NOAH025_M/brasilia_smoke/G1413724045-GES_DISC-0-30c622fdeaf2f759.nc4",
+          "size_bytes": 83186,
+          "sha256": "30c622fdeaf2f7591f2d46e4b415000bb715d5a3bcf004e3e21bcd5859b62aa0",
+          "sha256_verified": true,
+          "integrity": "all_requested_variable_blocks_read",
+          "variables": {
+            "SoilMoi0_10cm_inst": {
+              "requested_name": "SoilMoi0_10cm_inst",
+              "units": "kg m-2",
+              "dimensions": [
+                "time",
+                "lat",
+                "lon"
+              ],
+              "shape": [
+                1,
+                4,
+                4
+              ],
+              "dtype": "float32",
+              "missing_values": 0,
+              "attributes": {
+                "standard_name": "soil_moisture_content",
+                "long_name": "Soil moisture",
+                "units": "kg m-2",
+                "_FillValue": "-9999.0",
+                "missing_value": "-9999.0",
+                "cell_methods": "time: mean",
+                "vmin": "2.0",
+                "vmax": "100.0"
+              }
+            },
+            "SoilMoi10_40cm_inst": {
+              "requested_name": "SoilMoi10_40cm_inst",
+              "units": "kg m-2",
+              "dimensions": [
+                "time",
+                "lat",
+                "lon"
+              ],
+              "shape": [
+                1,
+                4,
+                4
+              ],
+              "dtype": "float32",
+              "missing_values": 0,
+              "attributes": {
+                "standard_name": "soil_moisture_content",
+                "long_name": "Soil moisture",
+                "units": "kg m-2",
+                "_FillValue": "-9999.0",
+                "missing_value": "-9999.0",
+                "cell_methods": "time: mean",
+                "vmin": "6.116536",
+                "vmax": "300.00003"
+              }
+            },
+            "SoilMoi40_100cm_inst": {
+              "requested_name": "SoilMoi40_100cm_inst",
+              "units": "kg m-2",
+              "dimensions": [
+                "time",
+                "lat",
+                "lon"
+              ],
+              "shape": [
+                1,
+                4,
+                4
+              ],
+              "dtype": "float32",
+              "missing_values": 0,
+              "attributes": {
+                "standard_name": "soil_moisture_content",
+                "long_name": "Soil moisture",
+                "units": "kg m-2",
+                "_FillValue": "-9999.0",
+                "missing_value": "-9999.0",
+                "cell_methods": "time: mean",
+                "vmin": "12.000001",
+                "vmax": "600.0"
+              }
+            },
+            "SoilMoi100_200cm_inst": {
+              "requested_name": "SoilMoi100_200cm_inst",
+              "units": "kg m-2",
+              "dimensions": [
+                "time",
+                "lat",
+                "lon"
+              ],
+              "shape": [
+                1,
+                4,
+                4
+              ],
+              "dtype": "float32",
+              "missing_values": 0,
+              "attributes": {
+                "standard_name": "soil_moisture_content",
+                "long_name": "Soil moisture",
+                "units": "kg m-2",
+                "_FillValue": "-9999.0",
+                "missing_value": "-9999.0",
+                "cell_methods": "time: mean",
+                "vmin": "20.073166",
+                "vmax": "1000.0"
+              }
+            },
+            "RootMoist_inst": {
+              "requested_name": "RootMoist_inst",
+              "units": "kg m-2",
+              "dimensions": [
+                "time",
+                "lat",
+                "lon"
+              ],
+              "shape": [
+                1,
+                4,
+                4
+              ],
+              "dtype": "float32",
+              "missing_values": 0,
+              "attributes": {
+                "standard_name": "root_zone_soil_moisture",
+                "long_name": "Root zone soil moisture",
+                "units": "kg m-2",
+                "_FillValue": "-9999.0",
+                "missing_value": "-9999.0",
+                "cell_methods": "time: mean",
+                "vmin": "2.0",
+                "vmax": "891.8663"
+              }
+            },
+            "Evap_tavg": {
+              "requested_name": "Evap_tavg",
+              "units": "kg m-2 s-1",
+              "dimensions": [
+                "time",
+                "lat",
+                "lon"
+              ],
+              "shape": [
+                1,
+                4,
+                4
+              ],
+              "dtype": "float32",
+              "missing_values": 0,
+              "attributes": {
+                "standard_name": "water_evaporation_flux",
+                "long_name": "Evapotranspiration",
+                "units": "kg m-2 s-1",
+                "_FillValue": "-9999.0",
+                "missing_value": "-9999.0",
+                "cell_methods": "time: mean",
+                "vmin": "-2.3084895e-06",
+                "vmax": "7.817458e-05"
+              }
+            },
+            "Qs_acc": {
+              "requested_name": "Qs_acc",
+              "units": "kg m-2",
+              "dimensions": [
+                "time",
+                "lat",
+                "lon"
+              ],
+              "shape": [
+                1,
+                4,
+                4
+              ],
+              "dtype": "float32",
+              "missing_values": 0,
+              "attributes": {
+                "standard_name": "surface_runoff_amount",
+                "long_name": "Storm surface runoff",
+                "units": "kg m-2",
+                "_FillValue": "-9999.0",
+                "missing_value": "-9999.0",
+                "cell_methods": "time: mean",
+                "vmin": "0.0",
+                "vmax": "2.9759786"
+              }
+            },
+            "Qsb_acc": {
+              "requested_name": "Qsb_acc",
+              "units": "kg m-2",
+              "dimensions": [
+                "time",
+                "lat",
+                "lon"
+              ],
+              "shape": [
+                1,
+                4,
+                4
+              ],
+              "dtype": "float32",
+              "missing_values": 0,
+              "attributes": {
+                "standard_name": "subsurface_runoff_amount",
+                "long_name": "Baseflow-groundwater runoff",
+                "units": "kg m-2",
+                "_FillValue": "-9999.0",
+                "missing_value": "-9999.0",
+                "cell_methods": "time: mean",
+                "vmin": "0.0",
+                "vmax": "1.8418143"
+              }
+            }
+          },
+          "missing_values": 0,
+          "dimensions": {
+            "lon": 4,
+            "time": 1,
+            "lat": 4,
+            "bnds": 2
+          },
+          "coordinates": {
+            "lon": {
+              "min": -48.125,
+              "max": -47.375,
+              "count": 4,
+              "units": "degrees_east",
+              "step": 0.25
+            },
+            "lat": {
+              "min": -16.125,
+              "max": -15.375,
+              "count": 4,
+              "units": "degrees_north",
+              "step": 0.25
+            }
+          },
+          "temporal_records": 1,
+          "observation_period": {
+            "start": "2015-12-01 00:00:00",
+            "end": "2015-12-01 00:00:00"
+          },
+          "quality": "attributes retained; no quality masking applied"
+        }
+      ],
+      "integrity_problems": []
+    },
+    "merra2": {
+      "file_count": 1,
+      "total_bytes": 86639,
+      "files": [
+        {
+          "path": "raw/merra2/M2TMNXSLV/nino34/G1278026042-GES_DISC-0-8c42502466a03f93.nc4",
+          "size_bytes": 86639,
+          "sha256": "8c42502466a03f934b48f53ba64e183bc058dfe31b90f2c5b953f3eabc1762fe",
+          "sha256_verified": true,
+          "integrity": "all_requested_variable_blocks_read",
+          "variables": {
+            "U10M": {
+              "requested_name": "U10M",
+              "units": "m s-1",
+              "dimensions": [
+                "time",
+                "lat",
+                "lon"
+              ],
+              "shape": [
+                1,
+                21,
+                81
+              ],
+              "dtype": "float32",
+              "missing_values": 0,
+              "attributes": {
+                "long_name": "10-meter_eastward_wind",
+                "units": "m s-1",
+                "_FillValue": "1e+15",
+                "missing_value": "1e+15",
+                "fmissing_value": "1e+15",
+                "vmax": "1e+15",
+                "vmin": "-1e+15",
+                "valid_range": "[-1.e+15  1.e+15]"
+              }
+            },
+            "V10M": {
+              "requested_name": "V10M",
+              "units": "m s-1",
+              "dimensions": [
+                "time",
+                "lat",
+                "lon"
+              ],
+              "shape": [
+                1,
+                21,
+                81
+              ],
+              "dtype": "float32",
+              "missing_values": 0,
+              "attributes": {
+                "long_name": "10-meter_northward_wind",
+                "units": "m s-1",
+                "_FillValue": "1e+15",
+                "missing_value": "1e+15",
+                "fmissing_value": "1e+15",
+                "vmax": "1e+15",
+                "vmin": "-1e+15",
+                "valid_range": "[-1.e+15  1.e+15]"
+              }
+            },
+            "SLP": {
+              "requested_name": "SLP",
+              "units": "Pa",
+              "dimensions": [
+                "time",
+                "lat",
+                "lon"
+              ],
+              "shape": [
+                1,
+                21,
+                81
+              ],
+              "dtype": "float32",
+              "missing_values": 0,
+              "attributes": {
+                "long_name": "sea_level_pressure",
+                "units": "Pa",
+                "_FillValue": "1e+15",
+                "missing_value": "1e+15",
+                "fmissing_value": "1e+15",
+                "vmax": "1e+15",
+                "vmin": "-1e+15",
+                "valid_range": "[-1.e+15  1.e+15]"
+              }
+            },
+            "T2M": {
+              "requested_name": "T2M",
+              "units": "K",
+              "dimensions": [
+                "time",
+                "lat",
+                "lon"
+              ],
+              "shape": [
+                1,
+                21,
+                81
+              ],
+              "dtype": "float32",
+              "missing_values": 0,
+              "attributes": {
+                "long_name": "2-meter_air_temperature",
+                "units": "K",
+                "_FillValue": "1e+15",
+                "missing_value": "1e+15",
+                "fmissing_value": "1e+15",
+                "vmax": "1e+15",
+                "vmin": "-1e+15",
+                "valid_range": "[-1.e+15  1.e+15]"
+              }
+            },
+            "TQV": {
+              "requested_name": "TQV",
+              "units": "kg m-2",
+              "dimensions": [
+                "time",
+                "lat",
+                "lon"
+              ],
+              "shape": [
+                1,
+                21,
+                81
+              ],
+              "dtype": "float32",
+              "missing_values": 0,
+              "attributes": {
+                "long_name": "total_precipitable_water_vapor",
+                "units": "kg m-2",
+                "_FillValue": "1e+15",
+                "missing_value": "1e+15",
+                "fmissing_value": "1e+15",
+                "vmax": "1e+15",
+                "vmin": "-1e+15",
+                "valid_range": "[-1.e+15  1.e+15]"
+              }
+            }
+          },
+          "missing_values": 0,
+          "dimensions": {
+            "lon": 81,
+            "time": 1,
+            "lat": 21
+          },
+          "coordinates": {
+            "lon": {
+              "min": -170.0,
+              "max": -120.0,
+              "count": 81,
+              "units": "degrees_east",
+              "step": 0.625
+            },
+            "lat": {
+              "min": -5.0,
+              "max": 5.0,
+              "count": 21,
+              "units": "degrees_north",
+              "step": 0.5
+            }
+          },
+          "temporal_records": 1,
+          "observation_period": {
+            "start": "2015-12-01 00:30:00",
+            "end": "2015-12-01 00:30:00"
+          },
+          "quality": "attributes retained; no quality masking applied"
+        }
+      ],
+      "integrity_problems": []
+    },
+    "gpm_daily": {
+      "file_count": 2,
+      "total_bytes": 71375,
+      "files": [
+        {
+          "path": "raw/gpm_daily/GPM_3IMERGDF/brasilia_smoke/G2819929145-GES_DISC-0-ae19577ed64e4621.nc4",
+          "size_bytes": 35863,
+          "sha256": "ae19577ed64e46210626eed41b2d521c9f7503a20ea5b67f96598d82dfe3cb65",
+          "sha256_verified": true,
+          "integrity": "all_requested_variable_blocks_read",
+          "variables": {
+            "precipitation": {
+              "requested_name": "precipitation",
+              "units": "mm/day",
+              "dimensions": [
+                "time",
+                "lon",
+                "lat"
+              ],
+              "shape": [
+                1,
+                11,
+                11
+              ],
+              "dtype": "float32",
+              "missing_values": 0,
+              "attributes": {
+                "units": "mm/day",
+                "long_name": "Daily mean precipitation rate (combined microwave-IR) estimate. Formerly precipitationCal.",
+                "coordinates": "time lon lat",
+                "_FillValue": "-9999.9"
+              }
+            }
+          },
+          "missing_values": 0,
+          "dimensions": {
+            "lon": 11,
+            "time": 1,
+            "lat": 11,
+            "nv": 2
+          },
+          "coordinates": {
+            "lon": {
+              "min": -48.25,
+              "max": -47.25,
+              "count": 11,
+              "units": "degrees_east",
+              "step": 0.09999847412109375
+            },
+            "lat": {
+              "min": -16.249999999999996,
+              "max": -15.249999999999996,
+              "count": 11,
+              "units": "degrees_north",
+              "step": 0.09999999999999432
+            }
+          },
+          "temporal_records": 1,
+          "observation_period": {
+            "start": "2015-12-01 00:00:00",
+            "end": "2015-12-01 00:00:00"
+          },
+          "quality": "attributes retained; no quality masking applied"
+        },
+        {
+          "path": "raw/gpm_daily/GPM_3IMERGDF/brasilia_smoke/G2819921532-GES_DISC-0-49f3c33055e06667.nc4",
+          "size_bytes": 35512,
+          "sha256": "49f3c33055e06667edcf05b96be445260da744d36b7efff5971ecaba39d50232",
+          "sha256_verified": true,
+          "integrity": "all_requested_variable_blocks_read",
+          "variables": {
+            "precipitation": {
+              "requested_name": "precipitation",
+              "units": "mm/day",
+              "dimensions": [
+                "time",
+                "lon",
+                "lat"
+              ],
+              "shape": [
+                1,
+                11,
+                11
+              ],
+              "dtype": "float32",
+              "missing_values": 0,
+              "attributes": {
+                "units": "mm/day",
+                "long_name": "Daily mean precipitation rate (combined microwave-IR) estimate. Formerly precipitationCal.",
+                "coordinates": "time lon lat",
+                "_FillValue": "-9999.9"
+              }
+            }
+          },
+          "missing_values": 0,
+          "dimensions": {
+            "lon": 11,
+            "time": 1,
+            "lat": 11,
+            "nv": 2
+          },
+          "coordinates": {
+            "lon": {
+              "min": -48.25,
+              "max": -47.25,
+              "count": 11,
+              "units": "degrees_east",
+              "step": 0.09999847412109375
+            },
+            "lat": {
+              "min": -16.249999999999996,
+              "max": -15.249999999999996,
+              "count": 11,
+              "units": "degrees_north",
+              "step": 0.09999999999999432
+            }
+          },
+          "temporal_records": 1,
+          "observation_period": {
+            "start": "2015-12-02 00:00:00",
+            "end": "2015-12-02 00:00:00"
+          },
+          "quality": "attributes retained; no quality masking applied"
+        }
+      ],
+      "integrity_problems": []
+    },
+    "mur_sst": {
+      "file_count": 2,
+      "total_bytes": 10448477,
+      "files": [
+        {
+          "path": "raw/mur_sst/MUR-JPL-L4-GLOB-v4.1/nino34/G2028180986-POCLOUD-0-44d51052179c5877.nc4",
+          "size_bytes": 5234208,
+          "sha256": "44d51052179c5877a37a2916c52869982d855a8eae075a86a8a5c0e181ca9f68",
+          "sha256_verified": true,
+          "integrity": "all_requested_variable_blocks_read",
+          "variables": {
+            "analysed_sst": {
+              "requested_name": "analysed_sst",
+              "units": "kelvin",
+              "dimensions": [
+                "time",
+                "lat",
+                "lon"
+              ],
+              "shape": [
+                1,
+                1001,
+                5001
+              ],
+              "dtype": "int16",
+              "missing_values": 0,
+              "attributes": {
+                "long_name": "analysed sea surface temperature",
+                "standard_name": "sea_surface_foundation_temperature",
+                "units": "kelvin",
+                "_FillValue": "-32768",
+                "add_offset": "298.15",
+                "scale_factor": "0.001",
+                "valid_min": "-32767",
+                "valid_max": "32767",
+                "comment": "\"Final\" version using Multi-Resolution Variational Analysis (MRVA) method for interpolation",
+                "coordinates": "lon lat",
+                "source": "AVHRR19_G-NAVO, AVHRR_METOP_A-EUMETSAT, MODIS_A-JPL, MODIS_T-JPL, WSAT-REMSS, iQUAM-NOAA/NESDIS, Ice_Conc-OSISAF"
+              }
+            },
+            "analysis_error": {
+              "requested_name": "analysis_error",
+              "units": "kelvin",
+              "dimensions": [
+                "time",
+                "lat",
+                "lon"
+              ],
+              "shape": [
+                1,
+                1001,
+                5001
+              ],
+              "dtype": "int16",
+              "missing_values": 0,
+              "attributes": {
+                "long_name": "estimated error standard deviation of analysed_sst",
+                "units": "kelvin",
+                "_FillValue": "-32768",
+                "add_offset": "0.0",
+                "scale_factor": "0.01",
+                "valid_min": "0",
+                "valid_max": "32767",
+                "comment": "none",
+                "coordinates": "lon lat"
+              }
+            }
+          },
+          "missing_values": 0,
+          "dimensions": {
+            "time": 1,
+            "lat": 1001,
+            "lon": 5001
+          },
+          "coordinates": {
+            "lat": {
+              "min": -5.0,
+              "max": 5.0,
+              "count": 1001,
+              "units": "degrees_north",
+              "step": 0.009999990463256836
+            },
+            "lon": {
+              "min": -170.0,
+              "max": -120.0,
+              "count": 5001,
+              "units": "degrees_east",
+              "step": 0.0099945068359375
+            }
+          },
+          "temporal_records": 1,
+          "observation_period": {
+            "start": "2015-12-01 09:00:00",
+            "end": "2015-12-01 09:00:00"
+          },
+          "quality": "attributes retained; no quality masking applied"
+        },
+        {
+          "path": "raw/mur_sst/MUR-JPL-L4-GLOB-v4.1/nino34/G2028182364-POCLOUD-0-bd41c2b3be9cad25.nc4",
+          "size_bytes": 5214269,
+          "sha256": "bd41c2b3be9cad256108d264c1fed9ce3fc92b1c6f2f62d78d51c26c0032de02",
+          "sha256_verified": true,
+          "integrity": "all_requested_variable_blocks_read",
+          "variables": {
+            "analysed_sst": {
+              "requested_name": "analysed_sst",
+              "units": "kelvin",
+              "dimensions": [
+                "time",
+                "lat",
+                "lon"
+              ],
+              "shape": [
+                1,
+                1001,
+                5001
+              ],
+              "dtype": "int16",
+              "missing_values": 0,
+              "attributes": {
+                "long_name": "analysed sea surface temperature",
+                "standard_name": "sea_surface_foundation_temperature",
+                "units": "kelvin",
+                "_FillValue": "-32768",
+                "add_offset": "298.15",
+                "scale_factor": "0.001",
+                "valid_min": "-32767",
+                "valid_max": "32767",
+                "comment": "\"Final\" version using Multi-Resolution Variational Analysis (MRVA) method for interpolation",
+                "coordinates": "lon lat",
+                "source": "AVHRR19_G-NAVO, AVHRR_METOP_A-EUMETSAT, MODIS_A-JPL, MODIS_T-JPL, WSAT-REMSS, iQUAM-NOAA/NESDIS, Ice_Conc-OSISAF"
+              }
+            },
+            "analysis_error": {
+              "requested_name": "analysis_error",
+              "units": "kelvin",
+              "dimensions": [
+                "time",
+                "lat",
+                "lon"
+              ],
+              "shape": [
+                1,
+                1001,
+                5001
+              ],
+              "dtype": "int16",
+              "missing_values": 0,
+              "attributes": {
+                "long_name": "estimated error standard deviation of analysed_sst",
+                "units": "kelvin",
+                "_FillValue": "-32768",
+                "add_offset": "0.0",
+                "scale_factor": "0.01",
+                "valid_min": "0",
+                "valid_max": "32767",
+                "comment": "none",
+                "coordinates": "lon lat"
+              }
+            }
+          },
+          "missing_values": 0,
+          "dimensions": {
+            "time": 1,
+            "lat": 1001,
+            "lon": 5001
+          },
+          "coordinates": {
+            "lat": {
+              "min": -5.0,
+              "max": 5.0,
+              "count": 1001,
+              "units": "degrees_north",
+              "step": 0.009999990463256836
+            },
+            "lon": {
+              "min": -170.0,
+              "max": -120.0,
+              "count": 5001,
+              "units": "degrees_east",
+              "step": 0.0099945068359375
+            }
+          },
+          "temporal_records": 1,
+          "observation_period": {
+            "start": "2015-12-02 09:00:00",
+            "end": "2015-12-02 09:00:00"
+          },
+          "quality": "attributes retained; no quality masking applied"
+        }
+      ],
+      "integrity_problems": []
+    }
+  },
+  "latest_dataset_runs": {
+    "noaa_roni": {
+      "retrieved_at_utc": "2026-11-14T19:36:18.557549+00:00",
+      "plan": {
+        "dataset": "noaa_roni",
+        "sources": {
+          "series": "https://www.cpc.ncep.noaa.gov/data/indices/RONI.ascii.txt",
+          "classification": "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso/roni/"
+        },
+        "access_method": "HTTPS_original_full_history",
+        "authentication_required": false,
+        "requested_period": {
+          "start": "2015-12-01T00:00:00+00:00",
+          "end": "2015-12-02T23:59:59.999999+00:00"
+        },
+        "note": "Preserva toda a fonte, sem filtrar a série nem inferir fases"
+      },
+      "result": {
+        "status": "complete",
+        "files": 2
+      },
+      "failure": null
+    },
+    "gpm_daily": {
+      "retrieved_at_utc": "2026-11-14T20:00:28.499687+00:00",
+      "plan": {
+        "dataset": "gpm_daily",
+        "product": "GPM_3IMERGDF",
+        "version": "07",
+        "collection_id": "C2723754864-GES_DISC",
+        "doi": "10.5067/GPM/IMERGDF/DAY/07",
+        "variables_requested": [
+          "precipitation"
+        ],
+        "available_period": {
+          "start": "1998-01-01T00:00:00.000Z",
+          "end": "2025-09-30T23:59:59.999Z"
+        },
+        "requested_period": {
+          "start": "2015-12-01T00:00:00+00:00",
+          "end": "2015-12-02T23:59:59.999999+00:00"
+        },
+        "effective_query_period": {
+          "start": "2015-12-01T00:00:00+00:00",
+          "end": "2015-12-02T23:59:59.999999+00:00"
+        },
+        "region": {
+          "description": "Caixa provisória de 1 grau próxima de Brasília, somente para verificar transferência de grades terrestres com baixo volume; não é área de estudo aprovada, polígono de bacia nem evidência de cobertura de estações ANA.",
+          "crs": "EPSG:4326",
+          "domain": "land",
+          "provisional": true,
+          "bbox": [
+            -48.25,
+            -16.25,
+            -47.25,
+            -15.25
+          ],
+          "id": "brasilia_smoke",
+          "extraction": "bounding_box",
+          "geometry_id": "e2ae1810deb9b58ce574a78359b0c6aeca602b2638695ca5b3aaaea044727cab"
+        },
+        "matching_granules": 2,
+        "cmr_parameters": {
+          "collection_concept_id": "C2723754864-GES_DISC",
+          "temporal": "2015-12-01T00:00:00+00:00,2015-12-02T23:59:59.999999+00:00",
+          "bounding_box": "-48.25,-16.25,-47.25,-15.25",
+          "page_size": 1,
+          "sort_key": "start_date"
+        },
+        "access_method": "Harmony_provider_bbox_subset_without_aggregation",
+        "temporal_selection": "CMR granule overlap; preserves full native time records",
+        "authentication_required": true
+      },
+      "result": {
+        "status": "complete",
+        "files": 2
+      },
+      "failure": null
+    },
+    "gpm_monthly": {
+      "retrieved_at_utc": "2026-11-14T20:00:24.091067+00:00",
+      "plan": {
+        "dataset": "gpm_monthly",
+        "product": "GPM_3IMERGM",
+        "version": "07",
+        "collection_id": "C2723754851-GES_DISC",
+        "doi": "10.5067/GPM/IMERG/3B-MONTH/07",
+        "variables_requested": [
+          "Grid/precipitation"
+        ],
+        "available_period": {
+          "start": "1998-01-01T00:00:00.000Z",
+          "end": "2025-09-30T23:59:59.999Z"
+        },
+        "requested_period": {
+          "start": "2015-12-01T00:00:00+00:00",
+          "end": "2015-12-31T23:59:59.999999+00:00"
+        },
+        "effective_query_period": {
+          "start": "2015-12-01T00:00:00+00:00",
+          "end": "2015-12-31T23:59:59.999999+00:00"
+        },
+        "region": {
+          "description": "Caixa provisória de 1 grau próxima de Brasília, somente para verificar transferência de grades terrestres com baixo volume; não é área de estudo aprovada, polígono de bacia nem evidência de cobertura de estações ANA.",
+          "crs": "EPSG:4326",
+          "domain": "land",
+          "provisional": true,
+          "bbox": [
+            -48.25,
+            -16.25,
+            -47.25,
+            -15.25
+          ],
+          "id": "brasilia_smoke",
+          "extraction": "bounding_box",
+          "geometry_id": "e2ae1810deb9b58ce574a78359b0c6aeca602b2638695ca5b3aaaea044727cab"
+        },
+        "matching_granules": 1,
+        "cmr_parameters": {
+          "collection_concept_id": "C2723754851-GES_DISC",
+          "temporal": "2015-12-01T00:00:00+00:00,2015-12-31T23:59:59.999999+00:00",
+          "bounding_box": "-48.25,-16.25,-47.25,-15.25",
+          "page_size": 1,
+          "sort_key": "start_date"
+        },
+        "access_method": "Harmony_provider_bbox_subset_without_aggregation",
+        "temporal_selection": "CMR granule overlap; preserves full native time records",
+        "authentication_required": true
+      },
+      "result": {
+        "status": "complete",
+        "files": 1
+      },
+      "failure": null
+    },
+    "gldas": {
+      "retrieved_at_utc": "2026-11-14T20:00:24.091067+00:00",
+      "plan": {
+        "dataset": "gldas",
+        "product": "GLDAS_NOAH025_M",
+        "version": "2.1",
+        "collection_id": "C1342986036-GES_DISC",
+        "doi": "10.5067/SXAVCZFAQLNO",
+        "variables_requested": [
+          "SoilMoi0_10cm_inst",
+          "SoilMoi10_40cm_inst",
+          "SoilMoi40_100cm_inst",
+          "SoilMoi100_200cm_inst",
+          "RootMoist_inst",
+          "Evap_tavg",
+          "Qs_acc",
+          "Qsb_acc"
+        ],
+        "available_period": {
+          "start": "2000-01-01T00:00:00.000Z",
+          "end": "2026-07-31T23:59:59.000Z"
+        },
+        "requested_period": {
+          "start": "2015-12-01T00:00:00+00:00",
+          "end": "2015-12-31T23:59:59.999999+00:00"
+        },
+        "effective_query_period": {
+          "start": "2015-12-01T00:00:00+00:00",
+          "end": "2015-12-31T23:59:59.999999+00:00"
+        },
+        "region": {
+          "description": "Caixa provisória de 1 grau próxima de Brasília, somente para verificar transferência de grades terrestres com baixo volume; não é área de estudo aprovada, polígono de bacia nem evidência de cobertura de estações ANA.",
+          "crs": "EPSG:4326",
+          "domain": "land",
+          "provisional": true,
+          "bbox": [
+            -48.25,
+            -16.25,
+            -47.25,
+            -15.25
+          ],
+          "id": "brasilia_smoke",
+          "extraction": "bounding_box",
+          "geometry_id": "e2ae1810deb9b58ce574a78359b0c6aeca602b2638695ca5b3aaaea044727cab"
+        },
+        "matching_granules": 1,
+        "cmr_parameters": {
+          "collection_concept_id": "C1342986036-GES_DISC",
+          "temporal": "2015-12-01T00:00:00+00:00,2015-12-31T23:59:59.999999+00:00",
+          "bounding_box": "-48.25,-16.25,-47.25,-15.25",
+          "page_size": 1,
+          "sort_key": "start_date"
+        },
+        "access_method": "Harmony_provider_bbox_subset_without_aggregation",
+        "temporal_selection": "CMR granule overlap; preserves full native time records",
+        "authentication_required": true
+      },
+      "result": {
+        "status": "complete",
+        "files": 1
+      },
+      "failure": null
+    },
+    "merra2": {
+      "retrieved_at_utc": "2026-11-14T20:00:24.091067+00:00",
+      "plan": {
+        "dataset": "merra2",
+        "product": "M2TMNXSLV",
+        "version": "5.12.4",
+        "collection_id": "C1276812859-GES_DISC",
+        "doi": "10.5067/AP1B0BA5PD2K",
+        "variables_requested": [
+          "U10M",
+          "V10M",
+          "SLP",
+          "T2M",
+          "TQV"
+        ],
+        "available_period": {
+          "start": "1980-01-01T00:00:00.000Z",
+          "end": "2026-09-30T23:59:59.000Z"
+        },
+        "requested_period": {
+          "start": "2015-12-01T00:00:00+00:00",
+          "end": "2015-12-31T23:59:59.999999+00:00"
+        },
+        "effective_query_period": {
+          "start": "2015-12-01T00:00:00+00:00",
+          "end": "2015-12-31T23:59:59.999999+00:00"
+        },
+        "region": {
+          "description": "Região Niño 3.4 definida na especificação",
+          "crs": "EPSG:4326",
+          "domain": "ocean",
+          "bbox": [
+            -170,
+            -5,
+            -120,
+            5
+          ],
+          "id": "nino34",
+          "extraction": "bounding_box",
+          "geometry_id": "0f29a8f695bd2547ccc3ec7b6764cb6bd83d58da16cf7db944d99605d2d15254"
+        },
+        "matching_granules": 1,
+        "cmr_parameters": {
+          "collection_concept_id": "C1276812859-GES_DISC",
+          "temporal": "2015-12-01T00:00:00+00:00,2015-12-31T23:59:59.999999+00:00",
+          "bounding_box": "-170,-5,-120,5",
+          "page_size": 1,
+          "sort_key": "start_date"
+        },
+        "access_method": "Harmony_provider_bbox_subset_without_aggregation",
+        "temporal_selection": "CMR granule overlap; preserves full native time records",
+        "authentication_required": true
+      },
+      "result": {
+        "status": "complete",
+        "files": 1
+      },
+      "failure": null
+    },
+    "mur_sst": {
+      "retrieved_at_utc": "2026-11-14T20:00:32.712711+00:00",
+      "plan": {
+        "dataset": "mur_sst",
+        "product": "MUR-JPL-L4-GLOB-v4.1",
+        "version": "4.1",
+        "collection_id": "C1996881146-POCLOUD",
+        "doi": "10.5067/GHGMR-4FJ04",
+        "variables_requested": [
+          "analysed_sst",
+          "analysis_error"
+        ],
+        "available_period": {
+          "start": "2002-05-31T21:00:00.000Z",
+          "end": "2026-11-13T21:00:00.000Z"
+        },
+        "requested_period": {
+          "start": "2015-12-01T00:00:00+00:00",
+          "end": "2015-12-01T23:59:59.999999+00:00"
+        },
+        "effective_query_period": {
+          "start": "2015-12-01T00:00:00+00:00",
+          "end": "2015-12-01T23:59:59.999999+00:00"
+        },
+        "region": {
+          "description": "Região Niño 3.4 definida na especificação",
+          "crs": "EPSG:4326",
+          "domain": "ocean",
+          "bbox": [
+            -170,
+            -5,
+            -120,
+            5
+          ],
+          "id": "nino34",
+          "extraction": "bounding_box",
+          "geometry_id": "0f29a8f695bd2547ccc3ec7b6764cb6bd83d58da16cf7db944d99605d2d15254"
+        },
+        "matching_granules": 2,
+        "cmr_parameters": {
+          "collection_concept_id": "C1996881146-POCLOUD",
+          "temporal": "2015-12-01T00:00:00+00:00,2015-12-01T23:59:59.999999+00:00",
+          "bounding_box": "-170,-5,-120,5",
+          "page_size": 1,
+          "sort_key": "start_date"
+        },
+        "access_method": "Harmony_provider_bbox_subset_without_aggregation",
+        "temporal_selection": "CMR granule overlap; preserves full native time records",
+        "authentication_required": true
+      },
+      "result": {
+        "status": "complete",
+        "files": 2
+      },
+      "failure": null
+    }
+  },
+  "NASA_authenticated_downloads_completed": 7,
+  "NASA_jobs_known": 7,
+  "verification": {
+    "file_count": 9,
+    "total_bytes": 10846669,
+    "sha256_all_verified": true,
+    "incomplete_files": 0,
+    "NASA_files_reused_without_transfer": 7,
+    "new_jobs_on_repeat": 0,
+    "new_scientific_downloads_on_repeat": 0
+  },
+  "limitations": [
+    "Brazil region is a provisional technical bounding box, not an approved study basin",
+    "NASA samples cover December 2015; full common historical window not downloaded",
+    "Native temporal granules are preserved; MUR request for December 1 includes a December 2 record by granule overlap",
+    "No polygon mask, unit conversion, cleaning, EDA or climate inference applied",
+    "Zero missing sentinels in these selected samples does not establish historical or regional quality"
+  ]
+}

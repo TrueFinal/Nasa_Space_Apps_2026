@@ -1,0 +1,18 @@
+regions:
+  nino34:
+    description: Região Niño 3.4 definida na especificação
+    crs: EPSG:4326
+    domain: ocean
+    bbox: [-170, -5, -120, 5]
+  brasilia_smoke:
+    description: >-
+      Caixa provisória de 1 grau próxima de Brasília, somente para verificar
+      transferência de grades terrestres com baixo volume; não é área de estudo
+      aprovada, polígono de bacia nem evidência de cobertura de estações ANA.
+    crs: EPSG:4326
+    domain: land
+    provisional: true
+    bbox: [-48.25, -16.25, -47.25, -15.25]
+# Para região própria, use bbox OU geometry_file (GeoJSON Polygon/MultiPolygon).
+# geometry_file é relativo a este YAML. Será extraída a bounding box do polígono,
+# sem máscara; a geometria completa e seu hash serão preservados no manifesto.

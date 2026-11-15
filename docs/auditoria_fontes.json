@@ -1,0 +1,3012 @@
+{
+  "scope": "public_metadata_preflight_only",
+  "scientific_files_downloaded": 0,
+  "authenticated_subset_jobs_submitted": 0,
+  "series_continuity_checked": false,
+  "products": [
+    {
+      "short_name": "GPM_3IMERGDF",
+      "version": "07",
+      "collection_id": "C2723754864-GES_DISC",
+      "doi": {
+        "DOI": "10.5067/GPM/IMERGDF/DAY/07"
+      },
+      "collection_temporal_extents": [
+        {
+          "RangeDateTimes": [
+            {
+              "BeginningDateTime": "1998-01-01T00:00:00.000Z",
+              "EndingDateTime": "2025-09-30T23:59:59.999Z"
+            }
+          ],
+          "EndsAtPresentFlag": false
+        }
+      ],
+      "queries": [
+        {
+          "endpoint": "https://cmr.earthdata.nasa.gov/search/collections.umm_json",
+          "params": {
+            "short_name": "GPM_3IMERGDF",
+            "page_size": 20
+          },
+          "retrieved_at_utc": "2026-11-14T18:10:17.920623+00:00",
+          "retrieved_at_local": "2026-11-14T15:10:17-03:00",
+          "local_timezone": "America/Sao_Paulo",
+          "stored_snapshot_sha256": "7c980f3c401fdf7a67e6dc9e8b8dd4db3df333b55db05a4301784df795667619"
+        },
+        {
+          "endpoint": "https://harmony.earthdata.nasa.gov/capabilities",
+          "params": {
+            "collectionId": "C2723754864-GES_DISC"
+          },
+          "retrieved_at_utc": "2026-11-14T18:10:52.406423+00:00",
+          "retrieved_at_local": "2026-11-14T15:10:52-03:00",
+          "local_timezone": "America/Sao_Paulo",
+          "stored_snapshot_sha256": "ada158fe7f53c19c9c7ed973aa67c2f439c3254516d6d288a6696cc96f509e84"
+        },
+        {
+          "endpoint": "https://cmr.earthdata.nasa.gov/search/granules.json",
+          "params": {
+            "collection_concept_id": "C2723754864-GES_DISC",
+            "sort_key": "-end_date",
+            "page_size": 1
+          },
+          "retrieved_at_utc": "2026-11-14T18:10:53.062458+00:00",
+          "retrieved_at_local": "2026-11-14T15:10:53-03:00",
+          "local_timezone": "America/Sao_Paulo",
+          "stored_snapshot_sha256": "bbe096e9c381752b84bf9839eb428f9a559b94a1cfe34a30dd7485f8368a8559"
+        }
+      ],
+      "harmony_capabilities": {
+        "conceptId": "C2723754864-GES_DISC",
+        "shortName": "GPM_3IMERGDF",
+        "summary": {
+          "subsetting": {
+            "bbox": true,
+            "dimension": true,
+            "shape": true,
+            "temporal": true,
+            "variable": true
+          },
+          "reprojection": {
+            "supported": true,
+            "supportedProjections": [
+              {
+                "name": "Geographic",
+                "crs": "EPSG:4326"
+              }
+            ],
+            "interpolationMethods": []
+          },
+          "averaging": {
+            "time": true,
+            "area": true
+          },
+          "concatenation": false,
+          "outputFormats": [
+            {
+              "name": "CSV",
+              "mimeType": "text/csv"
+            },
+            {
+              "name": "GEOTIFF",
+              "mimeType": "image/tiff"
+            },
+            {
+              "name": "NETCDF-4",
+              "mimeType": "application/netcdf"
+            },
+            {
+              "name": "NETCDF-4 (OPeNDAP URL)",
+              "mimeType": "application/x-netcdf4;profile=opendap_url"
+            }
+          ]
+        },
+        "services": [
+          {
+            "name": "giovanni-time-series-adapter",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/S2739607260-GES_DISC",
+            "capabilities": {
+              "subsetting": {
+                "bbox": false,
+                "dimension": false,
+                "shape": false,
+                "temporal": true,
+                "variable": true
+              },
+              "reprojection": {
+                "supported": false,
+                "supportedProjections": [],
+                "interpolationMethods": []
+              },
+              "averaging": {
+                "time": false,
+                "area": false
+              },
+              "concatenation": false,
+              "outputFormats": [
+                {
+                  "name": "CSV",
+                  "mimeType": "text/csv"
+                }
+              ]
+            }
+          },
+          {
+            "name": "sds/HOSS-geographic",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/S2164732315-XYZ_PROV",
+            "capabilities": {
+              "subsetting": {
+                "bbox": true,
+                "dimension": true,
+                "shape": true,
+                "temporal": true,
+                "variable": true
+              },
+              "reprojection": {
+                "supported": false,
+                "supportedProjections": [],
+                "interpolationMethods": []
+              },
+              "averaging": {
+                "time": false,
+                "area": false
+              },
+              "concatenation": false,
+              "outputFormats": [
+                {
+                  "name": "NETCDF-4",
+                  "mimeType": "application/netcdf"
+                }
+              ]
+            }
+          },
+          {
+            "name": "sds/HOSS-regridder-reformatter",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/S3671941188-XYZ_PROV",
+            "capabilities": {
+              "subsetting": {
+                "bbox": true,
+                "dimension": true,
+                "shape": true,
+                "temporal": true,
+                "variable": true
+              },
+              "reprojection": {
+                "supported": true,
+                "supportedProjections": [
+                  {
+                    "name": "Geographic",
+                    "crs": "EPSG:4326"
+                  }
+                ],
+                "interpolationMethods": []
+              },
+              "averaging": {
+                "time": false,
+                "area": false
+              },
+              "concatenation": false,
+              "outputFormats": [
+                {
+                  "name": "NETCDF-4",
+                  "mimeType": "application/netcdf"
+                },
+                {
+                  "name": "GEOTIFF",
+                  "mimeType": "image/tiff"
+                }
+              ]
+            }
+          },
+          {
+            "name": "sds/hoss-opendap-url",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/S4057306097-XYZ_PROV",
+            "capabilities": {
+              "subsetting": {
+                "bbox": true,
+                "dimension": false,
+                "shape": false,
+                "temporal": false,
+                "variable": true
+              },
+              "reprojection": {
+                "supported": false,
+                "supportedProjections": [],
+                "interpolationMethods": []
+              },
+              "averaging": {
+                "time": false,
+                "area": false
+              },
+              "concatenation": false,
+              "outputFormats": [
+                {
+                  "name": "NETCDF-4 (OPeNDAP URL)",
+                  "mimeType": "application/x-netcdf4;profile=opendap_url"
+                }
+              ]
+            }
+          },
+          {
+            "name": "giovanni-averaging-service",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/S3385907677-GES_DISC",
+            "capabilities": {
+              "subsetting": {
+                "bbox": true,
+                "dimension": false,
+                "shape": false,
+                "temporal": true,
+                "variable": true
+              },
+              "reprojection": {
+                "supported": false,
+                "supportedProjections": [],
+                "interpolationMethods": []
+              },
+              "averaging": {
+                "time": true,
+                "area": true
+              },
+              "concatenation": false,
+              "outputFormats": [
+                {
+                  "name": "CSV",
+                  "mimeType": "text/csv"
+                },
+                {
+                  "name": "GEOTIFF",
+                  "mimeType": "image/tiff"
+                }
+              ]
+            }
+          }
+        ],
+        "variables": [
+          {
+            "name": "lat",
+            "longName": "Latitude",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3156651249-GES_DISC",
+            "units": "degrees_north",
+            "scienceKeywords": []
+          },
+          {
+            "name": "lon",
+            "longName": "Longitude",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3156651243-GES_DISC",
+            "units": "degrees_east",
+            "scienceKeywords": []
+          },
+          {
+            "name": "MWprecipitation",
+            "longName": "Daily mean High Quality precipitation rate from all available microwave sources. Formerly HQprecipitation.",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3156651223-GES_DISC",
+            "units": "mm/day",
+            "scienceKeywords": []
+          },
+          {
+            "name": "MWprecipitation_cnt",
+            "longName": "Count of all valid half-hourly MWprecipitation retrievals for the day",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3156651230-GES_DISC",
+            "units": "count",
+            "scienceKeywords": []
+          },
+          {
+            "name": "MWprecipitation_cnt_cond",
+            "longName": "Count of half-hourly MWprecipitation retrievals for the day where precipitation is at least 0.01 mm/hr",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3156651232-GES_DISC",
+            "units": "count",
+            "scienceKeywords": []
+          },
+          {
+            "name": "precipitation",
+            "longName": "Daily mean precipitation rate (combined microwave-IR) estimate. Formerly precipitationCal.",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3156651215-GES_DISC",
+            "units": "mm/day",
+            "scienceKeywords": []
+          },
+          {
+            "name": "precipitation_cnt",
+            "longName": "Count of all valid half-hourly precipitation retrievals for the day",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3156651217-GES_DISC",
+            "units": "count",
+            "scienceKeywords": []
+          },
+          {
+            "name": "precipitation_cnt_cond",
+            "longName": "Count of half-hourly precipitation retrievals for the day where precipitation is at least 0.01 mm/hr",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3156651219-GES_DISC",
+            "units": "count",
+            "scienceKeywords": []
+          },
+          {
+            "name": "probabilityLiquidPrecipitation",
+            "longName": "Probability of liquid precipitation",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3914194828-GES_DISC",
+            "units": "percent",
+            "scienceKeywords": []
+          },
+          {
+            "name": "randomError",
+            "longName": "Root-mean-square error estimate for combined microwave-IR daily precipitation rate",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3156651235-GES_DISC",
+            "units": "mm/day",
+            "scienceKeywords": []
+          },
+          {
+            "name": "randomError_cnt",
+            "longName": "Count of valid half-hourly randomError retrievals for the day",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3156651241-GES_DISC",
+            "units": "count",
+            "scienceKeywords": []
+          },
+          {
+            "name": "time",
+            "longName": "time",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3156651253-GES_DISC",
+            "units": "days since 1980-01-06 00:00:00Z",
+            "scienceKeywords": []
+          },
+          {
+            "name": "time_bnds",
+            "longName": "time_bnds",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3156651258-GES_DISC",
+            "units": "days since 1980-01-06 00:00:00Z",
+            "scienceKeywords": []
+          }
+        ],
+        "capabilitiesVersion": "3"
+      },
+      "latest_granules": [
+        {
+          "producer_granule_id": "3B-DAY.MS.MRG.3IMERG.20250930-S000000-E235959.V07B.nc4",
+          "boxes": [
+            "-90 -180 90 180"
+          ],
+          "time_start": "2025-09-30T00:00:00.000Z",
+          "updated": "2026-02-02T22:12:57.000Z",
+          "dataset_id": "GPM IMERG Final Precipitation L3 1 day 0.1 degree x 0.1 degree V07 (GPM_3IMERGDF) at GES DISC",
+          "data_center": "GES_DISC",
+          "title": "GPM_3IMERGDF.07:3B-DAY.MS.MRG.3IMERG.20250930-S000000-E235959.V07B.nc4",
+          "coordinate_system": "CARTESIAN",
+          "day_night_flag": "UNSPECIFIED",
+          "time_end": "2025-09-30T23:59:59.999Z",
+          "id": "G3993405945-GES_DISC",
+          "original_format": "ECHO10",
+          "granule_size": "30.9714450836182",
+          "browse_flag": false,
+          "collection_concept_id": "C2723754864-GES_DISC",
+          "online_access_flag": true,
+          "links": [
+            {
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+              "title": "Download 3B-DAY.MS.MRG.3IMERG.20250930-S000000-E235959.V07B.nc4",
+              "hreflang": "en-US",
+              "href": "https://data.gesdisc.earthdata.nasa.gov/data/GPM_L3/GPM_3IMERGDF.07/2025/09/3B-DAY.MS.MRG.3IMERG.20250930-S000000-E235959.V07B.nc4"
+            },
+            {
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/s3#",
+              "title": "This link provides direct download access via S3 to the granule",
+              "hreflang": "en-US",
+              "href": "s3://gesdisc-cumulus-prod-protected/GPM_L3/GPM_3IMERGDF.07/2025/09/3B-DAY.MS.MRG.3IMERG.20250930-S000000-E235959.V07B.nc4"
+            },
+            {
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+              "title": "api endpoint to retrieve temporary credentials valid for same-region direct s3 access (VIEW RELATED INFORMATION)",
+              "hreflang": "en-US",
+              "href": "https://data.gesdisc.earthdata.nasa.gov/s3credentials"
+            },
+            {
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/service#",
+              "title": "OPeNDAP request URL (GET DATA : OPENDAP DATA)",
+              "hreflang": "en-US",
+              "href": "https://opendap.earthdata.nasa.gov/collections/C2723754864-GES_DISC/granules/GPM_3IMERGDF.07%3A3B-DAY.MS.MRG.3IMERG.20250930-S000000-E235959.V07B.nc4"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+              "hreflang": "en-US",
+              "href": "https://www.earthdata.nasa.gov/data/catalog/ges-disc-m2iunpana-5.12.4"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+              "hreflang": "en-US",
+              "href": "https://cmr.earthdata.nasa.gov/virtual-directory/collections/C2723754864-GES_DISC/temporal"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/service#",
+              "hreflang": "en-US",
+              "href": "https://cmr.earthdata.nasa.gov/virtual-directory/collections/C2723754864-GES_DISC/temporal"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+              "hreflang": "en-US",
+              "href": "https://search.earthdata.nasa.gov/search/granules?p=C2723754864-GES_DISC"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://arthurhou.pps.eosdis.nasa.gov/Documents/IMERG_V07_ATBD_final.pdf"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://arthurhou.pps.eosdis.nasa.gov/Documents/IMERG_TechnicalDocumentation_final.pdf"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://docserver.gesdisc.eosdis.nasa.gov/public/project/GPM/IMERGV06_QI.pdf"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://docserver.gesdisc.eosdis.nasa.gov/public/project/GPM/IMERGV06_TRMMera-caveats.pdf"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://gpm1.gesdisc.eosdis.nasa.gov/data/GPM_L3/doc/README.GPM.pdf"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://gpm.nasa.gov/resources/documents/imerg-v07-release-notes"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://gpmweb2https.pps.eosdis.nasa.gov/tsdis/AB/docs/gpm_anomalous.html"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+              "hreflang": "en-US",
+              "href": "https://gpm.nasa.gov"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://journals.ametsoc.org/doi/full/10.1175/JAM2173.1"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "http://journals.ametsoc.org/doi/10.1175/JHM-D-11-022.1"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "ftp://gpmweb2.pps.eosdis.nasa.gov/pub/GPMfilespec/filespec.GPM.pdf"
+            }
+          ]
+        }
+      ],
+      "file_units": null,
+      "file_dimensions": null,
+      "file_missing_values": null,
+      "file_integrity": "not_checked_no_scientific_file_downloaded"
+    },
+    {
+      "short_name": "GPM_3IMERGM",
+      "version": "07",
+      "collection_id": "C2723754851-GES_DISC",
+      "doi": {
+        "DOI": "10.5067/GPM/IMERG/3B-MONTH/07"
+      },
+      "collection_temporal_extents": [
+        {
+          "RangeDateTimes": [
+            {
+              "BeginningDateTime": "1998-01-01T00:00:00.000Z",
+              "EndingDateTime": "2025-09-30T23:59:59.999Z"
+            }
+          ],
+          "EndsAtPresentFlag": false
+        }
+      ],
+      "queries": [
+        {
+          "endpoint": "https://cmr.earthdata.nasa.gov/search/collections.umm_json",
+          "params": {
+            "short_name": "GPM_3IMERGM",
+            "page_size": 20
+          },
+          "retrieved_at_utc": "2026-11-14T18:10:17.928624+00:00",
+          "retrieved_at_local": "2026-11-14T15:10:17-03:00",
+          "local_timezone": "America/Sao_Paulo",
+          "stored_snapshot_sha256": "a39b337ceb701b59e05b6dc964ba26c494ef857a13f90b5c63e55fbde93b9d6f"
+        },
+        {
+          "endpoint": "https://harmony.earthdata.nasa.gov/capabilities",
+          "params": {
+            "collectionId": "C2723754851-GES_DISC"
+          },
+          "retrieved_at_utc": "2026-11-14T18:10:52.178411+00:00",
+          "retrieved_at_local": "2026-11-14T15:10:52-03:00",
+          "local_timezone": "America/Sao_Paulo",
+          "stored_snapshot_sha256": "b2254703c6a706a12f60e60a391f9994a0f9c9702c8de7cfb6edd0e99cd6f8b7"
+        },
+        {
+          "endpoint": "https://cmr.earthdata.nasa.gov/search/granules.json",
+          "params": {
+            "collection_concept_id": "C2723754851-GES_DISC",
+            "sort_key": "-end_date",
+            "page_size": 1
+          },
+          "retrieved_at_utc": "2026-11-14T18:10:52.958452+00:00",
+          "retrieved_at_local": "2026-11-14T15:10:52-03:00",
+          "local_timezone": "America/Sao_Paulo",
+          "stored_snapshot_sha256": "889a558e28fefc37fd2ed967e6a9b7f817538f46228da40112d900182a7af453"
+        }
+      ],
+      "harmony_capabilities": {
+        "conceptId": "C2723754851-GES_DISC",
+        "shortName": "GPM_3IMERGM",
+        "summary": {
+          "subsetting": {
+            "bbox": true,
+            "dimension": true,
+            "shape": true,
+            "temporal": true,
+            "variable": true
+          },
+          "reprojection": {
+            "supported": true,
+            "supportedProjections": [
+              {
+                "name": "Geographic",
+                "crs": "EPSG:4326"
+              }
+            ],
+            "interpolationMethods": []
+          },
+          "averaging": {
+            "time": true,
+            "area": true
+          },
+          "concatenation": false,
+          "outputFormats": [
+            {
+              "name": "CSV",
+              "mimeType": "text/csv"
+            },
+            {
+              "name": "GEOTIFF",
+              "mimeType": "image/tiff"
+            },
+            {
+              "name": "NETCDF-4",
+              "mimeType": "application/netcdf"
+            },
+            {
+              "name": "NETCDF-4 (OPeNDAP URL)",
+              "mimeType": "application/x-netcdf4;profile=opendap_url"
+            }
+          ]
+        },
+        "services": [
+          {
+            "name": "giovanni-time-series-adapter",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/S2739607260-GES_DISC",
+            "capabilities": {
+              "subsetting": {
+                "bbox": false,
+                "dimension": false,
+                "shape": false,
+                "temporal": true,
+                "variable": true
+              },
+              "reprojection": {
+                "supported": false,
+                "supportedProjections": [],
+                "interpolationMethods": []
+              },
+              "averaging": {
+                "time": false,
+                "area": false
+              },
+              "concatenation": false,
+              "outputFormats": [
+                {
+                  "name": "CSV",
+                  "mimeType": "text/csv"
+                }
+              ]
+            }
+          },
+          {
+            "name": "sds/HOSS-geographic",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/S2164732315-XYZ_PROV",
+            "capabilities": {
+              "subsetting": {
+                "bbox": true,
+                "dimension": true,
+                "shape": true,
+                "temporal": true,
+                "variable": true
+              },
+              "reprojection": {
+                "supported": false,
+                "supportedProjections": [],
+                "interpolationMethods": []
+              },
+              "averaging": {
+                "time": false,
+                "area": false
+              },
+              "concatenation": false,
+              "outputFormats": [
+                {
+                  "name": "NETCDF-4",
+                  "mimeType": "application/netcdf"
+                }
+              ]
+            }
+          },
+          {
+            "name": "sds/HOSS-regridder-reformatter",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/S3671941188-XYZ_PROV",
+            "capabilities": {
+              "subsetting": {
+                "bbox": true,
+                "dimension": true,
+                "shape": true,
+                "temporal": true,
+                "variable": true
+              },
+              "reprojection": {
+                "supported": true,
+                "supportedProjections": [
+                  {
+                    "name": "Geographic",
+                    "crs": "EPSG:4326"
+                  }
+                ],
+                "interpolationMethods": []
+              },
+              "averaging": {
+                "time": false,
+                "area": false
+              },
+              "concatenation": false,
+              "outputFormats": [
+                {
+                  "name": "NETCDF-4",
+                  "mimeType": "application/netcdf"
+                },
+                {
+                  "name": "GEOTIFF",
+                  "mimeType": "image/tiff"
+                }
+              ]
+            }
+          },
+          {
+            "name": "sds/hoss-opendap-url",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/S4057306097-XYZ_PROV",
+            "capabilities": {
+              "subsetting": {
+                "bbox": true,
+                "dimension": false,
+                "shape": false,
+                "temporal": false,
+                "variable": true
+              },
+              "reprojection": {
+                "supported": false,
+                "supportedProjections": [],
+                "interpolationMethods": []
+              },
+              "averaging": {
+                "time": false,
+                "area": false
+              },
+              "concatenation": false,
+              "outputFormats": [
+                {
+                  "name": "NETCDF-4 (OPeNDAP URL)",
+                  "mimeType": "application/x-netcdf4;profile=opendap_url"
+                }
+              ]
+            }
+          },
+          {
+            "name": "giovanni-averaging-service",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/S3385907677-GES_DISC",
+            "capabilities": {
+              "subsetting": {
+                "bbox": true,
+                "dimension": false,
+                "shape": false,
+                "temporal": true,
+                "variable": true
+              },
+              "reprojection": {
+                "supported": false,
+                "supportedProjections": [],
+                "interpolationMethods": []
+              },
+              "averaging": {
+                "time": true,
+                "area": true
+              },
+              "concatenation": false,
+              "outputFormats": [
+                {
+                  "name": "CSV",
+                  "mimeType": "text/csv"
+                },
+                {
+                  "name": "GEOTIFF",
+                  "mimeType": "image/tiff"
+                }
+              ]
+            }
+          }
+        ],
+        "variables": [
+          {
+            "name": "Grid/gaugeRelativeWeighting",
+            "longName": "Grid/gaugeRelativeWeighting",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3171500734-GES_DISC",
+            "units": "percent",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Grid/lat",
+            "longName": "Grid/lat",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3171500613-GES_DISC",
+            "units": "degrees_north",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Grid/lat_bnds",
+            "longName": "Grid/lat_bnds",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3171500681-GES_DISC",
+            "units": "degrees_north",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Grid/lon",
+            "longName": "Grid/lon",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3171500573-GES_DISC",
+            "units": "degrees_east",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Grid/lon_bnds",
+            "longName": "Grid/lon_bnds",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3171500677-GES_DISC",
+            "units": "degrees_east",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Grid/precipitation",
+            "longName": "Merged satellite-gauge precipitation estimate - Final Run (recommended for general use)",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3171500685-GES_DISC",
+            "units": "mm/hr",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Grid/precipitationQualityIndex",
+            "longName": "Quality Index for precipitation field - Final Run",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3171500816-GES_DISC",
+            "units": "Equivalent gauges per 2.5 deg box",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Grid/probabilityLiquidPrecipitation",
+            "longName": "Accumulation-weighted probability of liquid phase - Final Run",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3171500775-GES_DISC",
+            "units": "percent",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Grid/randomError",
+            "longName": "Random error for merged satellite-gauge precipitation - Final Run",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3171500691-GES_DISC",
+            "units": "mm/hr",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Grid/time",
+            "longName": "Grid/time",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3171500555-GES_DISC",
+            "units": "seconds since 1980-01-06 00:00:00 UTC",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Grid/time_bnds",
+            "longName": "Grid/time_bnds",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3171500647-GES_DISC",
+            "units": "seconds since 1980-01-06 00:00:00 UTC",
+            "scienceKeywords": []
+          }
+        ],
+        "capabilitiesVersion": "3"
+      },
+      "latest_granules": [
+        {
+          "producer_granule_id": "3B-MO.MS.MRG.3IMERG.20250901-S000000-E235959.09.V07B.HDF5",
+          "boxes": [
+            "-90 -180 90 180"
+          ],
+          "time_start": "2025-09-01T00:00:00.000Z",
+          "updated": "2026-02-02T20:40:23.000Z",
+          "dataset_id": "GPM IMERG Final Precipitation L3 1 month 0.1 degree x 0.1 degree V07 (GPM_3IMERGM) at GES DISC",
+          "data_center": "GES_DISC",
+          "title": "GPM_3IMERGM.07:3B-MO.MS.MRG.3IMERG.20250901-S000000-E235959.09.V07B.HDF5",
+          "coordinate_system": "CARTESIAN",
+          "day_night_flag": "UNSPECIFIED",
+          "time_end": "2025-09-30T23:59:59.999Z",
+          "id": "G3993333697-GES_DISC",
+          "original_format": "ECHO10",
+          "granule_size": "18.2847089767456",
+          "browse_flag": false,
+          "collection_concept_id": "C2723754851-GES_DISC",
+          "online_access_flag": true,
+          "links": [
+            {
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+              "title": "Download 3B-MO.MS.MRG.3IMERG.20250901-S000000-E235959.09.V07B.HDF5",
+              "hreflang": "en-US",
+              "href": "https://data.gesdisc.earthdata.nasa.gov/data/GPM_L3/GPM_3IMERGM.07/2025/3B-MO.MS.MRG.3IMERG.20250901-S000000-E235959.09.V07B.HDF5"
+            },
+            {
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/s3#",
+              "title": "This link provides direct download access via S3 to the granule",
+              "hreflang": "en-US",
+              "href": "s3://gesdisc-cumulus-prod-protected/GPM_L3/GPM_3IMERGM.07/2025/3B-MO.MS.MRG.3IMERG.20250901-S000000-E235959.09.V07B.HDF5"
+            },
+            {
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+              "title": "api endpoint to retrieve temporary credentials valid for same-region direct s3 access (VIEW RELATED INFORMATION)",
+              "hreflang": "en-US",
+              "href": "https://data.gesdisc.earthdata.nasa.gov/s3credentials"
+            },
+            {
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/service#",
+              "title": "OPeNDAP request URL (GET DATA : OPENDAP DATA)",
+              "hreflang": "en-US",
+              "href": "https://opendap.earthdata.nasa.gov/collections/C2723754851-GES_DISC/granules/GPM_3IMERGM.07%3A3B-MO.MS.MRG.3IMERG.20250901-S000000-E235959.09.V07B.HDF5"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+              "hreflang": "en-US",
+              "href": "https://www.earthdata.nasa.gov/data/catalog/ges-disc-m2t3nvcld-5.12.4"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+              "hreflang": "en-US",
+              "href": "https://cmr.earthdata.nasa.gov/virtual-directory/collections/C2723754851-GES_DISC/temporal"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+              "hreflang": "en-US",
+              "href": "https://search.earthdata.nasa.gov/search/granules?p=C2723754851-GES_DISC"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/service#",
+              "hreflang": "en-US",
+              "href": "https://cmr.earthdata.nasa.gov/virtual-directory/collections/C2723754851-GES_DISC/temporal"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://arthurhou.pps.eosdis.nasa.gov/Documents/IMERG_V07_ATBD_final.pdf"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://arthurhou.pps.eosdis.nasa.gov/Documents/IMERG_TechnicalDocumentation_final.pdf"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://docserver.gesdisc.eosdis.nasa.gov/public/project/GPM/IMERGV06_QI.pdf"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://docserver.gesdisc.eosdis.nasa.gov/public/project/GPM/IMERGV06_TRMMera-caveats.pdf"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://gpm1.gesdisc.eosdis.nasa.gov/data/GPM_L3/doc/README.GPM.pdf"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://gpm.nasa.gov/resources/documents/imerg-v07-release-notes"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://gpmweb2https.pps.eosdis.nasa.gov/tsdis/AB/docs/gpm_anomalous.html"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+              "hreflang": "en-US",
+              "href": "https://gpm.nasa.gov"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://journals.ametsoc.org/doi/full/10.1175/JAM2173.1"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "http://journals.ametsoc.org/doi/10.1175/JHM-D-11-022.1"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "ftp://gpmweb2.pps.eosdis.nasa.gov/pub/GPMfilespec/filespec.GPM.pdf"
+            }
+          ]
+        }
+      ],
+      "file_units": null,
+      "file_dimensions": null,
+      "file_missing_values": null,
+      "file_integrity": "not_checked_no_scientific_file_downloaded"
+    },
+    {
+      "short_name": "GLDAS_NOAH025_M",
+      "version": "2.1",
+      "collection_id": "C1342986036-GES_DISC",
+      "doi": {
+        "DOI": "10.5067/SXAVCZFAQLNO"
+      },
+      "collection_temporal_extents": [
+        {
+          "RangeDateTimes": [
+            {
+              "BeginningDateTime": "2000-01-01T00:00:00.000Z"
+            }
+          ],
+          "EndsAtPresentFlag": true
+        }
+      ],
+      "queries": [
+        {
+          "endpoint": "https://cmr.earthdata.nasa.gov/search/collections.umm_json",
+          "params": {
+            "short_name": "GLDAS_NOAH025_M",
+            "page_size": 20
+          },
+          "retrieved_at_utc": "2026-11-14T18:10:17.992627+00:00",
+          "retrieved_at_local": "2026-11-14T15:10:17-03:00",
+          "local_timezone": "America/Sao_Paulo",
+          "stored_snapshot_sha256": "9c290cefeb6eba814ddc7603fe9dbbac72f2a20a0c322e1a4fc77251dcd3ec55"
+        },
+        {
+          "endpoint": "https://harmony.earthdata.nasa.gov/capabilities",
+          "params": {
+            "collectionId": "C1342986036-GES_DISC"
+          },
+          "retrieved_at_utc": "2026-11-14T18:10:52.490427+00:00",
+          "retrieved_at_local": "2026-11-14T15:10:52-03:00",
+          "local_timezone": "America/Sao_Paulo",
+          "stored_snapshot_sha256": "68f582c9dfc46193263d69406fdf56bff82946803b52d2cc7942b1f06c198c98"
+        },
+        {
+          "endpoint": "https://cmr.earthdata.nasa.gov/search/granules.json",
+          "params": {
+            "collection_concept_id": "C1342986036-GES_DISC",
+            "sort_key": "-end_date",
+            "page_size": 1
+          },
+          "retrieved_at_utc": "2026-11-14T18:10:53.174463+00:00",
+          "retrieved_at_local": "2026-11-14T15:10:53-03:00",
+          "local_timezone": "America/Sao_Paulo",
+          "stored_snapshot_sha256": "75a4bdf23493a383138470502a104e88710de4b777e6dbf6fe34903ca263961b"
+        }
+      ],
+      "harmony_capabilities": {
+        "conceptId": "C1342986036-GES_DISC",
+        "shortName": "GLDAS_NOAH025_M",
+        "summary": {
+          "subsetting": {
+            "bbox": true,
+            "dimension": true,
+            "shape": true,
+            "temporal": true,
+            "variable": true
+          },
+          "reprojection": {
+            "supported": true,
+            "supportedProjections": [
+              {
+                "name": "Geographic",
+                "crs": "EPSG:4326"
+              }
+            ],
+            "interpolationMethods": []
+          },
+          "averaging": {
+            "time": true,
+            "area": true
+          },
+          "concatenation": false,
+          "outputFormats": [
+            {
+              "name": "CSV",
+              "mimeType": "text/csv"
+            },
+            {
+              "name": "GEOTIFF",
+              "mimeType": "image/tiff"
+            },
+            {
+              "name": "NETCDF-4",
+              "mimeType": "application/netcdf"
+            },
+            {
+              "name": "NETCDF-4 (OPeNDAP URL)",
+              "mimeType": "application/x-netcdf4;profile=opendap_url"
+            }
+          ]
+        },
+        "services": [
+          {
+            "name": "giovanni-time-series-adapter",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/S2739607260-GES_DISC",
+            "capabilities": {
+              "subsetting": {
+                "bbox": false,
+                "dimension": false,
+                "shape": false,
+                "temporal": true,
+                "variable": true
+              },
+              "reprojection": {
+                "supported": false,
+                "supportedProjections": [],
+                "interpolationMethods": []
+              },
+              "averaging": {
+                "time": false,
+                "area": false
+              },
+              "concatenation": false,
+              "outputFormats": [
+                {
+                  "name": "CSV",
+                  "mimeType": "text/csv"
+                }
+              ]
+            }
+          },
+          {
+            "name": "sds/HOSS-geographic",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/S2164732315-XYZ_PROV",
+            "capabilities": {
+              "subsetting": {
+                "bbox": true,
+                "dimension": true,
+                "shape": true,
+                "temporal": true,
+                "variable": true
+              },
+              "reprojection": {
+                "supported": false,
+                "supportedProjections": [],
+                "interpolationMethods": []
+              },
+              "averaging": {
+                "time": false,
+                "area": false
+              },
+              "concatenation": false,
+              "outputFormats": [
+                {
+                  "name": "NETCDF-4",
+                  "mimeType": "application/netcdf"
+                }
+              ]
+            }
+          },
+          {
+            "name": "sds/HOSS-regridder-reformatter",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/S3671941188-XYZ_PROV",
+            "capabilities": {
+              "subsetting": {
+                "bbox": true,
+                "dimension": true,
+                "shape": true,
+                "temporal": true,
+                "variable": true
+              },
+              "reprojection": {
+                "supported": true,
+                "supportedProjections": [
+                  {
+                    "name": "Geographic",
+                    "crs": "EPSG:4326"
+                  }
+                ],
+                "interpolationMethods": []
+              },
+              "averaging": {
+                "time": false,
+                "area": false
+              },
+              "concatenation": false,
+              "outputFormats": [
+                {
+                  "name": "NETCDF-4",
+                  "mimeType": "application/netcdf"
+                },
+                {
+                  "name": "GEOTIFF",
+                  "mimeType": "image/tiff"
+                }
+              ]
+            }
+          },
+          {
+            "name": "sds/hoss-opendap-url",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/S4057306097-XYZ_PROV",
+            "capabilities": {
+              "subsetting": {
+                "bbox": true,
+                "dimension": false,
+                "shape": false,
+                "temporal": false,
+                "variable": true
+              },
+              "reprojection": {
+                "supported": false,
+                "supportedProjections": [],
+                "interpolationMethods": []
+              },
+              "averaging": {
+                "time": false,
+                "area": false
+              },
+              "concatenation": false,
+              "outputFormats": [
+                {
+                  "name": "NETCDF-4 (OPeNDAP URL)",
+                  "mimeType": "application/x-netcdf4;profile=opendap_url"
+                }
+              ]
+            }
+          },
+          {
+            "name": "giovanni-averaging-service",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/S3385907677-GES_DISC",
+            "capabilities": {
+              "subsetting": {
+                "bbox": true,
+                "dimension": false,
+                "shape": false,
+                "temporal": true,
+                "variable": true
+              },
+              "reprojection": {
+                "supported": false,
+                "supportedProjections": [],
+                "interpolationMethods": []
+              },
+              "averaging": {
+                "time": true,
+                "area": true
+              },
+              "concatenation": false,
+              "outputFormats": [
+                {
+                  "name": "CSV",
+                  "mimeType": "text/csv"
+                },
+                {
+                  "name": "GEOTIFF",
+                  "mimeType": "image/tiff"
+                }
+              ]
+            }
+          }
+        ],
+        "variables": [
+          {
+            "name": "Albedo_inst",
+            "longName": "Albedo",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384930132-GES_DISC",
+            "units": "%",
+            "scienceKeywords": []
+          },
+          {
+            "name": "AvgSurfT_inst",
+            "longName": "Average Surface Skin temperature",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384930086-GES_DISC",
+            "units": "K",
+            "scienceKeywords": []
+          },
+          {
+            "name": "CanopInt_inst",
+            "longName": "Plant canopy surface water",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384930939-GES_DISC",
+            "units": "kg m-2",
+            "scienceKeywords": []
+          },
+          {
+            "name": "ECanop_tavg",
+            "longName": "Canopy water evaporation",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384930633-GES_DISC",
+            "units": "W m-2",
+            "scienceKeywords": []
+          },
+          {
+            "name": "ESoil_tavg",
+            "longName": "Direct Evaporation from Bare Soil",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384930823-GES_DISC",
+            "units": "W m-2",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Evap_tavg",
+            "longName": "Evapotranspiration",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384929979-GES_DISC",
+            "units": "kg m-2 s-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "lat",
+            "longName": "latitude",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384929656-GES_DISC",
+            "units": "degrees_north",
+            "scienceKeywords": []
+          },
+          {
+            "name": "lon",
+            "longName": "longitude",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384929687-GES_DISC",
+            "units": "degrees_east",
+            "scienceKeywords": []
+          },
+          {
+            "name": "LWdown_f_tavg",
+            "longName": "Downward long-wave radiation flux",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384931548-GES_DISC",
+            "units": "W m-2",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Lwnet_tavg",
+            "longName": "Net long-wave radiation flux",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384929765-GES_DISC",
+            "units": "W m-2",
+            "scienceKeywords": []
+          },
+          {
+            "name": "PotEvap_tavg",
+            "longName": "Potential evaporation rate",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384930609-GES_DISC",
+            "units": "W m-2",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Psurf_f_inst",
+            "longName": "Surface air pressure",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384931320-GES_DISC",
+            "units": "Pa",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Qair_f_inst",
+            "longName": "Specific humidity",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384931255-GES_DISC",
+            "units": "kg kg-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Qg_tavg",
+            "longName": "Ground heat flux",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384929885-GES_DISC",
+            "units": "W m-2",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Qh_tavg",
+            "longName": "Sensible heat net flux",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384929871-GES_DISC",
+            "units": "W m-2",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Qle_tavg",
+            "longName": "Latent heat net flux",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384929848-GES_DISC",
+            "units": "W m-2",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Qs_acc",
+            "longName": "Storm surface runoff",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384929986-GES_DISC",
+            "units": "kg m-2",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Qsb_acc",
+            "longName": "Baseflow-groundwater runoff",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384930022-GES_DISC",
+            "units": "kg m-2",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Qsm_acc",
+            "longName": "Snow melt",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384930039-GES_DISC",
+            "units": "kg m-2",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Rainf_f_tavg",
+            "longName": "Total precipitation rate",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384931063-GES_DISC",
+            "units": "kg m-2 s-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Rainf_tavg",
+            "longName": "Rain precipitation rate",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384929959-GES_DISC",
+            "units": "kg m-2 s-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "RootMoist_inst",
+            "longName": "Root zone soil moisture",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384930910-GES_DISC",
+            "units": "kg m-2",
+            "scienceKeywords": []
+          },
+          {
+            "name": "SnowDepth_inst",
+            "longName": "Snow depth",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384930178-GES_DISC",
+            "units": "m",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Snowf_tavg",
+            "longName": "Snow precipitation rate",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384929890-GES_DISC",
+            "units": "kg m-2 s-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "SoilMoi0_10cm_inst",
+            "longName": "Soil moisture content (0 - 10 cm underground)",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384930202-GES_DISC",
+            "units": "kg m-2",
+            "scienceKeywords": []
+          },
+          {
+            "name": "SoilMoi100_200cm_inst",
+            "longName": "Soil moisture content (100 - 200 cm underground)",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384930233-GES_DISC",
+            "units": "kg m-2",
+            "scienceKeywords": []
+          },
+          {
+            "name": "SoilMoi10_40cm_inst",
+            "longName": "Soil moisture content (10 - 40 cm underground)",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384930208-GES_DISC",
+            "units": "kg m-2",
+            "scienceKeywords": []
+          },
+          {
+            "name": "SoilMoi40_100cm_inst",
+            "longName": "Soil moisture content (40 - 100 cm underground)",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384930224-GES_DISC",
+            "units": "kg m-2",
+            "scienceKeywords": []
+          },
+          {
+            "name": "SoilTMP0_10cm_inst",
+            "longName": "Soil temperature (0 - 10 cm underground)",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384930248-GES_DISC",
+            "units": "K",
+            "scienceKeywords": []
+          },
+          {
+            "name": "SoilTMP100_200cm_inst",
+            "longName": "Soil temperature (100 - 200 cm underground)",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384930557-GES_DISC",
+            "units": "K",
+            "scienceKeywords": []
+          },
+          {
+            "name": "SoilTMP10_40cm_inst",
+            "longName": "Soil temperature (10 - 40 cm underground)",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384930397-GES_DISC",
+            "units": "K",
+            "scienceKeywords": []
+          },
+          {
+            "name": "SoilTMP40_100cm_inst",
+            "longName": "Soil temperature (40 - 100 cm underground)",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384930542-GES_DISC",
+            "units": "K",
+            "scienceKeywords": []
+          },
+          {
+            "name": "SWdown_f_tavg",
+            "longName": "Downward short-wave radiation flux",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384931531-GES_DISC",
+            "units": "W m-2",
+            "scienceKeywords": []
+          },
+          {
+            "name": "SWE_inst",
+            "longName": "Snow depth water equivalent",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384930168-GES_DISC",
+            "units": "kg m-2",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Swnet_tavg",
+            "longName": "Net short wave radiation flux",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384929704-GES_DISC",
+            "units": "W m-2",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Tair_f_inst",
+            "longName": "Near surface air temperature",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384931134-GES_DISC",
+            "units": "K",
+            "scienceKeywords": []
+          },
+          {
+            "name": "time",
+            "longName": "time",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384929692-GES_DISC",
+            "units": "days since 2000-01-01 00:00:00",
+            "scienceKeywords": []
+          },
+          {
+            "name": "time_bnds",
+            "longName": "time_bnds",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384929698-GES_DISC",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Tveg_tavg",
+            "longName": "Transpiration",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384930774-GES_DISC",
+            "units": "W m-2",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Wind_f_inst",
+            "longName": "Near surface wind speed",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3384931055-GES_DISC",
+            "units": "m s-1",
+            "scienceKeywords": []
+          }
+        ],
+        "capabilitiesVersion": "3"
+      },
+      "latest_granules": [
+        {
+          "producer_granule_id": "GLDAS_NOAH025_M.A202607.021.nc4",
+          "boxes": [
+            "-60 -180 90 180"
+          ],
+          "time_start": "2026-07-01T00:00:00.000Z",
+          "updated": "2026-10-19T18:30:41.000Z",
+          "dataset_id": "GLDAS Noah Land Surface Model L4 monthly 0.25 x 0.25 degree V2.1 (GLDAS_NOAH025_M)",
+          "data_center": "GES_DISC",
+          "title": "GLDAS_NOAH025_M.2.1:GLDAS_NOAH025_M.A202607.021.nc4",
+          "coordinate_system": "CARTESIAN",
+          "day_night_flag": "UNSPECIFIED",
+          "time_end": "2026-07-31T23:59:59.000Z",
+          "id": "G4378078469-GES_DISC",
+          "original_format": "ECHO10",
+          "granule_size": "23.4171409606934",
+          "browse_flag": false,
+          "collection_concept_id": "C1342986036-GES_DISC",
+          "online_access_flag": true,
+          "links": [
+            {
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+              "title": "Download GLDAS_NOAH025_M.A202607.021.nc4",
+              "hreflang": "en-US",
+              "href": "https://data.gesdisc.earthdata.nasa.gov/data/GLDAS/GLDAS_NOAH025_M.2.1/2026/GLDAS_NOAH025_M.A202607.021.nc4"
+            },
+            {
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/s3#",
+              "title": "This link provides direct download access via S3 to the granule",
+              "hreflang": "en-US",
+              "href": "s3://gesdisc-cumulus-prod-protected/GLDAS/GLDAS_NOAH025_M.2.1/2026/GLDAS_NOAH025_M.A202607.021.nc4"
+            },
+            {
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+              "title": "api endpoint to retrieve temporary credentials valid for same-region direct s3 access (VIEW RELATED INFORMATION)",
+              "hreflang": "en-US",
+              "href": "https://data.gesdisc.earthdata.nasa.gov/s3credentials"
+            },
+            {
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/service#",
+              "title": "OPeNDAP request URL (GET DATA : OPENDAP DATA)",
+              "hreflang": "en-US",
+              "href": "https://opendap.earthdata.nasa.gov/collections/C1342986036-GES_DISC/granules/GLDAS_NOAH025_M.2.1%3AGLDAS_NOAH025_M.A202607.021.nc4"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+              "hreflang": "en-US",
+              "href": "https://www.earthdata.nasa.gov/data/catalog/ges-disc-tovsadng-01"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+              "hreflang": "en-US",
+              "href": "https://cmr.earthdata.nasa.gov/virtual-directory/collections/C1342986036-GES_DISC"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/service#",
+              "hreflang": "en-US",
+              "href": "https://cmr.earthdata.nasa.gov/virtual-directory/collections/C1342986036-GES_DISC"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://docserver.gesdisc.eosdis.nasa.gov/public/project/hydrology/README_GLDAS2.pdf"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+              "hreflang": "en-US",
+              "href": "https://ldas.gsfc.nasa.gov/gldas/"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://disc.gsfc.nasa.gov/information/howto?tags=hydrology"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://disc.gsfc.nasa.gov/information/documents?title=Hydrology%20Documentation"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+              "hreflang": "en-US",
+              "href": "https://search.earthdata.nasa.gov/search/granules?p=C1342986036-GES_DISC"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://docserver.gesdisc.eosdis.nasa.gov/repository/Mission/GLDAS/GLDAS_CLM10SUBP_3H_Status_and_Related_Data_Collections.pdf"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://docserver.gesdisc.eosdis.nasa.gov/repository/Mission/GLDAS/GLDAS_LSM_Description.pdf"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "http://journals.ametsoc.org/doi/10.1175/BAMS-85-3-381"
+            }
+          ]
+        }
+      ],
+      "file_units": null,
+      "file_dimensions": null,
+      "file_missing_values": null,
+      "file_integrity": "not_checked_no_scientific_file_downloaded"
+    },
+    {
+      "short_name": "M2TMNXSLV",
+      "version": "5.12.4",
+      "collection_id": "C1276812859-GES_DISC",
+      "doi": {
+        "DOI": "10.5067/AP1B0BA5PD2K"
+      },
+      "collection_temporal_extents": [
+        {
+          "RangeDateTimes": [
+            {
+              "BeginningDateTime": "1980-01-01T00:00:00.000Z"
+            }
+          ],
+          "EndsAtPresentFlag": true
+        }
+      ],
+      "queries": [
+        {
+          "endpoint": "https://cmr.earthdata.nasa.gov/search/collections.umm_json",
+          "params": {
+            "short_name": "M2TMNXSLV",
+            "page_size": 20
+          },
+          "retrieved_at_utc": "2026-11-14T18:10:17.724613+00:00",
+          "retrieved_at_local": "2026-11-14T15:10:17-03:00",
+          "local_timezone": "America/Sao_Paulo",
+          "stored_snapshot_sha256": "5c2fdf8e6f005d488e5d878d484b07b1d6216abeb4d657195711d1b79c1b0592"
+        },
+        {
+          "endpoint": "https://harmony.earthdata.nasa.gov/capabilities",
+          "params": {
+            "collectionId": "C1276812859-GES_DISC"
+          },
+          "retrieved_at_utc": "2026-11-14T18:10:52.618434+00:00",
+          "retrieved_at_local": "2026-11-14T15:10:52-03:00",
+          "local_timezone": "America/Sao_Paulo",
+          "stored_snapshot_sha256": "daaeb592f62df773700ba5c40758b5e4e7ae00786b9d1fd6778c8acebde89955"
+        },
+        {
+          "endpoint": "https://cmr.earthdata.nasa.gov/search/granules.json",
+          "params": {
+            "collection_concept_id": "C1276812859-GES_DISC",
+            "sort_key": "-end_date",
+            "page_size": 1
+          },
+          "retrieved_at_utc": "2026-11-14T18:10:53.302470+00:00",
+          "retrieved_at_local": "2026-11-14T15:10:53-03:00",
+          "local_timezone": "America/Sao_Paulo",
+          "stored_snapshot_sha256": "41d96fc608c91b9b0cfef5b47257f7fe1c1a06022a802ceb4c70ea6f40327e15"
+        }
+      ],
+      "harmony_capabilities": {
+        "conceptId": "C1276812859-GES_DISC",
+        "shortName": "M2TMNXSLV",
+        "summary": {
+          "subsetting": {
+            "bbox": true,
+            "dimension": true,
+            "shape": true,
+            "temporal": true,
+            "variable": true
+          },
+          "reprojection": {
+            "supported": false,
+            "supportedProjections": [],
+            "interpolationMethods": []
+          },
+          "averaging": {
+            "time": false,
+            "area": false
+          },
+          "concatenation": false,
+          "outputFormats": [
+            {
+              "name": "NETCDF-4",
+              "mimeType": "application/netcdf"
+            },
+            {
+              "name": "NETCDF-4 (OPeNDAP URL)",
+              "mimeType": "application/x-netcdf4;profile=opendap_url"
+            }
+          ]
+        },
+        "services": [
+          {
+            "name": "sds/HOSS-geographic",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/S2164732315-XYZ_PROV",
+            "capabilities": {
+              "subsetting": {
+                "bbox": true,
+                "dimension": true,
+                "shape": true,
+                "temporal": true,
+                "variable": true
+              },
+              "reprojection": {
+                "supported": false,
+                "supportedProjections": [],
+                "interpolationMethods": []
+              },
+              "averaging": {
+                "time": false,
+                "area": false
+              },
+              "concatenation": false,
+              "outputFormats": [
+                {
+                  "name": "NETCDF-4",
+                  "mimeType": "application/netcdf"
+                }
+              ]
+            }
+          },
+          {
+            "name": "sds/hoss-opendap-url",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/S4057306097-XYZ_PROV",
+            "capabilities": {
+              "subsetting": {
+                "bbox": true,
+                "dimension": false,
+                "shape": false,
+                "temporal": false,
+                "variable": true
+              },
+              "reprojection": {
+                "supported": false,
+                "supportedProjections": [],
+                "interpolationMethods": []
+              },
+              "averaging": {
+                "time": false,
+                "area": false
+              },
+              "concatenation": false,
+              "outputFormats": [
+                {
+                  "name": "NETCDF-4 (OPeNDAP URL)",
+                  "mimeType": "application/x-netcdf4;profile=opendap_url"
+                }
+              ]
+            }
+          }
+        ],
+        "variables": [
+          {
+            "name": "CLDPRS",
+            "longName": "cloud_top_pressure",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188344602-GES_DISC",
+            "units": "Pa",
+            "scienceKeywords": []
+          },
+          {
+            "name": "CLDTMP",
+            "longName": "cloud_top_temperature",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188344607-GES_DISC",
+            "units": "K",
+            "scienceKeywords": []
+          },
+          {
+            "name": "DISPH",
+            "longName": "zero_plane_displacement_height",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188344616-GES_DISC",
+            "units": "m",
+            "scienceKeywords": []
+          },
+          {
+            "name": "H1000",
+            "longName": "height_at_1000_mb",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188344632-GES_DISC",
+            "units": "m",
+            "scienceKeywords": []
+          },
+          {
+            "name": "H250",
+            "longName": "height_at_250_hPa",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188344675-GES_DISC",
+            "units": "m",
+            "scienceKeywords": []
+          },
+          {
+            "name": "H500",
+            "longName": "height_at_500_hPa",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188344701-GES_DISC",
+            "units": "m",
+            "scienceKeywords": []
+          },
+          {
+            "name": "H850",
+            "longName": "height_at_850_hPa",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188344742-GES_DISC",
+            "units": "m",
+            "scienceKeywords": []
+          },
+          {
+            "name": "lat",
+            "longName": "latitude",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188344589-GES_DISC",
+            "units": "degrees_north",
+            "scienceKeywords": []
+          },
+          {
+            "name": "lon",
+            "longName": "longitude",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188344585-GES_DISC",
+            "units": "degrees_east",
+            "scienceKeywords": []
+          },
+          {
+            "name": "OMEGA500",
+            "longName": "omega_at_500_hPa",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188344772-GES_DISC",
+            "units": "Pa s-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "PBLTOP",
+            "longName": "pbltop_pressure",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188344787-GES_DISC",
+            "units": "Pa",
+            "scienceKeywords": []
+          },
+          {
+            "name": "PS",
+            "longName": "surface_pressure",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188344811-GES_DISC",
+            "units": "Pa",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Q250",
+            "longName": "specific_humidity_at_250_hPa",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188344823-GES_DISC",
+            "units": "kg kg-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Q500",
+            "longName": "specific_humidity_at_500_hPa",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188344837-GES_DISC",
+            "units": "kg kg-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Q850",
+            "longName": "specific_humidity_at_850_hPa",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188344861-GES_DISC",
+            "units": "kg kg-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "QV10M",
+            "longName": "10-meter_specific_humidity",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188344901-GES_DISC",
+            "units": "kg kg-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "QV2M",
+            "longName": "2-meter_specific_humidity",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188344935-GES_DISC",
+            "units": "kg kg-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "SLP",
+            "longName": "sea_level_pressure",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188344977-GES_DISC",
+            "units": "Pa",
+            "scienceKeywords": []
+          },
+          {
+            "name": "T10M",
+            "longName": "10-meter_air_temperature",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188345022-GES_DISC",
+            "units": "K",
+            "scienceKeywords": []
+          },
+          {
+            "name": "T250",
+            "longName": "air_temperature_at_250_hPa",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188345089-GES_DISC",
+            "units": "K",
+            "scienceKeywords": []
+          },
+          {
+            "name": "T2M",
+            "longName": "2-meter_air_temperature",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188345197-GES_DISC",
+            "units": "K",
+            "scienceKeywords": []
+          },
+          {
+            "name": "T2MDEW",
+            "longName": "dew_point_temperature_at_2_m",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188345465-GES_DISC",
+            "units": "K",
+            "scienceKeywords": []
+          },
+          {
+            "name": "T2MWET",
+            "longName": "wet_bulb_temperature_at_2_m",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188345717-GES_DISC",
+            "units": "K",
+            "scienceKeywords": []
+          },
+          {
+            "name": "T500",
+            "longName": "air_temperature_at_500_hPa",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188346125-GES_DISC",
+            "units": "K",
+            "scienceKeywords": []
+          },
+          {
+            "name": "T850",
+            "longName": "air_temperature_at_850_hPa",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188346340-GES_DISC",
+            "units": "K",
+            "scienceKeywords": []
+          },
+          {
+            "name": "time",
+            "longName": "time",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188344594-GES_DISC",
+            "units": "minutes since 2024-06-01 00:30:00",
+            "scienceKeywords": []
+          },
+          {
+            "name": "TO3",
+            "longName": "total_column_ozone",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188346379-GES_DISC",
+            "units": "Dobsons",
+            "scienceKeywords": []
+          },
+          {
+            "name": "TOX",
+            "longName": "total_column_odd_oxygen",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188346441-GES_DISC",
+            "units": "kg m-2",
+            "scienceKeywords": []
+          },
+          {
+            "name": "TQI",
+            "longName": "total_precipitable_ice_water",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188346492-GES_DISC",
+            "units": "kg m-2",
+            "scienceKeywords": []
+          },
+          {
+            "name": "TQL",
+            "longName": "total_precipitable_liquid_water",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188346550-GES_DISC",
+            "units": "kg m-2",
+            "scienceKeywords": []
+          },
+          {
+            "name": "TQV",
+            "longName": "total_precipitable_water_vapor",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188346609-GES_DISC",
+            "units": "kg m-2",
+            "scienceKeywords": []
+          },
+          {
+            "name": "TROPPB",
+            "longName": "tropopause_pressure_based_on_blended_estimate",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188346783-GES_DISC",
+            "units": "Pa",
+            "scienceKeywords": []
+          },
+          {
+            "name": "TROPPT",
+            "longName": "tropopause_pressure_based_on_thermal_estimate",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188346855-GES_DISC",
+            "units": "Pa",
+            "scienceKeywords": []
+          },
+          {
+            "name": "TROPPV",
+            "longName": "tropopause_pressure_based_on_EPV_estimate",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188346952-GES_DISC",
+            "units": "Pa",
+            "scienceKeywords": []
+          },
+          {
+            "name": "TROPQ",
+            "longName": "tropopause_specific_humidity_using_blended_TROPP_estimate",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188347002-GES_DISC",
+            "units": "kg kg-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "TROPT",
+            "longName": "tropopause_temperature_using_blended_TROPP_estimate",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188347065-GES_DISC",
+            "units": "K",
+            "scienceKeywords": []
+          },
+          {
+            "name": "TS",
+            "longName": "surface_skin_temperature",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188347096-GES_DISC",
+            "units": "K",
+            "scienceKeywords": []
+          },
+          {
+            "name": "U10M",
+            "longName": "10-meter_eastward_wind",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188347118-GES_DISC",
+            "units": "m s-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "U250",
+            "longName": "eastward_wind_at_250_hPa",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188347142-GES_DISC",
+            "units": "m s-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "U2M",
+            "longName": "2-meter_eastward_wind",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188347221-GES_DISC",
+            "units": "m s-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "U500",
+            "longName": "eastward_wind_at_500_hPa",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188347311-GES_DISC",
+            "units": "m s-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "U50M",
+            "longName": "eastward_wind_at_50_meters",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188347350-GES_DISC",
+            "units": "m s-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "U850",
+            "longName": "eastward_wind_at_850_hPa",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188347539-GES_DISC",
+            "units": "m s-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "V10M",
+            "longName": "10-meter_northward_wind",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188348079-GES_DISC",
+            "units": "m s-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "V250",
+            "longName": "northward_wind_at_250_hPa",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188348443-GES_DISC",
+            "units": "m s-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "V2M",
+            "longName": "2-meter_northward_wind",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188348759-GES_DISC",
+            "units": "m s-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "V500",
+            "longName": "northward_wind_at_500_hPa",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188348910-GES_DISC",
+            "units": "m s-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "V50M",
+            "longName": "northward_wind_at_50_meters",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188348960-GES_DISC",
+            "units": "m s-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "V850",
+            "longName": "northward_wind_at_850_hPa",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188349048-GES_DISC",
+            "units": "m s-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_CLDPRS",
+            "longName": "Variance_of_CLDPRS",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188349059-GES_DISC",
+            "units": "Pa Pa",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_CLDTMP",
+            "longName": "Variance_of_CLDTMP",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188349065-GES_DISC",
+            "units": "K K",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_DISPH",
+            "longName": "Variance_of_DISPH",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188349130-GES_DISC",
+            "units": "m m",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_H1000",
+            "longName": "Variance_of_H1000",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188349205-GES_DISC",
+            "units": "m m",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_H250",
+            "longName": "Variance_of_H250",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188349258-GES_DISC",
+            "units": "m m",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_H500",
+            "longName": "Variance_of_H500",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188349308-GES_DISC",
+            "units": "m m",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_H850",
+            "longName": "Variance_of_H850",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188349362-GES_DISC",
+            "units": "m m",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_OMEGA500",
+            "longName": "Variance_of_OMEGA500",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188349401-GES_DISC",
+            "units": "Pa s-1 Pa s-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_PBLTOP",
+            "longName": "Variance_of_PBLTOP",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188349427-GES_DISC",
+            "units": "Pa Pa",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_PS",
+            "longName": "Variance_of_PS",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188349459-GES_DISC",
+            "units": "Pa Pa",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_Q250",
+            "longName": "Variance_of_Q250",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188349571-GES_DISC",
+            "units": "kg kg-1 kg kg-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_Q500",
+            "longName": "Variance_of_Q500",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188349589-GES_DISC",
+            "units": "kg kg-1 kg kg-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_Q850",
+            "longName": "Variance_of_Q850",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188349654-GES_DISC",
+            "units": "kg kg-1 kg kg-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_QV10M",
+            "longName": "Variance_of_QV10M",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188349795-GES_DISC",
+            "units": "kg kg-1 kg kg-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_QV2M",
+            "longName": "Variance_of_QV2M",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188350054-GES_DISC",
+            "units": "kg kg-1 kg kg-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_SLP",
+            "longName": "Variance_of_SLP",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188350632-GES_DISC",
+            "units": "Pa Pa",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_T10M",
+            "longName": "Variance_of_T10M",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188350762-GES_DISC",
+            "units": "K K",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_T250",
+            "longName": "Variance_of_T250",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188350824-GES_DISC",
+            "units": "K K",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_T2M",
+            "longName": "Variance_of_T2M",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188351008-GES_DISC",
+            "units": "K K",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_T2MDEW",
+            "longName": "Variance_of_T2MDEW",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188351020-GES_DISC",
+            "units": "K K",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_T2MWET",
+            "longName": "Variance_of_T2MWET",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188351036-GES_DISC",
+            "units": "K K",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_T500",
+            "longName": "Variance_of_T500",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188351051-GES_DISC",
+            "units": "K K",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_T850",
+            "longName": "Variance_of_T850",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188351065-GES_DISC",
+            "units": "K K",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_TO3",
+            "longName": "Variance_of_TO3",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188351101-GES_DISC",
+            "units": "Dobsons Dobsons",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_TOX",
+            "longName": "Variance_of_TOX",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188351154-GES_DISC",
+            "units": "kg m-2 kg m-2",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_TQI",
+            "longName": "Variance_of_TQI",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188351197-GES_DISC",
+            "units": "kg m-2 kg m-2",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_TQL",
+            "longName": "Variance_of_TQL",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188351283-GES_DISC",
+            "units": "kg m-2 kg m-2",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_TQV",
+            "longName": "Variance_of_TQV",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188351330-GES_DISC",
+            "units": "kg m-2 kg m-2",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_TROPPB",
+            "longName": "Variance_of_TROPPB",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188351393-GES_DISC",
+            "units": "Pa Pa",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_TROPPT",
+            "longName": "Variance_of_TROPPT",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188351439-GES_DISC",
+            "units": "Pa Pa",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_TROPPV",
+            "longName": "Variance_of_TROPPV",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188351496-GES_DISC",
+            "units": "Pa Pa",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_TROPQ",
+            "longName": "Variance_of_TROPQ",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188351573-GES_DISC",
+            "units": "kg kg-1 kg kg-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_TROPT",
+            "longName": "Variance_of_TROPT",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188351612-GES_DISC",
+            "units": "K K",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_TS",
+            "longName": "Variance_of_TS",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188351747-GES_DISC",
+            "units": "K K",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_U10M",
+            "longName": "Variance_of_U10M",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188351788-GES_DISC",
+            "units": "m s-1 m s-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_U250",
+            "longName": "Variance_of_U250",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188352238-GES_DISC",
+            "units": "m s-1 m s-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_U2M",
+            "longName": "Variance_of_U2M",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188352510-GES_DISC",
+            "units": "m s-1 m s-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_U500",
+            "longName": "Variance_of_U500",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188352558-GES_DISC",
+            "units": "m s-1 m s-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_U50M",
+            "longName": "Variance_of_U50M",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188352574-GES_DISC",
+            "units": "m s-1 m s-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_U850",
+            "longName": "Variance_of_U850",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188352651-GES_DISC",
+            "units": "m s-1 m s-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_V10M",
+            "longName": "Variance_of_V10M",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188352716-GES_DISC",
+            "units": "m s-1 m s-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_V250",
+            "longName": "Variance_of_V250",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188352779-GES_DISC",
+            "units": "m s-1 m s-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_V2M",
+            "longName": "Variance_of_V2M",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188352862-GES_DISC",
+            "units": "m s-1 m s-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_V500",
+            "longName": "Variance_of_V500",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188352919-GES_DISC",
+            "units": "m s-1 m s-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_V50M",
+            "longName": "Variance_of_V50M",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188352960-GES_DISC",
+            "units": "m s-1 m s-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_V850",
+            "longName": "Variance_of_V850",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188353004-GES_DISC",
+            "units": "m s-1 m s-1",
+            "scienceKeywords": []
+          },
+          {
+            "name": "Var_ZLCL",
+            "longName": "Variance_of_ZLCL",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188353044-GES_DISC",
+            "units": "m m",
+            "scienceKeywords": []
+          },
+          {
+            "name": "ZLCL",
+            "longName": "lifting_condensation_level",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V3188349053-GES_DISC",
+            "units": "m",
+            "scienceKeywords": []
+          }
+        ],
+        "capabilitiesVersion": "3"
+      },
+      "latest_granules": [
+        {
+          "producer_granule_id": "MERRA2_400.tavgM_2d_slv_Nx.202609.nc4",
+          "boxes": [
+            "-90 -180 90 180"
+          ],
+          "time_start": "2026-09-01T00:00:00.000Z",
+          "updated": "2026-10-20T04:44:09.000Z",
+          "dataset_id": "MERRA-2 tavgM_2d_slv_Nx: 2d,Monthly mean,Time-Averaged,Single-Level,Assimilation,Single-Level Diagnostics 0.625 x 0.5 degree V5.12.4 (M2TMNXSLV) ",
+          "data_center": "GES_DISC",
+          "title": "M2TMNXSLV.5.12.4:MERRA2_400.tavgM_2d_slv_Nx.202609.nc4",
+          "coordinate_system": "CARTESIAN",
+          "day_night_flag": "UNSPECIFIED",
+          "time_end": "2026-09-30T23:59:59.000Z",
+          "id": "G4379178609-GES_DISC",
+          "original_format": "ECHO10",
+          "granule_size": "75.18868350982666",
+          "browse_flag": false,
+          "collection_concept_id": "C1276812859-GES_DISC",
+          "online_access_flag": true,
+          "links": [
+            {
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+              "title": "Download MERRA2_400.tavgM_2d_slv_Nx.202609.nc4",
+              "hreflang": "en-US",
+              "href": "https://data.gesdisc.earthdata.nasa.gov/data/MERRA2_MONTHLY/M2TMNXSLV.5.12.4/2026/MERRA2_400.tavgM_2d_slv_Nx.202609.nc4"
+            },
+            {
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/s3#",
+              "title": "This link provides direct download access via S3 to the granule",
+              "hreflang": "en-US",
+              "href": "s3://gesdisc-cumulus-prod-protected/MERRA2_MONTHLY/M2TMNXSLV.5.12.4/2026/MERRA2_400.tavgM_2d_slv_Nx.202609.nc4"
+            },
+            {
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+              "title": "api endpoint to retrieve temporary credentials valid for same-region direct s3 access (VIEW RELATED INFORMATION)",
+              "hreflang": "en-US",
+              "href": "https://data.gesdisc.earthdata.nasa.gov/s3credentials"
+            },
+            {
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/service#",
+              "title": "OPeNDAP request URL (GET DATA : OPENDAP DATA)",
+              "hreflang": "en-US",
+              "href": "https://opendap.earthdata.nasa.gov/collections/C1276812859-GES_DISC/granules/M2TMNXSLV.5.12.4%3AMERRA2_400.tavgM_2d_slv_Nx.202609.nc4"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://disc.gsfc.nasa.gov/information/howto?tags=MERRA"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+              "hreflang": "en-US",
+              "href": "https://www.earthdata.nasa.gov/data/catalog/ges-disc-gpm-3gprofnoaa21atms-day-07"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+              "hreflang": "en-US",
+              "href": "https://goldsmr4.gesdisc.eosdis.nasa.gov/data/MERRA2_MONTHLY/M2TMNXSLV.5.12.4/"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+              "hreflang": "en-US",
+              "href": "https://search.earthdata.nasa.gov/search/granules?p=C1276812859-GES_DISC"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/service#",
+              "hreflang": "en-US",
+              "href": "https://cmr.earthdata.nasa.gov/virtual-directory/collections/C1276812859-GES_DISC"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+              "hreflang": "en-US",
+              "href": "https://gmao.gsfc.nasa.gov/gmao-products/merra-2/documentation_merra-2/"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://gmao.gsfc.nasa.gov/media/publications/zbly36ziNFDFbmYmvhQeVqPhUo/Bosilovich785.pdf"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://docserver.gesdisc.eosdis.nasa.gov/public/project/MERRA/MERRA2.README.pdf"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://disc.gsfc.nasa.gov/information/mission-project?title=MERRA-2"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://docserver.gesdisc.eosdis.nasa.gov/public/project/MERRA/Records_MERRA-2_Data_Reprocessing_and_Service_Changes.pdf"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://disc.gsfc.nasa.gov/information/faqs?keywords=MERRA-2&page=1"
+            }
+          ]
+        }
+      ],
+      "file_units": null,
+      "file_dimensions": null,
+      "file_missing_values": null,
+      "file_integrity": "not_checked_no_scientific_file_downloaded"
+    },
+    {
+      "short_name": "MUR-JPL-L4-GLOB-v4.1",
+      "version": "4.1",
+      "collection_id": "C1996881146-POCLOUD",
+      "doi": {
+        "DOI": "10.5067/GHGMR-4FJ04",
+        "Authority": "https://doi.org"
+      },
+      "collection_temporal_extents": [
+        {
+          "RangeDateTimes": [
+            {
+              "BeginningDateTime": "2002-05-31T21:00:00.000Z"
+            }
+          ]
+        }
+      ],
+      "queries": [
+        {
+          "endpoint": "https://cmr.earthdata.nasa.gov/search/collections.umm_json",
+          "params": {
+            "short_name": "MUR-JPL-L4-GLOB-v4.1",
+            "page_size": 20
+          },
+          "retrieved_at_utc": "2026-11-14T18:10:17.848619+00:00",
+          "retrieved_at_local": "2026-11-14T15:10:17-03:00",
+          "local_timezone": "America/Sao_Paulo",
+          "stored_snapshot_sha256": "171e0b6461aee348fa2f52ccbd07298e94ece6c8fd2649482b0e78d37c938251"
+        },
+        {
+          "endpoint": "https://harmony.earthdata.nasa.gov/capabilities",
+          "params": {
+            "collectionId": "C1996881146-POCLOUD"
+          },
+          "retrieved_at_utc": "2026-11-14T18:10:52.394423+00:00",
+          "retrieved_at_local": "2026-11-14T15:10:52-03:00",
+          "local_timezone": "America/Sao_Paulo",
+          "stored_snapshot_sha256": "76f639ec38a27320d87f198a9f54d4abb0b842c0b5f63c19e8560ab9e52dc3a4"
+        },
+        {
+          "endpoint": "https://cmr.earthdata.nasa.gov/search/granules.json",
+          "params": {
+            "collection_concept_id": "C1996881146-POCLOUD",
+            "sort_key": "-end_date",
+            "page_size": 1
+          },
+          "retrieved_at_utc": "2026-11-14T18:10:53.126461+00:00",
+          "retrieved_at_local": "2026-11-14T15:10:53-03:00",
+          "local_timezone": "America/Sao_Paulo",
+          "stored_snapshot_sha256": "e6a8fb5a236dc0875b0a587b5e5e4ea2b8b5a31b2b4a628c6a0b2f9915f55ab1"
+        }
+      ],
+      "harmony_capabilities": {
+        "conceptId": "C1996881146-POCLOUD",
+        "shortName": "MUR-JPL-L4-GLOB-v4.1",
+        "summary": {
+          "subsetting": {
+            "bbox": true,
+            "dimension": true,
+            "shape": true,
+            "temporal": true,
+            "variable": true
+          },
+          "reprojection": {
+            "supported": true,
+            "supportedProjections": [],
+            "interpolationMethods": []
+          },
+          "averaging": {
+            "time": false,
+            "area": false
+          },
+          "concatenation": false,
+          "outputFormats": [
+            {
+              "name": "GEOTIFF",
+              "mimeType": "image/tiff"
+            },
+            {
+              "name": "JPEG",
+              "mimeType": "image/jpeg"
+            },
+            {
+              "name": "NETCDF-4",
+              "mimeType": "application/netcdf"
+            },
+            {
+              "name": "PNG",
+              "mimeType": "image/png"
+            }
+          ]
+        },
+        "services": [
+          {
+            "name": "sds/HOSS-geographic",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/S2164732315-XYZ_PROV",
+            "capabilities": {
+              "subsetting": {
+                "bbox": true,
+                "dimension": true,
+                "shape": true,
+                "temporal": true,
+                "variable": true
+              },
+              "reprojection": {
+                "supported": false,
+                "supportedProjections": [],
+                "interpolationMethods": []
+              },
+              "averaging": {
+                "time": false,
+                "area": false
+              },
+              "concatenation": false,
+              "outputFormats": [
+                {
+                  "name": "NETCDF-4",
+                  "mimeType": "application/netcdf"
+                }
+              ]
+            }
+          },
+          {
+            "name": "asdc/imagenator_l3",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/S3616918458-LARC_CLOUD",
+            "capabilities": {
+              "subsetting": {
+                "bbox": false,
+                "dimension": false,
+                "shape": false,
+                "temporal": false,
+                "variable": true
+              },
+              "reprojection": {
+                "supported": true,
+                "supportedProjections": [],
+                "interpolationMethods": []
+              },
+              "averaging": {
+                "time": false,
+                "area": false
+              },
+              "concatenation": false,
+              "outputFormats": [
+                {
+                  "name": "PNG",
+                  "mimeType": "image/png"
+                },
+                {
+                  "name": "JPEG",
+                  "mimeType": "image/jpeg"
+                }
+              ]
+            }
+          },
+          {
+            "name": "net2cog",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/S3177988677-POCLOUD",
+            "capabilities": {
+              "subsetting": {
+                "bbox": false,
+                "dimension": false,
+                "shape": false,
+                "temporal": false,
+                "variable": true
+              },
+              "reprojection": {
+                "supported": false,
+                "supportedProjections": [],
+                "interpolationMethods": []
+              },
+              "averaging": {
+                "time": false,
+                "area": false
+              },
+              "concatenation": false,
+              "outputFormats": [
+                {
+                  "name": "GEOTIFF",
+                  "mimeType": "image/tiff"
+                }
+              ]
+            }
+          }
+        ],
+        "variables": [
+          {
+            "name": "analysed_sst",
+            "longName": "analysed sea surface temperature",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V2028632042-POCLOUD",
+            "units": "kelvin",
+            "scienceKeywords": []
+          },
+          {
+            "name": "analysis_error",
+            "longName": "estimated error standard deviation of analysed_sst",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V2028632044-POCLOUD",
+            "units": "kelvin",
+            "scienceKeywords": []
+          },
+          {
+            "name": "lat",
+            "longName": "latitude",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V2112015422-POCLOUD",
+            "units": "degrees_north",
+            "scienceKeywords": []
+          },
+          {
+            "name": "lon",
+            "longName": "longitude",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V2112015425-POCLOUD",
+            "units": "degrees_east",
+            "scienceKeywords": []
+          },
+          {
+            "name": "mask",
+            "longName": "sea/land field composite mask",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V2028668049-POCLOUD",
+            "scienceKeywords": []
+          },
+          {
+            "name": "sea_ice_fraction",
+            "longName": "sea ice area fraction",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V2028632047-POCLOUD",
+            "units": "fraction (between 0 and 1)",
+            "scienceKeywords": []
+          },
+          {
+            "name": "sst_anomaly",
+            "longName": "SST anomaly from a seasonal SST climatology based on the MUR data over 2003-2014 period",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V2262655973-POCLOUD",
+            "units": "kelvin",
+            "scienceKeywords": [
+              {
+                "category": "EARTH SCIENCE",
+                "topic": "OCEANS",
+                "term": "OCEAN TEMPERATURE",
+                "variableLevel1": "SEA SURFACE TEMPERATURE",
+                "variableLevel2": "SEA SURFACE TEMPERATURE ANOMALY"
+              }
+            ]
+          },
+          {
+            "name": "time",
+            "longName": "reference time of sst field",
+            "href": "https://cmr.earthdata.nasa.gov/search/concepts/V2112015420-POCLOUD",
+            "units": "seconds since 1981-01-01 00:00:00 UTC",
+            "scienceKeywords": []
+          }
+        ],
+        "capabilitiesVersion": "3"
+      },
+      "latest_granules": [
+        {
+          "producer_granule_id": "20261113090000-JPL-L4_GHRSST-SSTfnd-MUR-GLOB-v02.0-fv04.1",
+          "boxes": [
+            "-90 -180 90 180"
+          ],
+          "time_start": "2026-11-12T21:00:00.000Z",
+          "updated": "2026-11-14T09:22:23.775Z",
+          "dataset_id": "GHRSST Level 4 MUR Global Foundation Sea Surface Temperature Analysis (v4.1)",
+          "data_center": "POCLOUD",
+          "title": "20261113090000-JPL-L4_GHRSST-SSTfnd-MUR-GLOB-v02.0-fv04.1",
+          "coordinate_system": "CARTESIAN",
+          "day_night_flag": "UNSPECIFIED",
+          "time_end": "2026-11-13T21:00:00.000Z",
+          "id": "G4411477359-POCLOUD",
+          "original_format": "UMM_JSON",
+          "granule_size": "700.1585655212402",
+          "browse_flag": false,
+          "collection_concept_id": "C1996881146-POCLOUD",
+          "online_access_flag": true,
+          "links": [
+            {
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+              "title": "Download 20261113090000-JPL-L4_GHRSST-SSTfnd-MUR-GLOB-v02.0-fv04.1.nc",
+              "hreflang": "en-US",
+              "href": "https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/MUR-JPL-L4-GLOB-v4.1/20261113090000-JPL-L4_GHRSST-SSTfnd-MUR-GLOB-v02.0-fv04.1.nc"
+            },
+            {
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+              "title": "Download 20261113090000-JPL-L4_GHRSST-SSTfnd-MUR-GLOB-v02.0-fv04.1.nc.md5",
+              "hreflang": "en-US",
+              "href": "https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-public/MUR-JPL-L4-GLOB-v4.1/20261113090000-JPL-L4_GHRSST-SSTfnd-MUR-GLOB-v02.0-fv04.1.nc.md5"
+            },
+            {
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/s3#",
+              "title": "This link provides direct download access via S3 to the granule",
+              "hreflang": "en-US",
+              "href": "s3://podaac-ops-cumulus-protected/MUR-JPL-L4-GLOB-v4.1/20261113090000-JPL-L4_GHRSST-SSTfnd-MUR-GLOB-v02.0-fv04.1.nc"
+            },
+            {
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+              "title": "This link provides direct download access via S3 to the granule",
+              "hreflang": "en-US",
+              "href": "s3://podaac-ops-cumulus-public/MUR-JPL-L4-GLOB-v4.1/20261113090000-JPL-L4_GHRSST-SSTfnd-MUR-GLOB-v02.0-fv04.1.nc.md5"
+            },
+            {
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+              "title": "api endpoint to retrieve temporary credentials valid for same-region direct s3 access",
+              "hreflang": "en-US",
+              "href": "https://archive.podaac.earthdata.nasa.gov/s3credentials"
+            },
+            {
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/service#",
+              "title": "OPeNDAP request URL",
+              "hreflang": "en-US",
+              "href": "https://opendap.earthdata.nasa.gov/collections/C1996881146-POCLOUD/granules/20261113090000-JPL-L4_GHRSST-SSTfnd-MUR-GLOB-v02.0-fv04.1"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://podaac.jpl.nasa.gov/CitingPODAAC"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://ghrsst.jpl.nasa.gov"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://earthdata.nasa.gov/esds/competitive-programs/measures/mur-sst"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "http://journals.ametsoc.org/doi/abs/10.1175/1520-0426%281998%29015%3C0741:BSHWSS%3E2.0.CO;2"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-docs/ghrsst/open/docs/GDS20r5.pdf"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://github.com/podaac/data-readers"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://doi.org/10.1016/j.rse.2017.07.029"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "http://www.ghrsst.org"
+            },
+            {
+              "inherited": true,
+              "length": "300MB",
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+              "hreflang": "en-US",
+              "href": "https://cmr.earthdata.nasa.gov/virtual-directory/collections/C1996881146-POCLOUD "
+            },
+            {
+              "inherited": true,
+              "length": "700MB",
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+              "hreflang": "en-US",
+              "href": " https://search.earthdata.nasa.gov/search/granules?p=C1996881146-POCLOUD "
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://podaac.jpl.nasa.gov/MEaSUREs-MUR"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+              "hreflang": "en-US",
+              "href": "https://github.com/podaac/tutorials/blob/master/notebooks/SWOT-EA-2021/Colocate_satellite_insitu_ocean.ipynb"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+              "hreflang": "en-US",
+              "href": "https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-docs/ghrsst/open/docs/MUR-JPL-L4-GLOB-v4.1_combined-ref.json"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+              "hreflang": "en-US",
+              "href": "https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-docs/ghrsst/open/docs/MUR-JPL-L4-GLOB-v4.1_combined-ref.parq.zip"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+              "hreflang": "en-US",
+              "href": "https://github.com/podaac/data-subscriber"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/service#",
+              "hreflang": "en-US",
+              "href": "https://opendap.earthdata.nasa.gov"
+            },
+            {
+              "inherited": true,
+              "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+              "hreflang": "en-US",
+              "href": "https://harmony.earthdata.nasa.gov/"
+            }
+          ]
+        }
+      ],
+      "file_units": null,
+      "file_dimensions": null,
+      "file_missing_values": null,
+      "file_integrity": "not_checked_no_scientific_file_downloaded"
+    }
+  ]
+}

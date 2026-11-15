@@ -1,4 +1,5 @@
-> Legacy UI references below describe the earlier prototype. The home is `web/site` at `/`; the current laboratory is `web/sky-explorer` at `/lab`.
+> The current explorer remains at `/lab`; the complementary native FITS/MPC laboratory is available at `/native-lab`, using the same server.
+
 
 # Mosaico infravermelho em falsas cores
 
