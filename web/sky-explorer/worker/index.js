@@ -35,8 +35,11 @@ export default {
         return new Response(asset.body,{headers:{'content-type':asset.type,'cache-control':path.endsWith('.json')?'public,max-age=300':'public,max-age=600','x-content-type-options':'nosniff','referrer-policy':'strict-origin-when-cross-origin'}});
       }
       const key=new Request(upstream.toString());
-      const cache=globalThis.caches?.default;
-      if(!u.searchParams.has('refresh')&&cache){const hit=await cache.match(key);if(hit)return hit;}
+      // Some managed Worker runtimes prohibit Cache API access. Caching must
+      // remain optional: never prevent a scientific query because of it.
+      let cache=null;
+      try{cache=globalThis.caches?.default;}catch{}
+      if(!u.searchParams.has('refresh')&&cache){try{const hit=await cache.match(key);if(hit)return hit;}catch{cache=null;}}
       let response;
       for(let attempt=0;attempt<2;attempt++) {
         response=await fetch(upstream,{signal:AbortSignal.timeout(45000),redirect:'follow'});

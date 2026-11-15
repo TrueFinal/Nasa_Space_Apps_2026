@@ -8,3 +8,12 @@ test('public application assets and prepared observed examples are served',async
 test('archive input validation and FITS allowlist reject invalid requests before network access',async()=>{
  for(const path of ['/api/archive?ra=360&dec=0','/api/archive?ra=0&dec=91','/api/archive?ra=1&dec=1&fov=99999','/api/archive?ra=1&dec=1&collection=private','/api/cutout?url=https://example.com/data.fits']){const r=await worker.fetch(new Request('http://test'+path));assert.equal(r.status,400,path);}
 });
+test('live archive still works when hosting denies the default Cache API',async()=>{
+ const original=globalThis.fetch,descriptor=Object.getOwnPropertyDescriptor(globalThis,'caches');
+ try{
+  Object.defineProperty(globalThis,'caches',{configurable:true,get(){throw new Error('This Worker is not permitted to access the default cache.');}});
+  globalThis.fetch=async()=>new Response('s_ra,s_dec\n1,2\n');
+  const r=await worker.fetch(new Request('http://test/api/archive?ra=1&dec=2&fov=300'));
+  assert.equal(r.status,200);assert.match(await r.text(),/s_ra,s_dec/);
+ }finally{globalThis.fetch=original;if(descriptor)Object.defineProperty(globalThis,'caches',descriptor);else delete globalThis.caches;}
+});
