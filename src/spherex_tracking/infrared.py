@@ -238,6 +238,37 @@ def make_handler(state):
             if not self._local_request():
                 return self._send(403, {"error": "Origem não autorizada"})
             route = unquote(urlsplit(self.path).path)
+            if route.startswith("/api/skyshift") or route.startswith("/skyshift-data/"):
+                from .skyshift import public_data
+
+                try:
+                    data = public_data()
+                    if route == "/api/skyshift":
+                        return self._send(200, data.summary())
+                    if route == "/api/skyshift/object":
+                        query = parse_qs(urlsplit(self.path).query)
+                        return self._send(
+                            200,
+                            data.object(query.get("slug", [""])[0], query.get("frames", [None])[0]),
+                        )
+                    if route.startswith("/skyshift-data/"):
+                        name = route.removeprefix("/skyshift-data/")
+                        if not name.endswith(".bin"):
+                            raise ValueError("Apenas imagens binárias nesta rota")
+                        return self._send(
+                            200, data.file(name).read_bytes(), "application/octet-stream"
+                        )
+                    return self._send(404, {"error": "Rota SkyShift inexistente"})
+                except FileNotFoundError:
+                    return self._send(
+                        404,
+                        {
+                            "error": "Dados SkyShift não importados. "
+                            "Execute scripts/skyshift_import.py."
+                        },
+                    )
+                except (ValueError, KeyError) as exc:
+                    return self._send(400, {"error": str(exc)})
             if route == "/api/channels":
                 from .infrared_catalogs import channel_grid
 
@@ -278,9 +309,25 @@ def make_handler(state):
                     from .infrared_catalogs import build_join
 
                     report["dataset_join"] = build_join(report)
+                from .skyshift import enrich_report
+
+                enrich_report(report)
                 return self._send(200, report)
             if route.startswith("/files/") and state.current_output:
                 name = route.removeprefix("/files/")
+                if name in ("skyshift_context.json", "skyshift_photometry.json"):
+                    from .skyshift import enrich_report
+
+                    report = json.loads((state.current_output / "report.json").read_text("utf-8"))
+                    field = name.removesuffix(".json")
+                    report = enrich_report(report)
+                    return (
+                        self._send(200, report[field])
+                        if field in report
+                        else self._send(
+                            404, {"error": "Este produto não está disponível para a análise atual"}
+                        )
+                    )
                 if name == "joined_samples.json" and not (state.current_output / name).exists():
                     from .infrared_catalogs import build_join
 
@@ -295,6 +342,9 @@ def make_handler(state):
                     "color_mosaic_rgba.png",
                     "color_mosaic.json",
                     "joined_samples.json",
+                    "skyshift_context.json",
+                    "skyshift_photometry.json",
+                    "comparison_negative.png",
                 } | {f"exposure_{i:02d}.fits" for i in range(MAX_EXPOSURES)}
                 if name not in allowed or not (state.current_output / name).is_file():
                     return self._send(404, {"error": "Arquivo não encontrado"})
@@ -313,6 +363,8 @@ def make_handler(state):
                 "/lab/": ("index.html", "text/html; charset=utf-8"),
                 "/app.js": ("app.js", "text/javascript; charset=utf-8"),
                 "/plate.mjs": ("plate.mjs", "text/javascript; charset=utf-8"),
+                "/skyshift.mjs": ("skyshift.mjs", "text/javascript; charset=utf-8"),
+                "/skyshift-math.mjs": ("skyshift-math.mjs", "text/javascript; charset=utf-8"),
                 "/style.css": ("style.css", "text/css; charset=utf-8"),
             }
             if route in assets:

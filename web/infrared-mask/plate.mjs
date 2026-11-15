@@ -87,6 +87,18 @@ export function stretch(value, limits) {
   const t = Math.max(0, Math.min(1, (value - limits.lo) / (limits.hi - limits.lo)));
   return Math.asinh(10 * t) / Math.asinh(10);
 }
+// SkyShift paint.ts palette; display only, never applied to photometry.
+export function plateRGB(s, negative = true) {
+  const glass = [237, 240, 239], ink = [24, 32, 46];
+  return glass.map((v, i) => Math.round(negative
+    ? v + (ink[i] - v) * s : ink[i] + (v - ink[i]) * s));
+}
+export function playbackFrames(frames, current) {
+  // A detector switch is colour, not motion. Also limit the CWAVE separation.
+  const channel = current.measurement?.lambda_um;
+  return frames.filter(f => f.detector === current.detector && Number.isFinite(channel)
+    && Math.abs((f.measurement?.lambda_um ?? Infinity) - channel) <= .01);
+}
 export function viewport(crop, width, height) {
   const scale = Math.min((width - 80) / crop.w, (height - 90) / crop.h);
   return { left: 50 + (width - 80 - crop.w * scale) / 2, top: 20 + (height - 90 - crop.h * scale) / 2,

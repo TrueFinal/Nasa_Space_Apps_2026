@@ -554,6 +554,11 @@ def run_manifest(manifest_path, output_dir, config=None, progress=lambda text: N
     report["dataset_join"] = build_join(report, manifest.get("context_catalogues"))
     report["request_selection"] = manifest.get("request_selection", {})
     write_json(output / "joined_samples.json", report["dataset_join"])
+    from .skyshift import enrich_report
+
+    enrich_report(report)
+    if "skyshift_context" in report:
+        write_json(output / "skyshift_context.json", report["skyshift_context"])
     write_json(output / "report.json", report)
     write_json(output / "manifest.json", manifest)
     rows = [

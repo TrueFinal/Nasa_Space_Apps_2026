@@ -1,6 +1,8 @@
 # Earth Detectives — The ENSO Case
 
 Também inclui o **[Laboratório SPHEREx / MPC / Gaia DR3 / WISE](docs/laboratorio_catalogos.md)**.
+O laboratório oferece [dados públicos, plotagem em negativo e análises SkyShift](docs/skyshift.md),
+com [recibo reproduzível da execução](docs/skyshift_execution.json).
 Em “Preparar observações”, busque a identificação na API MPC, escolha um dos 102 canais
 SPHEREx e solicite imagens na trajetória MOST ou nas coordenadas de uma amostra cruzada.
 O laboratório oferece FITS SPHEREx, recortes AllWISE W1/W2 e acesso ao contexto WISEView,

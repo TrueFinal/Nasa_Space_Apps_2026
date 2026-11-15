@@ -1,0 +1,590 @@
+{
+  "repository": "https://github.com/Nsa-2026/skyshift",
+  "commit": "a6427d86ee7e90da700b35eb26d554de6dbbf777",
+  "imported_utc": "2026-11-15T18:13:49.816899+00:00",
+  "summary": {
+    "json_files": 483,
+    "binary_files": 871,
+    "frame_sets": 106,
+    "bytes": 128585955,
+    "pixels": 38214599,
+    "no_data_pixels": 3505329,
+    "candidates": 11192,
+    "kinds": {
+      "mover": 1885,
+      "high_pm": 8123,
+      "spectral": 1179,
+      "shape": 5
+    }
+  },
+  "inventory_sha256": "6cb61221f323ca5dd9c745f0bbe3f01a5fccd880a311f3a340423054ff86b922",
+  "objects_with_spectra": 365,
+  "objects_with_images": 83,
+  "analysis": {
+    "repository": "https://github.com/Nsa-2026/skyshift",
+    "commit": "a6427d86ee7e90da700b35eb26d554de6dbbf777",
+    "runs": [
+      {
+        "script": "scripts/validate/build_validation.py",
+        "name": "build_validation",
+        "status": "completed",
+        "returncode": 0,
+        "log": "build_validation.log"
+      },
+      {
+        "script": "scripts/validate/distant.py",
+        "name": "distant",
+        "status": "completed",
+        "returncode": 0,
+        "log": "distant.log"
+      },
+      {
+        "script": "skyshift_photometry.py",
+        "name": "native_photometry",
+        "status": "completed",
+        "returncode": 0,
+        "log": "native_photometry.log"
+      }
+    ],
+    "scope": "aggregation_of_published_measurements_and_separate_native_photometry",
+    "checks": [
+      {
+        "id": "V1",
+        "status": "pass",
+        "headline": "5 of 5 test objects found where predicted, in 20 of 20 visits; median offset 0.191 px"
+      },
+      {
+        "id": "V2",
+        "status": "pass",
+        "headline": "Barnard's Star moved 10.83\" ± 0.36\" at PA 357.8° in 0.986 yr; Gaia predicts 10.27\" (+5.5%, 2.2°, 1.6 sigma); 5 of 5 targets within 3 sigma"
+      },
+      {
+        "id": "V3",
+        "status": "pass",
+        "headline": "Position error 0.36\" from 344 reference stars: motions above 1.1\"/yr are seen at 3 sigma in one year"
+      },
+      {
+        "id": "V4",
+        "status": "pass",
+        "headline": "Re-found 60 of 60 asteroids where NASA predicted them; median offset 0.125 px (0.77\"); control 3' away: 0.7% of photos, 2 of 60 asteroids"
+      },
+      {
+        "id": "V5",
+        "status": "pending",
+        "headline": "Numbers after the pilot"
+      },
+      {
+        "id": "V6",
+        "status": "pass",
+        "headline": "40 of 40 fastest Gaia stars measured: slope 0.943 +- 0.029 (measured against predicted shift), RMS 0.6\"; 39 of 40 within 3 sigma; without the 6 blended with a brighter star, slope 0.972 +- 0.019"
+      },
+      {
+        "id": "V7",
+        "status": "pass",
+        "headline": "8 of 10 brown dwarfs whose motion SPHEREx can show in one year (predicted shift >= 3 sigma) shift the predicted way; of all 24 measured, 23 agree with the predicted shift within 3 sigma"
+      },
+      {
+        "id": "V8",
+        "status": "pass",
+        "headline": "SPHEREx / catalogue flux, Ks 0.993 (scatter 2.9%, 25,696 stars); W1 1.029 (scatter 1.9%, 27,860 stars) (hunt zone, 10-13 mag; pilot zone Ks 0.993, W1 1.026); median time to first frame 7.9 s over 20 live requests (20 ok) (2026-11-14 13:54 UTC)"
+      },
+      {
+        "id": "V9",
+        "status": "pending",
+        "headline": "Numbers after the pilot"
+      },
+      {
+        "id": "V10",
+        "status": "pending",
+        "headline": "Numbers after the pilot"
+      },
+      {
+        "id": "V11",
+        "status": "pass",
+        "headline": "11 asteroids: diameter 1.06x published (scatter 14%); albedo 0.71x (scatter 26%)"
+      }
+    ],
+    "not_rerun": [
+      {
+        "scripts": "v1_targets.py, v4_asteroids.py, v6_v7_motion.py",
+        "reason": "A agregação usa medidas publicadas; recuperação/astrometria bruta requer novos recortes."
+      },
+      {
+        "scripts": "v8_spectra.py, distant_injection.py",
+        "reason": "Tabelas Parquet das zonas e órfãos não constam em web/public/data."
+      },
+      {
+        "scripts": "science/asteroids.py, science/comet.py",
+        "reason": "Ajustes físicos completos requerem recortes e geometria Horizons; não foram inferidos do RGB."
+      },
+      {
+        "scripts": "precompute/*, candidates/frames.py, demo_check.py",
+        "reason": "Produtos públicos foram importados; não houve novo levantamento nem teste de latência remoto."
+      }
+    ],
+    "native_photometry": {
+      "report_manifest_sha256": "6973f02824b9507c0c781dd0d2234b1b72be95d24ad5b4312eb085a5e36ee299",
+      "method": "scripts/science/phot.py:measure",
+      "input": "native SCIENCE/FLAGS/VARIANCE",
+      "calibration": "bilinear CWAVE/CBAND maps, no synthetic wavelengths",
+      "annulus_px": [
+        4,
+        9
+      ],
+      "recentre": true,
+      "max_offset_px": 1.5,
+      "gaia_mask_applied": false,
+      "aperture_correction_r2": 1.033,
+      "scope": "independent_photometry_not_identity_or_orbit_validation",
+      "primary_measurements_changed": false,
+      "rows": [
+        {
+          "frame_id": "exposure_03",
+          "fits_sha256": "b211fa2b4afb2985ff872dbdeba1dcc0d97185dd27661b7e049a044a131d2e89",
+          "detector": 5,
+          "mjd": 61241.11152502,
+          "point": {
+            "ok": true,
+            "why": "",
+            "x": 35.1949489095739,
+            "y": 34.505417667129755,
+            "offset_px": 0.3433264312306664,
+            "um": 3.8010340888392515,
+            "bw_um": 0.03605187725475184,
+            "flux": {
+              "2.0": 505.7585128465788,
+              "3.0": 735.9149851505208
+            },
+            "err": {
+              "2.0": 118.19821563007264,
+              "3.0": 170.00050890467227
+            },
+            "bkg_mjysr": 0.019272543489933014,
+            "saturated": false,
+            "record_flags": 524288
+          },
+          "primary_measurement": {
+            "status": "aperture_measurement",
+            "coverage": 1.0,
+            "flux_ujy": 467.0126934301994,
+            "error_ujy": 115.65592444402625,
+            "snr": 4.037948731767896,
+            "background_mjysr": 0.017865225672721863,
+            "lambda_um": 3.8010365849808805,
+            "bandwidth_um": 0.03605031878746386
+          }
+        },
+        {
+          "frame_id": "exposure_00",
+          "fits_sha256": "feb2b776a3e99cbef42f653b64500da0ebe1c1bc29a4b4aa7e7c467f27bff474",
+          "detector": 1,
+          "mjd": 61241.246680692,
+          "point": {
+            "ok": true,
+            "why": "",
+            "x": 34.890309864180686,
+            "y": 34.406588271769905,
+            "offset_px": 0.13197098266791052,
+            "um": 0.8071190000266757,
+            "bw_um": 0.020046933692995685,
+            "flux": {
+              "2.0": 555.304693003075,
+              "3.0": 543.9327555106153
+            },
+            "err": {
+              "2.0": 78.49683753917208,
+              "3.0": 110.64091917499678
+            },
+            "bkg_mjysr": 0.02024570107460022,
+            "saturated": false,
+            "record_flags": 524288
+          },
+          "primary_measurement": {
+            "status": "aperture_measurement",
+            "coverage": 1.0,
+            "flux_ujy": 501.7456794121914,
+            "error_ujy": 78.17389798113854,
+            "snr": 6.418327502784247,
+            "background_mjysr": 0.02303534746170044,
+            "lambda_um": 0.807064012407114,
+            "bandwidth_um": 0.02011851996730882
+          }
+        },
+        {
+          "frame_id": "exposure_02",
+          "fits_sha256": "39ae4958c693a5e943e006cd3b0a97a40f956755691d082d69913f73312f916e",
+          "detector": 4,
+          "mjd": 61241.246680692,
+          "point": {
+            "ok": true,
+            "why": "",
+            "x": 34.401100745209895,
+            "y": 34.57848035604876,
+            "offset_px": 0.17601441900556355,
+            "um": 2.6471903626927302,
+            "bw_um": 0.07560919625024348,
+            "flux": {
+              "2.0": 291.65636353303483,
+              "3.0": 337.68942255112404
+            },
+            "err": {
+              "2.0": 52.3169901301499,
+              "3.0": 74.27059800808243
+            },
+            "bkg_mjysr": 0.014646172523498535,
+            "saturated": false,
+            "record_flags": 524288
+          },
+          "primary_measurement": {
+            "status": "aperture_measurement",
+            "coverage": 1.0,
+            "flux_ujy": 276.91854389522535,
+            "error_ujy": 56.623106296388094,
+            "snr": 4.890557265539662,
+            "background_mjysr": 0.014646172523498535,
+            "lambda_um": 2.647211730668222,
+            "bandwidth_um": 0.07551929161939712
+          }
+        },
+        {
+          "frame_id": "exposure_11",
+          "fits_sha256": "b9ccef22d71831e7337ab618f9733d5c27d304645ab0a8e9c7389d9ec2f271ae",
+          "detector": 4,
+          "mjd": 61243.42084296,
+          "point": {
+            "ok": true,
+            "why": "",
+            "x": 35.28448248652728,
+            "y": 34.22733897156463,
+            "offset_px": 0.4206083072547349,
+            "um": 3.130775820629532,
+            "bw_um": 0.08777977103110907,
+            "flux": {
+              "2.0": 414.03282872010993,
+              "3.0": 424.03650092531683
+            },
+            "err": {
+              "2.0": 49.23018569904609,
+              "3.0": 67.6672493465866
+            },
+            "bkg_mjysr": 0.014160692691802979,
+            "saturated": false,
+            "record_flags": 524288
+          },
+          "primary_measurement": {
+            "status": "aperture_measurement",
+            "coverage": 1.0,
+            "flux_ujy": 350.06907669770584,
+            "error_ujy": 47.94604453240683,
+            "snr": 7.30131296776929,
+            "background_mjysr": 0.015742667019367218,
+            "lambda_um": 3.1305439953548304,
+            "bandwidth_um": 0.08924340538986097
+          }
+        },
+        {
+          "frame_id": "exposure_09",
+          "fits_sha256": "241bb4e8b83ff5f493cbe2e860c45c13eb454ab9a0e0045547df973bf5b25859",
+          "detector": 1,
+          "mjd": 61243.420842972,
+          "point": {
+            "ok": true,
+            "why": "",
+            "x": 34.43747179961004,
+            "y": 34.02526221459575,
+            "offset_px": 0.02636123330394639,
+            "um": 0.9335084144698743,
+            "bw_um": 0.023227420529003014,
+            "flux": {
+              "2.0": 562.4904392913002,
+              "3.0": 446.1454769088145
+            },
+            "err": {
+              "2.0": 77.87024306988219,
+              "3.0": 109.6268215493267
+            },
+            "bkg_mjysr": 0.027803823351860046,
+            "saturated": false,
+            "record_flags": 524288
+          },
+          "primary_measurement": {
+            "status": "aperture_measurement",
+            "coverage": 1.0,
+            "flux_ujy": 563.7042568218371,
+            "error_ujy": 81.61025854791319,
+            "snr": 6.9072720372634,
+            "background_mjysr": 0.02611488103866577,
+            "lambda_um": 0.9334320198921933,
+            "bandwidth_um": 0.023534186923551186
+          }
+        },
+        {
+          "frame_id": "exposure_05",
+          "fits_sha256": "990d44900913321ed3944f232495b9b490ccedf268c43477dc2c58381abfd095",
+          "detector": 1,
+          "mjd": 61243.82360965,
+          "point": {
+            "ok": true,
+            "why": "",
+            "x": 34.79471052588098,
+            "y": 34.42739090871584,
+            "offset_px": 0.07557542973855341,
+            "um": 1.076566154059119,
+            "bw_um": 0.029424311465747477,
+            "flux": {
+              "2.0": 873.0414615776339,
+              "3.0": 965.0172367882868
+            },
+            "err": {
+              "2.0": 124.82995526790029,
+              "3.0": 179.26839310438942
+            },
+            "bkg_mjysr": 0.7799720764160156,
+            "saturated": false,
+            "record_flags": 524288
+          },
+          "primary_measurement": {
+            "status": "aperture_measurement",
+            "coverage": 1.0,
+            "flux_ujy": 776.8749367259855,
+            "error_ujy": 124.8882552145859,
+            "snr": 6.220560415318006,
+            "background_mjysr": 0.7865727543830872,
+            "lambda_um": 1.0765340509868804,
+            "bandwidth_um": 0.029256573739269428
+          }
+        },
+        {
+          "frame_id": "exposure_07",
+          "fits_sha256": "c708bc1f01cae5102b837b1bffa206621d04c05c573015d3019bd9daf68ce9cf",
+          "detector": 4,
+          "mjd": 61243.82360965,
+          "point": {
+            "ok": true,
+            "why": "",
+            "x": 33.97206952621128,
+            "y": 34.65063001423849,
+            "offset_px": 0.1337749074812753,
+            "um": 3.6804602600257486,
+            "bw_um": 0.102242337855205,
+            "flux": {
+              "2.0": 301.6097718769283,
+              "3.0": 400.80262837157835
+            },
+            "err": {
+              "2.0": 49.34094481140842,
+              "3.0": 70.79685220957985
+            },
+            "bkg_mjysr": 0.015583842992782593,
+            "saturated": false,
+            "record_flags": 524288
+          },
+          "primary_measurement": {
+            "status": "aperture_measurement",
+            "coverage": 1.0,
+            "flux_ujy": 291.51318361228346,
+            "error_ujy": 48.99866293043209,
+            "snr": 5.949410987523711,
+            "background_mjysr": 0.015618324279785156,
+            "lambda_um": 3.680508090725429,
+            "bandwidth_um": 0.1024971213191748
+          }
+        },
+        {
+          "frame_id": "exposure_10",
+          "fits_sha256": "c751cb31c4937df04b76d2a6956c4f0368f6bc23723df9de8a644ab62799dc97",
+          "detector": 2,
+          "mjd": 61244.301521988,
+          "point": {
+            "ok": true,
+            "why": "",
+            "x": 34.31619924222029,
+            "y": 34.40213351829053,
+            "offset_px": 0.0977379629219299,
+            "um": 1.3222957283138037,
+            "bw_um": 0.031835447370479344,
+            "flux": {
+              "2.0": 677.4649048933728,
+              "3.0": 656.4350609100903
+            },
+            "err": {
+              "2.0": 77.62578007209942,
+              "3.0": 109.43912701943808
+            },
+            "bkg_mjysr": 0.028008684515953064,
+            "saturated": false,
+            "record_flags": 524288
+          },
+          "primary_measurement": {
+            "status": "aperture_measurement",
+            "coverage": 1.0,
+            "flux_ujy": 716.6953739090941,
+            "error_ujy": 77.29264112194147,
+            "snr": 9.272491708213112,
+            "background_mjysr": 0.024450525641441345,
+            "lambda_um": 1.322245269726327,
+            "bandwidth_um": 0.03159688877906063
+          }
+        },
+        {
+          "frame_id": "exposure_01",
+          "fits_sha256": "b4d7a0eea0bb17446e6136d4b52bc31ac76fb0805f33f27396e349c89c16318f",
+          "detector": 3,
+          "mjd": 61244.709973411,
+          "point": {
+            "ok": true,
+            "why": "",
+            "x": 34.51759690713639,
+            "y": 34.22681294555697,
+            "offset_px": 0.19106790231859777,
+            "um": 2.4042465291593045,
+            "bw_um": 0.05740834261364594,
+            "flux": {
+              "2.0": 348.77760870036605,
+              "3.0": 469.9729474843323
+            },
+            "err": {
+              "2.0": 75.84024545287004,
+              "3.0": 107.92911350154884
+            },
+            "bkg_mjysr": -0.003953196108341217,
+            "saturated": false,
+            "record_flags": 0
+          },
+          "primary_measurement": {
+            "status": "aperture_measurement",
+            "coverage": 1.0,
+            "flux_ujy": 310.85234268797853,
+            "error_ujy": 80.82995105732108,
+            "snr": 3.8457569084451824,
+            "background_mjysr": -0.0024871528148651123,
+            "lambda_um": 2.4041511982491928,
+            "bandwidth_um": 0.0575058575625877
+          }
+        },
+        {
+          "frame_id": "exposure_04",
+          "fits_sha256": "5101db945ab1bb04ddc2433f432ee842038801196654a82ab59e5937026ff61a",
+          "detector": 6,
+          "mjd": 61244.709973411,
+          "point": {
+            "ok": true,
+            "why": "",
+            "x": 34.832461698502115,
+            "y": 34.07671759096628,
+            "offset_px": 0.15476238254212982,
+            "um": 4.995634851998679,
+            "bw_um": 0.03740575540251192,
+            "flux": {
+              "2.0": 2893.9990909411345,
+              "3.0": 3117.89205924221
+            },
+            "err": {
+              "2.0": 298.7881761276544,
+              "3.0": 414.10982344585176
+            },
+            "bkg_mjysr": 0.07468545436859131,
+            "saturated": false,
+            "record_flags": 524288
+          },
+          "primary_measurement": {
+            "status": "aperture_measurement",
+            "coverage": 1.0,
+            "flux_ujy": 2758.5695466286943,
+            "error_ujy": 309.4338979720518,
+            "snr": 8.914891240771073,
+            "background_mjysr": 0.07523071765899658,
+            "lambda_um": 4.995628780107406,
+            "bandwidth_um": 0.03711151399940156
+          }
+        },
+        {
+          "frame_id": "exposure_06",
+          "fits_sha256": "e5f39ab695de15b57a8279b64708902df39d8d14d4086bca9a478eb91b8c54a1",
+          "detector": 2,
+          "mjd": 61245.523856178,
+          "point": {
+            "ok": true,
+            "why": "",
+            "x": 34.599489660753136,
+            "y": 34.419253420367134,
+            "offset_px": 0.08748491505229104,
+            "um": 1.607388655481874,
+            "bw_um": 0.0389203421973307,
+            "flux": {
+              "2.0": 507.4379949818653,
+              "3.0": 385.46032889077594
+            },
+            "err": {
+              "2.0": 71.4789053039242,
+              "3.0": 100.88061654563349
+            },
+            "bkg_mjysr": 0.029672235250473022,
+            "saturated": false,
+            "record_flags": 524288
+          },
+          "primary_measurement": {
+            "status": "aperture_measurement",
+            "coverage": 1.0,
+            "flux_ujy": 515.3308617070081,
+            "error_ujy": 74.15542752558812,
+            "snr": 6.949334376491697,
+            "background_mjysr": 0.027373582124710083,
+            "lambda_um": 1.6073322429870947,
+            "bandwidth_um": 0.03893873794004321
+          }
+        },
+        {
+          "frame_id": "exposure_08",
+          "fits_sha256": "af4f6305d9d5103f7c9a782f2c1e6bd380054141e31f3617e855cd1c2fc22221",
+          "detector": 5,
+          "mjd": 61245.523856178,
+          "point": {
+            "ok": true,
+            "why": "",
+            "x": 34.20363723909505,
+            "y": 34.75709208027779,
+            "offset_px": 0.05456616406949219,
+            "um": 4.385751121254605,
+            "bw_um": 0.03763091021048576,
+            "flux": {
+              "2.0": 861.919516886183,
+              "3.0": 872.4848705836063
+            },
+            "err": {
+              "2.0": 153.37532858475748,
+              "3.0": 215.67258225972708
+            },
+            "bkg_mjysr": 0.03192126750946045,
+            "saturated": false,
+            "record_flags": 524288
+          },
+          "primary_measurement": {
+            "status": "aperture_measurement",
+            "coverage": 1.0,
+            "flux_ujy": 815.8770556946496,
+            "error_ujy": 152.39287046236376,
+            "snr": 5.353774446398039,
+            "background_mjysr": 0.033503711223602295,
+            "lambda_um": 4.385751791274585,
+            "bandwidth_um": 0.03761993464046774
+          }
+        }
+      ],
+      "accepted": 12,
+      "total": 12
+    }
+  },
+  "local_context": {
+    "repository": "https://github.com/Nsa-2026/skyshift",
+    "commit": "a6427d86ee7e90da700b35eb26d554de6dbbf777",
+    "radius_arcsec": 3,
+    "epoch_tolerance_days": 1,
+    "samples_checked": 268,
+    "matches": [],
+    "max_candidates_per_sample": 20,
+    "positions_propagated": false,
+    "measurement_policy": "native_aperture_unchanged",
+    "status": "complete"
+  }
+}

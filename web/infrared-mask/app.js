@@ -1,4 +1,4 @@
-import { cropFor, available, starsFor, segmentsFor, backgroundFor, limitsFor, stretch, viewport, imagePoint, pixelAt, spectralPoints } from './plate.mjs';
+import { cropFor, available, starsFor, segmentsFor, backgroundFor, limitsFor, stretch, viewport, imagePoint, pixelAt, spectralPoints, plateRGB, playbackFrames } from './plate.mjs';
 const $ = id => document.getElementById(id);
 let report, allFrames = [], index = 0, mode = 'science', timer, imageView, gaiaAvailable = false;
 let channelData = [], joinedSamples = [];
@@ -49,6 +49,13 @@ function populateSamples() {
 async function load() {
   report = await api('/api/report'); index = 0; stop();
   populateSamples();
+  const external = report.skyshift_context;
+  $('sky-context-panel').hidden = !external;
+  if (external) {
+    const compatible = external.matches.filter(m => m.epoch_compatible).length;
+    $('sky-context').textContent = `${external.samples_checked} amostra(s) verificadas · ${external.matches.length} associação(ões) posicionais · ${compatible} compatível(is) em época. SkyShift ${external.commit.slice(0, 7)}. ${external.matches.length ? 'Revise separação, época e detector no JSON.' : 'Nenhum candidato dentro do raio; as medidas locais permanecem preservadas.'}`;
+    if (report.skyshift_photometry) $('sky-context').textContent += ` Fotometria independente pelo script SkyShift: ${report.skyshift_photometry.accepted}/${report.skyshift_photometry.total} exposições aceitas, com recentragem e correção de abertura. Não aplica a nossa máscara Gaia; consulte a coluna adicional e a proveniência.`;
+  }
   const excluded = report.frames.filter(f => f.plot?.eligible === false);
   allFrames = report.frames.filter(f => f.plot?.eligible !== false);
   report.frames = allFrames;
@@ -125,7 +132,7 @@ function drawImage() {
       if (mode === 'wavelength') {
         const t = Math.max(0, Math.min(1, (value - report.config.low_um) / (report.config.high_um - report.config.low_um)));
         rgb = [60 + 170 * t, 145 - 80 * t, 225 - 160 * t];
-      } else { const v = Math.round(255 * stretch(value - background, limits)); rgb = [v, v, v]; }
+      } else { rgb = plateRGB(stretch(value - background, limits), $('palette').value !== 'positive'); }
     }
     // FITS y=0 is the bottom row; display the sky with y increasing upwards.
     const p = ((height - 1 - y) * width + x) * 4;
@@ -150,7 +157,7 @@ function drawImage() {
   const stars = starsFor(f, scope, bandOnly, gaiaAvailable && $('gaia-overlay').checked);
   ctx.save(); ctx.beginPath(); ctx.rect(imageView.left, imageView.top, imageView.width, imageView.height); ctx.clip();
   if ($('overlays').checked) {
-    ctx.strokeStyle = '#72d9ee'; ctx.lineWidth = 1.2; ctx.setLineDash([5, 4]);
+    ctx.strokeStyle = photometric && $('palette').value !== 'positive' ? '#0a7a8f' : '#72d9ee'; ctx.lineWidth = 1.2; ctx.setLineDash([5, 4]);
     for (const segment of segmentsFor(f, scope, bandOnly)) {
       ctx.beginPath(); segment.forEach((p, i) => { const [x, y] = imagePoint(p, imageView); if (i) ctx.lineTo(x, y); else ctx.moveTo(x, y); }); ctx.stroke();
     }
@@ -161,7 +168,7 @@ function drawImage() {
       ctx.beginPath(); ctx.moveTo(tx - 4, ty); ctx.lineTo(tx + 4, ty); ctx.moveTo(tx, ty - 4); ctx.lineTo(tx, ty + 4); ctx.stroke();
     }
   }
-  ctx.strokeStyle = '#f4ce75'; ctx.lineWidth = 1;
+  ctx.strokeStyle = photometric && $('palette').value !== 'positive' ? '#a77600' : '#f4ce75'; ctx.lineWidth = 1;
   for (const star of stars) { const [x, y] = imagePoint(star, imageView); ctx.beginPath(); ctx.arc(x, y, 4, 0, 2 * Math.PI); ctx.stroke(); }
   const compass = f.plot?.compass || {};
   const cx = imageView.left + imageView.width - 45, cy = imageView.top + 48;
@@ -219,6 +226,8 @@ function render() {
   $('measurements').replaceChildren(...report.frames.map((frame, i) => {
     const a = frame.measurement, tr = node('tr', '', i === index ? 'selected' : ''); tr.tabIndex = 0;
     [`D${frame.detector ?? 4}`, frame.utc, number(a.lambda_um, 4), number(a.bandwidth_um, 4), a.flux_ujy == null ? '—' : `${number(a.flux_ujy)} ± ${number(a.error_ujy)}`, number(a.snr), `${number(100 * a.coverage, 1)}%`, statuses[a.status] || a.status].forEach(s => tr.append(node('td', s)));
+    const upstream = report.skyshift_photometry?.rows.find(r => r.frame_id === frame.id)?.point;
+    tr.append(node('td', !upstream ? 'Não executada' : upstream.ok ? `${number(upstream.flux['2.0'])} ± ${number(upstream.err['2.0'])} μJy` : upstream.why));
     const select = () => { stop(); index = i; render(); }; tr.addEventListener('click', select); tr.addEventListener('keydown', e => { if (e.key === 'Enter') select(); }); return tr;
   }));
   const entries = { 'Alvo RA / Dec': `${number(f.target.ra, 7)}° / ${number(f.target.dec, 7)}°`, 'Origem da posição': f.target.provider || 'Manifesto fornecido', 'Astrometria': f.target.position_status || 'Não verificada', 'Máscara': statuses[m.status] || m.status, 'ZODI subtraído': f.zodi_subtracted ? 'Sim; modelo do FITS' : 'Não', 'Flags de revisão': `${number(100 * f.advisory_fraction, 2)}% dos pixels; preservadas`, 'Calibração': f.calibration.source, 'SHA-256 original': f.input_sha256, 'SHA-256 saída': f.output_sha256 };
@@ -226,13 +235,24 @@ function render() {
   drawImage(); plot();
 }
 $('time').addEventListener('input', e => { stop(); index = +e.target.value; render(); });
-$('play').addEventListener('click', () => { if (timer) return stop(); if (!report || report.frames.length < 2) return; $('play').textContent = 'Ⅱ'; $('play').setAttribute('aria-label', 'Pausar exposições'); timer = setInterval(() => { index = (index + 1) % report.frames.length; render(); }, 1000); });
+$('play').addEventListener('click', () => {
+  if (timer) return stop();
+  if (!report?.frames.length) return;
+  const sequence = playbackFrames(report.frames, report.frames[index]);
+  if (sequence.length < 2) return status('Sem duas exposições no mesmo detector e com CWAVE a até 0,01 μm. Selecione quadros manualmente.');
+  $('play').textContent = 'Ⅱ'; $('play').setAttribute('aria-label', 'Pausar exposições');
+  timer = setInterval(() => {
+    const next = sequence[(sequence.indexOf(report.frames[index]) + 1) % sequence.length];
+    index = report.frames.indexOf(next); render();
+  }, 1000);
+});
 document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); });
 $('tabs').addEventListener('click', e => { if (!e.target.dataset.mode) return; mode = e.target.dataset.mode; for (const b of $('tabs').children) b.setAttribute('aria-pressed', String(b === e.target)); drawImage(); });
 $('overlays').addEventListener('change', drawImage);
 $('gaia-overlay').addEventListener('change', drawImage);
 $('scope').addEventListener('change', drawImage);
 $('contrast').addEventListener('input', drawImage);
+$('palette').addEventListener('change', drawImage);
 $('plot-axis').addEventListener('change', plot);
 $('detector-view').addEventListener('change', e => {
   if (!report) return;

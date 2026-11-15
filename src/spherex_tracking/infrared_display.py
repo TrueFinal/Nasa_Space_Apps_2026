@@ -165,7 +165,7 @@ def display_normalization(lo, hi):
     return ImageNormalize(vmin=lo, vmax=hi, stretch=AsinhStretch(0.1), clip=False)
 
 
-def render_comparison(report, output):
+def render_comparison(report, output, *, negative=False):
     """A shareable scientific plate, with native pixels and the same display policy."""
     import matplotlib
 
@@ -175,7 +175,8 @@ def render_comparison(report, output):
 
     from .infrared_color import render_color_mosaic
 
-    render_color_mosaic(report, output)
+    if not negative:
+        render_color_mosaic(report, output)
 
     all_frames = [f for f in report["frames"] if f["plot"]["eligible"]]
     if not all_frames:
@@ -207,7 +208,13 @@ def render_comparison(report, output):
         lo, hi = np.percentile(sample, [3.35, 100 - 0.05 * 10**0.69])
         norms[detector] = display_normalization(lo, max(hi, lo + 1e-6))
     with plt.style.context("dark_background"):
-        cmap = plt.get_cmap("gray").copy()
+        from matplotlib.colors import LinearSegmentedColormap
+
+        cmap = (
+            LinearSegmentedColormap.from_list("skyshift", ["#edf0ef", "#18202e"])
+            if negative
+            else plt.get_cmap("gray").copy()
+        )
         cmap.set_bad("#24313f")
         columns = min(3, len(frames))
         blocks = int(np.ceil(len(frames) / columns))
@@ -246,7 +253,7 @@ def render_comparison(report, output):
                                 (star["x"], star["y"]),
                                 0.6,
                                 fill=False,
-                                color="#f4ce75",
+                                color="#a77600" if negative else "#f4ce75",
                                 linewidth=0.7,
                             )
                         )
@@ -256,7 +263,7 @@ def render_comparison(report, output):
                         ax.plot(
                             [p["x"] for p in segment],
                             [p["y"] for p in segment],
-                            color="#72d9ee",
+                            color="#0a7a8f" if negative else "#72d9ee",
                             linewidth=1,
                         )
                 if covered(frame["target"], support, c):
@@ -265,7 +272,7 @@ def render_comparison(report, output):
                             (frame["target"]["x"], frame["target"]["y"]),
                             report["config"]["aperture_px"],
                             fill=False,
-                            color="#72d9ee",
+                            color="#0a7a8f" if negative else "#72d9ee",
                             linewidth=0.9,
                         )
                     )
@@ -294,7 +301,10 @@ def render_comparison(report, output):
             fontsize=8,
         )
         fig.tight_layout(rect=(0, 0.04, 1, 0.92))
-        fig.savefig(output / "comparison.png", dpi=150)
+        filename = "comparison_negative.png" if negative else "comparison.png"
+        fig.savefig(output / filename, dpi=150)
         plt.close(fig)
-    report["plotting"]["preview"] = "files/comparison.png"
+    report["plotting"]["negative_preview" if negative else "preview"] = f"files/{filename}"
     report["plotting"]["preview_frame_ids"] = [f["id"] for f in frames]
+    if not negative:
+        render_comparison(report, output, negative=True)
