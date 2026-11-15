@@ -17,7 +17,7 @@ for (const [source, output, upstream] of [
   manifest.files[output] = {upstream, sha256: crypto.createHash('sha256').update(content).digest('hex')};
 }
 execFileSync(process.execPath, [path.join(root, 'node_modules/tailwindcss/lib/cli.js'), '--config', 'tailwind.config.cjs', '--input', 'input.css', '--output', 'assets/home.css', '--minify'], {cwd: root, stdio: 'inherit'});
-for (const name of ['home.css', 'theme.css', 'zephyr-logo.svg', 'spherex-cutout.png']) {
+for (const name of ['home.css', 'theme.css', 'zephyr-logo.svg', 'spherex-cutout.png', 'navigation.css', 'navigation.js']) {
   manifest.files[name] = {sha256: crypto.createHash('sha256').update(fs.readFileSync(path.join(asset, name))).digest('hex')};
 }
 fs.writeFileSync(path.join(asset, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n');

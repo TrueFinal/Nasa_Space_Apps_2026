@@ -282,6 +282,8 @@ def make_handler(state):
                 "home.css": "text/css",
                 "theme.css": "text/css",
                 "spherex-cutout.png": "image/png",
+                "navigation.css": "text/css",
+                "navigation.js": "text/javascript",
                 "zephyr-logo.svg": "image/svg+xml",
                 "manifest.json": "application/json",
             }
