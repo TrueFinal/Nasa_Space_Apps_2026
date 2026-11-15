@@ -139,6 +139,7 @@ async function openArchiveImage(row){
     if(id!==job)return;
     e.obs_id=row.obs_id;e.url=row.access_url;e.collection=row.collection;raw=[e];
     dataset={...c,collection:row.collection,title:row.obs_id,bandLabel:`D${detector}`,archive_count:archive.rows.length};point=null;
+    mode='image';document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode==='image'));$('aladin').hidden=true;$('sky').hidden=false;$('play').disabled=false;
     rebuild();status(`Imagem individual ${row.obs_id} · ${row.collection}. Todos os outros arquivos continuam na lista.`);
   }catch(e){if(id===job)status(signal.aborted?'Abertura cancelada.':e.message,true);}
   finally{if(id===job){$('cancel').hidden=true;$('search-button').disabled=false;$('progress').hidden=true;}}

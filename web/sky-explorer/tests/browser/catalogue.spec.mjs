@@ -17,7 +17,7 @@ test('no sampling by default; complete catalogue paginates and opens images outs
  await page.locator('#catalogue-next').click();await expect(page.locator('#catalogue-page')).toHaveText('Página 2 de 6');
  await page.locator('#catalogue-detector').selectOption('SPHEREx-D3');await expect(page.locator('#catalogue-count')).toContainText('132 imagens');
  await page.locator('#catalogue-search').fill('obs_263');await expect(page.locator('#catalogue-body tr')).toHaveCount(1);
- await page.locator('#catalogue-body button').click();await expect(page.locator('#target-title')).toHaveText('obs_263');expect(cutouts).toBe(134);
+ await page.locator('[data-mode="difference"]').click();await page.locator('#catalogue-body button').click();await expect(page.locator('#target-title')).toHaveText('obs_263');expect(cutouts).toBe(134);await expect(page.locator('[data-mode="image"]')).toHaveClass('active');
  const csv=page.waitForEvent('download');await page.locator('#catalogue-export').click();expect((await csv).suggestedFilename()).toBe('spherex-all-images.csv');
 });
 test('individual exposure animation keeps every loaded image accessible',async({page})=>{

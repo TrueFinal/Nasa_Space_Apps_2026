@@ -47,9 +47,9 @@ Fontes: [SIMBAD](https://simbad.cds.unistra.fr/simbad/), [Gaia DR3](https://gea.
 
 O MOST da IRSA localiza imagens que interceptam a trajetória de um objeto conhecido. O tutorial oficial inclui SPHEREx. Ele é útil para perguntar “em quais imagens este objeto aparece”; não é um classificador de fontes desconhecidas numa imagem. Para a pergunta inversa — quais objetos conhecidos podem estar no campo numa data — o JPL Small-Body Identification API é uma opção.
 
-O JPL aceita posição/velocidade de observador espacial. O parâmetro `xobs` exige coordenadas cartesianas **ICRF**, posição em km e velocidade opcional em km/s. Os FITS locais contêm `X_SC`, `Y_SC`, `Z_SC`, velocidades e origem `GEOCENTER`; essa origem, isoladamente, não confirma a orientação ICRF. A convenção precisa ser verificada/convertida antes de executar associações científicas. Usar um observatório terrestre como substituto pode deslocar objetos próximos por paralaxe. Magnitude visual prevista não equivale ao fluxo infravermelho SPHEREx.
+O JPL aceita posição/velocidade de observador espacial. O parâmetro `xobs` exige coordenadas cartesianas **ICRF**, posição em km e velocidade opcional em km/s. Os FITS locais contêm `X_SC`, `Y_SC`, `Z_SC`, velocidades e origem `GEOCENTER`; essa origem, isoladamente, não confirma a orientação ICRF. A convenção precisa ser verificada/convertida antes de executar associações científicas. O `RADESYS=ICRS` do WCS da imagem não estabelece, por si só, a orientação dos vetores da nave. Usar um observatório terrestre como substituto pode deslocar objetos próximos por paralaxe. Magnitude visual prevista não equivale ao fluxo infravermelho SPHEREx.
 
-Fontes: [tutorial MOST/SPHEREx](https://caltech-ipac.github.io/irsa-tutorials/most-queries/), [JPL SB Identification](https://ssd-api.jpl.nasa.gov/doc/sb_ident.html).
+Fontes: [tutorial MOST/SPHEREx](https://caltech-ipac.github.io/irsa-tutorials/most-queries/), [JPL SB Identification](https://ssd-api.jpl.nasa.gov/doc/sb_ident.html), [suplemento SPHEREx — vetores no cabeçalho](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp.pdf).
 
 ### Anãs marrons: espectros, não a paleta de cor
 
